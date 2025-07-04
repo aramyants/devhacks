@@ -1,150 +1,52 @@
 
-import React, { useState, useEffect } from 'react';
-import CompanyList from './components/CompanyList';
-import CompanyForm from './components/CompanyForm';
-import { companyApi } from './services/api';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import Company from './components/Company';
+import Chat from './components/Chat';
 
-function App() {
-  const [companies, setCompanies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingCompany, setEditingCompany] = useState(null);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-
-  // Load companies on component mount
-  useEffect(() => {loadCompanies();  }, []);
-
-  const loadCompanies = async () => {
-    setIsLoading(true);
-    setError('');
-    try {
-      const data = await companyApi.getCompanies();
-      setCompanies(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleAddCompany = () => {
-    setEditingCompany(null);
-    setIsFormOpen(true);
-    setError('');
-    setSuccess('');
-  };
-
-  const handleEditCompany = (company) => {
-    setEditingCompany(company);
-    setIsFormOpen(true);
-    setError('');
-    setSuccess('');
-  };
-
-  const handleSaveCompany = async (companyData) => {
-    setIsLoading(true);
-    setError('');
-    setSuccess('');
-    
-    try {
-      if (editingCompany) {
-        // Update existing company
-        await companyApi.updateCompany(editingCompany.id, companyData);
-        setSuccess('Company updated successfully!');
-      } else {
-        // Create new company
-        await companyApi.createCompany(companyData);
-        setSuccess('Company created successfully!');
-      }
-      
-      setIsFormOpen(false);
-      setEditingCompany(null);
-      await loadCompanies();
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleDeleteCompany = async (companyId) => {
-    if (window.confirm('Are you sure you want to delete this company?')) {
-      setIsLoading(true);
-      setError('');
-      
-      setSuccess('');
-      
-      try {
-        await companyApi.deleteCompany(companyId);
-        setSuccess('Company deleted successfully!');
-        await loadCompanies();
-      } catch (err) {
-        //setError(error.message);
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  };
-
-  const handleCloseForm = () => {
-    setIsFormOpen(false);
-    setEditingCompany(null);
-
-    setError('');
-  };
-
-  // Clear messages after 3 seconds
-  useEffect(() => {
-    if (error || success) {
-      const timer = setTimeout(() => {
-        setError('');
-        setSuccess('');
-      }, 3000);
-
-
-      return () => clearTimeout(timer);
-    }
-  }, [error, success]);
+function Navigation() {
+  const location = useLocation();
 
   return (
-    <div className="App">
-      <header className="header">
-        <div className="container">
-          <h1>Company Admin Panel</h1>
-        </div>
-      </header>
-
-      <main className="container">
-        {error && <div className="error">{error}</div>}
-        {success && <div className="success">{success}</div>}
-        
-        <button 
-          className="add-company-btn" 
-          onClick={handleAddCompany}
-          disabled={isLoading}
+    <nav className="navigation">
+      <div className="nav-links">
+        <Link 
+          to="/companies" 
+          className={location.pathname === '/companies' ? 'active' : ''}
         >
-          Add New Company
-        </button>
+          Company Management
+        </Link>
+        <Link 
+          to="/chat" 
+          className={location.pathname === '/chat' ? 'active' : ''}
+        >
+          Chat Room
+        </Link>
+      </div>
+    </nav>
+  );
+}
 
-        <CompanyList
-          companies={companies}
-          onEdit={handleEditCompany}
-          onDelete={handleDeleteCompany}
-          isLoading={isLoading}
-        />
+function App() {
+  return (
+    <Router>
+      <div className="App">
+        <header className="header">
+          <div className="container">
+            <h1>Admin Panel</h1>
+            <Navigation />
+          </div>
+        </header>
 
-        {isFormOpen && (
-          <CompanyForm
-            company={editingCompany}
-            onSave={handleSaveCompany}
-            onCancel={handleCloseForm}
-            isLoading={isLoading}
-          />
-        )}
-      </main>
-    </div>
+        <main className="container">
+          <Routes>
+            <Route path="/" element={<Company />} />
+            <Route path="/companies" element={<Company />} />
+            <Route path="/chat" element={<Chat />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 }
 

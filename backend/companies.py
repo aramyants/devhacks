@@ -1,7 +1,7 @@
 
 from sqlalchemy.orm import Session
-from models import Company
-from schemas import CompanyCreate, CompanyUpdate
+from models import Company, ChatMessage
+from schemas import CompanyCreate, CompanyUpdate, ChatMessageCreate
 from typing import List, Optional
 
 def get_companies(db: Session, skip: int = 0, limit: int = 100) -> List[Company]:
@@ -33,3 +33,13 @@ def delete_company(db: Session, company_id: int) -> bool:
         db.commit()
         return True
     return False
+
+def get_chat_messages(db: Session, skip: int = 0, limit: int = 100) -> List[ChatMessage]:
+    return db.query(ChatMessage).order_by(ChatMessage.created_at.asc()).offset(skip).limit(limit).all()
+
+def create_chat_message(db: Session, message: ChatMessageCreate) -> ChatMessage:
+    db_message = ChatMessage(message=message.message, sender=message.sender)
+    db.add(db_message)
+    db.commit()
+    db.refresh(db_message)
+    return db_message

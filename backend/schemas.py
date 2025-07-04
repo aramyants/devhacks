@@ -20,3 +20,17 @@ class Company(CompanyBase):
 
     class Config:
         from_attributes = True
+
+class ChatMessageBase(BaseModel):
+    message: str
+    sender: str
+
+class ChatMessageCreate(ChatMessageBase):
+    pass
+
+class ChatMessage(ChatMessageBase):
+    id: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True

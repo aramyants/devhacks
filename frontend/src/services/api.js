@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'http://localhost:8002/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -58,6 +58,28 @@ export const companyApi = {
       return true;
     } catch (error) {
       throw new Error(error.response?.data?.detail || 'Failed to delete company');
+    }
+  },
+};
+
+export const chatApi = {
+  // Get all messages
+  getMessages: async () => {
+    try {
+      const response = await api.get('/messages');
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to fetch messages');
+    }
+  },
+
+  // Send a new message
+  sendMessage: async (messageData) => {
+    try {
+      const response = await api.post('/messages', messageData);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || 'Failed to send message');
     }
   },
 };
