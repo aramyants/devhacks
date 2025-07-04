@@ -36,3 +36,37 @@
     transform: rotate(360deg);
   }
 }
+
+/* styles.css */
+.navigation .nav-links a {
+  margin-right: 1rem;
+  text-decoration: none;
+}
+.navigation .nav-links .active {
+  font-weight: bold;
+  border-bottom: 2px solid currentColor;
+}
+
+.kpi-cards {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.kpi-cards .card {
+  flex: 1;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.product-table {
+  margin-top: 1rem;
+  width: 100%;
+  border-collapse: collapse;
+}
+.product-table th,
+.product-table td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+}
