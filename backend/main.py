@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes import router
 from database import engine
 from models import Base
-cd
+
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
