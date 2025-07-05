@@ -136,10 +136,25 @@ export const authApi = {
   login: async (email, password) => {
     try {
       console.log("AuthAPI: Attempting login with", { email, password });
+      console.log(
+        "AuthAPI: Email type:",
+        typeof email,
+        "Password type:",
+        typeof password,
+      );
 
       // For demo purposes, we'll simulate the backend response
       // Accept multiple password variations for demo
       const validPasswords = ["demo123", "password", "123", "admin", "test"];
+
+      console.log("AuthAPI: Valid passwords:", validPasswords);
+      console.log(
+        "AuthAPI: Password check:",
+        validPasswords.includes(password),
+      );
+      console.log("AuthAPI: Email check admin:", email === "admin@saas.com");
+      console.log("AuthAPI: Email check acme:", email === "owner@acme.com");
+      console.log("AuthAPI: Email check globex:", email === "owner@globex.com");
 
       if (email === "admin@saas.com" && validPasswords.includes(password)) {
         const result = {
@@ -170,6 +185,15 @@ export const authApi = {
         return result;
       } else {
         console.log("AuthAPI: Login failed - invalid credentials");
+        console.log("AuthAPI: Failed because - email match:", [
+          email === "admin@saas.com",
+          email === "owner@acme.com",
+          email === "owner@globex.com",
+        ]);
+        console.log(
+          "AuthAPI: Failed because - password match:",
+          validPasswords.includes(password),
+        );
         throw new Error("Invalid email or password");
       }
 
