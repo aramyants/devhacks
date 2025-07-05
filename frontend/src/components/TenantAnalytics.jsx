@@ -157,53 +157,62 @@ export default function TenantAnalytics() {
         </div>
       </div>
 
-      {/* Company-specific metrics */}
-      <div className="metrics-grid">
-        <div className="metric-card">
-          <div className="metric-icon">📦</div>
-          <div className="metric-content">
-            <h3>Total Products</h3>
-            <div className="metric-value">{data.totalProducts || 0}</div>
-            <div className="metric-change positive">
-              +{data.newProducts || 0} new
+      {/* Key Performance Metrics */}
+      <div className="analytics-section">
+        <h2 className="section-title">Key Performance Metrics</h2>
+        <div className="stats-grid">
+          <div className="stat-card products">
+            <div className="stat-header">
+              <div className="stat-icon">📦</div>
+              <span className="stat-label">Products</span>
+            </div>
+            <div className="stat-value">{data.totalProducts || 0}</div>
+            <div className="stat-change positive">
+              <span className="change-icon">↗</span>+{data.newProducts || 0}{" "}
+              this period
             </div>
           </div>
-        </div>
 
-        <div className="metric-card">
-          <div className="metric-icon">💰</div>
-          <div className="metric-content">
-            <h3>Revenue</h3>
-            <div className="metric-value">
+          <div className="stat-card revenue">
+            <div className="stat-header">
+              <div className="stat-icon">💰</div>
+              <span className="stat-label">Revenue</span>
+            </div>
+            <div className="stat-value">
               ${(data.revenue || 0).toLocaleString()}
             </div>
             <div
-              className={`metric-change ${data.revenueGrowth >= 0 ? "positive" : "negative"}`}
+              className={`stat-change ${data.revenueGrowth >= 0 ? "positive" : "negative"}`}
             >
+              <span className="change-icon">
+                {data.revenueGrowth >= 0 ? "↗" : "↘"}
+              </span>
               {data.revenueGrowth >= 0 ? "+" : ""}
-              {data.revenueGrowth || 0}%
+              {data.revenueGrowth || 0}% growth
             </div>
           </div>
-        </div>
 
-        <div className="metric-card">
-          <div className="metric-icon">📋</div>
-          <div className="metric-content">
-            <h3>Orders</h3>
-            <div className="metric-value">{data.orders || 0}</div>
-            <div className="metric-change positive">
-              +{data.newOrders || 0} new
+          <div className="stat-card orders">
+            <div className="stat-header">
+              <div className="stat-icon">📋</div>
+              <span className="stat-label">Orders</span>
+            </div>
+            <div className="stat-value">{data.orders || 0}</div>
+            <div className="stat-change positive">
+              <span className="change-icon">↗</span>+{data.newOrders || 0} new
+              orders
             </div>
           </div>
-        </div>
 
-        <div className="metric-card">
-          <div className="metric-icon">👥</div>
-          <div className="metric-content">
-            <h3>Customers</h3>
-            <div className="metric-value">{data.customers || 0}</div>
-            <div className="metric-change positive">
-              +{data.newCustomers || 0} new
+          <div className="stat-card customers">
+            <div className="stat-header">
+              <div className="stat-icon">👥</div>
+              <span className="stat-label">Customers</span>
+            </div>
+            <div className="stat-value">{data.customers || 0}</div>
+            <div className="stat-change positive">
+              <span className="change-icon">↗</span>+{data.newCustomers || 0}{" "}
+              new customers
             </div>
           </div>
         </div>
