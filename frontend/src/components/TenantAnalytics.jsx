@@ -77,8 +77,8 @@ export default function TenantAnalytics() {
 
   if (loading) {
     return (
-      <div className="dashboard-container">
-        <div className="loading-container">
+      <div className="modern-container">
+        <div className="loading-state">
           <div className="loading-spinner"></div>
           <p>Loading analytics...</p>
         </div>
@@ -88,8 +88,9 @@ export default function TenantAnalytics() {
 
   if (error) {
     return (
-      <div className="dashboard-container">
-        <div className="error-container">
+      <div className="modern-container">
+        <div className="error-state">
+          <div className="error-icon">⚠️</div>
           <h3>Failed to load analytics</h3>
           <p>{error}</p>
         </div>
@@ -99,10 +100,15 @@ export default function TenantAnalytics() {
 
   if (!data) {
     return (
-      <div className="dashboard-container">
-        <div className="empty-container">
+      <div className="modern-container">
+        <div className="empty-state">
+          <div className="empty-icon">📊</div>
           <h3>No analytics data available</h3>
-          <p>Select a company from the dropdown to view analytics</p>
+          <p>
+            {isAdmin
+              ? "Select a company from the dropdown to view analytics"
+              : "No data available for your company"}
+          </p>
         </div>
       </div>
     );
