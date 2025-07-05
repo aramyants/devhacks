@@ -1,7 +1,7 @@
 // src/pages/CompanySettings.jsx
-import React, { useEffect, useState } from 'react';
-import { companyApi } from '../services/api';
-import { useTenant } from './TenantContext';
+import React, { useEffect, useState } from "react";
+import { companyApi } from "../services/api";
+import { useTenant } from "./TenantContext";
 
 /**
  * Company Settings & Privacy page
@@ -12,35 +12,35 @@ import { useTenant } from './TenantContext';
 export default function CompanySettings({ companyId = 1 }) {
   const { tenant } = useTenant();
   // ---------- STATE ----------
-  const [form,   setForm]   = useState({
-    companyName: '',
-    contactEmail: '',
-    phoneNumber: '',
-    description: '',
-    privacyPolicy: '',
+  const [form, setForm] = useState({
+    companyName: "",
+    contactEmail: "",
+    phoneNumber: "",
+    description: "",
+    privacyPolicy: "",
     acceptsMarketing: false,
   });
-  const [status, setStatus] = useState('idle');   // idle | loading | saving | success | error
-  const [error,  setError]  = useState(null);
+  const [status, setStatus] = useState("idle"); // idle | loading | saving | success | error
+  const [error, setError] = useState(null);
 
   // ---------- FETCH ON MOUNT ----------
   useEffect(() => {
     const fetchCompany = async () => {
       try {
-        setStatus('loading');
+        setStatus("loading");
         const data = await companyApi.getCompany(companyId);
         setForm({
-          companyName:      data.companyName      ?? '',
-          contactEmail:     data.contactEmail     ?? '',
-          phoneNumber:      data.phoneNumber      ?? '',
-          description:      data.description      ?? '',
-          privacyPolicy:    data.privacyPolicy    ?? '',
+          companyName: data.companyName ?? "",
+          contactEmail: data.contactEmail ?? "",
+          phoneNumber: data.phoneNumber ?? "",
+          description: data.description ?? "",
+          privacyPolicy: data.privacyPolicy ?? "",
           acceptsMarketing: data.acceptsMarketing ?? false,
         });
-        setStatus('idle');
+        setStatus("idle");
       } catch (err) {
         setError(err.message);
-        setStatus('error');
+        setStatus("error");
       }
     };
 
@@ -50,40 +50,41 @@ export default function CompanySettings({ companyId = 1 }) {
   // ---------- HANDLERS ----------
   const handleChange = (e) => {
     const { name, type, checked, value } = e.target;
-    setForm((f) => ({ ...f, [name]: type === 'checkbox' ? checked : value }));
+    setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setStatus('saving');
+      setStatus("saving");
       await companyApi.updateCompany(companyId, form);
-      setStatus('success');
-      setTimeout(() => setStatus('idle'), 2500);
+      setStatus("success");
+      setTimeout(() => setStatus("idle"), 2500);
     } catch (err) {
       setError(err.message);
-      setStatus('error');
+      setStatus("error");
     }
   };
 
   // ---------- RENDER ----------
-  if (status === 'loading')
-    return <p style={{ padding: '1rem' }}>Loading company data…</p>;
+  if (status === "loading")
+    return <p style={{ padding: "1rem" }}>Loading company data…</p>;
 
-  if (status === 'error')
-    return (
-      <p style={{ padding: '1rem', color: 'crimson' }}>
-        Error: {error}
-      </p>
-    );
+  if (status === "error")
+    return <p style={{ padding: "1rem", color: "crimson" }}>Error: {error}</p>;
 
   return (
     <section className="company-settings">
-      <h2>Company Settings&nbsp;&amp;&nbsp;Privacy</h2>
-      <div style={{ marginBottom: 16, color: '#888', fontSize: 15 }}>
-        <b>Tenant:</b> {tenant.name}
+      <div className="settings-header">
+        <h2 className="settings-title">Company Settings & Privacy</h2>
+        <div className="tenant-info">
+          <span className="tenant-label">Tenant:</span>
+          <span className="tenant-name">{tenant?.name}</span>
+        </div>
+        <p className="settings-description">
+          Update company contact details and privacy preferences below.
+        </p>
       </div>
-      <p>Update company contact details and privacy-policy preferences below.</p>
 
       <form onSubmit={handleSubmit} className="settings-form">
         {/* Company Name */}
@@ -157,12 +158,12 @@ export default function CompanySettings({ companyId = 1 }) {
           Allow marketing e-mails to customers
         </label>
 
-        <button type="submit" disabled={status === 'saving'}>
-          {status === 'saving' ? 'Saving…' : 'Save Changes'}
+        <button type="submit" disabled={status === "saving"}>
+          {status === "saving" ? "Saving…" : "Save Changes"}
         </button>
 
-        {status === 'success' && (
-          <span style={{ marginLeft: 12, color: 'green' }}>Saved!</span>
+        {status === "success" && (
+          <span style={{ marginLeft: 12, color: "green" }}>Saved!</span>
         )}
       </form>
     </section>
