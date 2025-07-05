@@ -400,40 +400,151 @@ export const dashboardApi = {
 };
 
 export const productsApi = {
+  // Get all items (products + offerings) for a company
+  getCompanyItems: async (companyId) => {
+    try {
+      const response = await api.get(`/company/${companyId}/all-items`);
+      return response.data;
+    } catch (error) {
+      console.warn("⚠️ Backend API unavailable. Using mock data fallback.");
+      return {
+        products: [
+          {
+            id: 1,
+            name: "Premium Widget",
+            price: 99.99,
+            type: "product",
+            stock_qty: 45,
+            description: "High-quality premium widget",
+            created_at: "2024-01-15T10:00:00Z",
+          },
+          {
+            id: 2,
+            name: "Basic Plan",
+            price: 29.99,
+            type: "product",
+            stock_qty: 100,
+            description: "Essential features for small teams",
+            created_at: "2024-01-25T09:15:00Z",
+          },
+        ],
+        offerings: [
+          {
+            id: 1,
+            name: "Professional Service",
+            price: 299.99,
+            type: "service",
+            currency: "USD",
+            description: "Expert consultation services",
+            created_at: "2024-01-20T14:30:00Z",
+          },
+          {
+            id: 2,
+            name: "Custom Integration",
+            price: 499.99,
+            type: "service",
+            currency: "USD",
+            description: "Custom software integration",
+            created_at: "2024-02-01T09:00:00Z",
+          },
+        ],
+        total: 4,
+      };
+    }
+  },
+
   // Get products for a company
   getCompanyProducts: async (companyId) => {
     try {
-      // For demo, return mock data
-      // Real API call: const response = await api.get(`/companies/${companyId}/products`);
-      return [
-        {
-          id: 1,
-          name: "Premium Widget",
-          price: 99.99,
-          stock_qty: 45,
-          category: "Electronics",
-          created_at: "2024-01-15T10:00:00Z",
-        },
-        {
-          id: 2,
-          name: "Professional Service",
-          price: 299.99,
-          stock_qty: null,
-          category: "Services",
-          created_at: "2024-01-20T14:30:00Z",
-        },
-        {
-          id: 3,
-          name: "Basic Plan",
-          price: 29.99,
-          stock_qty: 100,
-          category: "Subscriptions",
-          created_at: "2024-01-25T09:15:00Z",
-        },
-      ];
+      const response = await api.get(`/products?company_id=${companyId}`);
+      return response.data;
     } catch (error) {
       throw new Error(
         error.response?.data?.detail || "Failed to fetch products",
+      );
+    }
+  },
+
+  // Get offerings for a company
+  getCompanyOfferings: async (companyId) => {
+    try {
+      const response = await api.get(`/offerings?company_id=${companyId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.detail || "Failed to fetch offerings",
+      );
+    }
+  },
+
+  // Create a new product
+  createProduct: async (productData) => {
+    try {
+      const response = await api.post("/products", productData);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.detail || "Failed to create product",
+      );
+    }
+  },
+
+  // Create a new offering
+  createOffering: async (offeringData) => {
+    try {
+      const response = await api.post("/offerings", offeringData);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.detail || "Failed to create offering",
+      );
+    }
+  },
+
+  // Update a product
+  updateProduct: async (id, productData) => {
+    try {
+      const response = await api.put(`/products/${id}`, productData);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.detail || "Failed to update product",
+      );
+    }
+  },
+
+  // Update an offering
+  updateOffering: async (id, offeringData) => {
+    try {
+      const response = await api.put(`/offerings/${id}`, offeringData);
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.detail || "Failed to update offering",
+      );
+    }
+  },
+
+  // Delete a product
+  deleteProduct: async (id) => {
+    try {
+      await api.delete(`/products/${id}`);
+      return true;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.detail || "Failed to delete product",
+      );
+    }
+  },
+
+  // Delete an offering
+  deleteOffering: async (id) => {
+    try {
+      await api.delete(`/offerings/${id}`);
+      return true;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.detail || "Failed to delete offering",
       );
     }
   },
