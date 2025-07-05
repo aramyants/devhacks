@@ -169,7 +169,7 @@ export default function Dashboard() {
                   <YAxis allowDecimals={false} />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="value" fill="#e67e22" />
+                  <Bar dataKey="value" fill="var(--warning)" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
