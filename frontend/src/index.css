@@ -1597,21 +1597,23 @@ td button {
 }
 
 .auth-switch-btn {
-  background: none;
-  border: 2px solid var(--primary);
-  color: var(--primary);
+  background: linear-gradient(135deg, #00d4ff, #8000ff);
+  border: none;
+  color: white;
   border-radius: 12px;
   padding: 0.75rem 2rem;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 212, 255, 0.3);
 }
 
 .auth-switch-btn:hover:not(:disabled) {
-  background: var(--primary);
+  background: linear-gradient(135deg, #0099cc, #6600cc);
   color: white;
   transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
 }
 
 .auth-switch-btn:disabled {
