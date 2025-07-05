@@ -12,6 +12,9 @@ export default function CompanyOptimized() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingCompany, setEditingCompany] = useState(null);
+  const [operationLoading, setOperationLoading] = useState(false);
   const [newCompany, setNewCompany] = useState({
     name: "",
     industry: "",
