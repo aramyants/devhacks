@@ -1,7 +1,7 @@
 /* index.css  ────────────────────────────────────────────────
    Cosmic Epic Dashboard Theme - Advanced space-themed UI system
    with real database integration and responsive design
-──────��───────────────────────────────────────────────────── */
+──────────────────────────────────────────────────────────── */
 
 @import url("./cosmic-components.css");
 @import url("./responsive-ui.css");
@@ -612,23 +612,31 @@ td button {
 .chat-container {
   display: flex;
   flex-direction: column;
-  background: var(--surface);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-cosmic);
+  backdrop-filter: blur(20px);
   height: 600px;
   overflow: hidden;
 }
 .chat-header {
-  background: var(--text);
-  color: #fff;
-  padding: 1rem;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: var(--text);
+  padding: 1.5rem;
   text-align: center;
+  border-bottom: 1px solid var(--glass-border);
+}
+.chat-header h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 .chat-messages {
   flex: 1;
   padding: 1rem;
   overflow-y: auto;
-  background: #f8f9fa;
+  background: rgba(0, 0, 0, 0.1);
 }
 .message {
   background: var(--surface);
