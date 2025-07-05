@@ -897,9 +897,12 @@
 
   .modal-actions {
     flex-direction: column;
+    gap: 0.75rem;
   }
 
-  .cosmic-btn {
+  .modal-actions .cosmic-btn {
+    width: 100%;
+    min-width: unset;
     justify-content: center;
   }
 }
