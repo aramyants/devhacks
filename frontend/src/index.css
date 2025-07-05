@@ -1,4 +1,4 @@
-/* index.css  ────────────────────────────────────────────────
+/* index.css  ─────────────────��──────────────────────────────
    Cosmic Epic Dashboard Theme - Advanced space-themed UI system
    with real database integration and responsive design
 ──────────────────────────────────────────────────────────── */
@@ -715,7 +715,7 @@ td button {
 /* Cosmic Tenant Switcher */
 .cosmic-tenant-switcher {
   position: relative;
-  z-index: 2100;
+  z-index: 9999;
 }
 
 .cosmic-tenant-switcher.loading {
