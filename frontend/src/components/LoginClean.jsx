@@ -154,6 +154,24 @@ export default function LoginClean({ onSwitchToRegister }) {
           </button>
         </form>
 
+        {/* Test Credentials Helper */}
+        {process.env.NODE_ENV === "development" && (
+          <div className="test-credentials">
+            <h4>🧪 Test Credentials</h4>
+            <div className="credentials-list">
+              <div className="credential-item">
+                <strong>Admin:</strong> admin@saas.com / admin123
+              </div>
+              <div className="credential-item">
+                <strong>Owner:</strong> owner@acme.com / acme123
+              </div>
+              <div className="credential-item">
+                <strong>User:</strong> test@acme.com / test123
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="auth-footer">
           <p className="auth-footer-text">Don't have an account?</p>
           <button
