@@ -411,6 +411,21 @@ export default function Products() {
               </button>
             </div>
 
+            {!tenant?.id && (
+              <div
+                className="cosmic-alert warning"
+                style={{ marginBottom: "1rem" }}
+              >
+                <span className="alert-icon">⚠️</span>
+                <div className="alert-content">
+                  <h4 className="font-semibold">Company Required</h4>
+                  <p className="text-sm">
+                    Please select a company to create products or services.
+                  </p>
+                </div>
+              </div>
+            )}
+
             <form onSubmit={handleCreateItem} className="product-form">
               <div className="form-grid">
                 <div className="form-group">
