@@ -98,6 +98,13 @@ export default function Products() {
     setOperationLoading(true);
     setError("");
 
+    // Validate required data
+    if (!editingItem?.id) {
+      setError("Item information is missing. Please try again.");
+      setOperationLoading(false);
+      return;
+    }
+
     try {
       const itemData = {
         name: editingItem.name,
