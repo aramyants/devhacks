@@ -51,6 +51,7 @@ export default function OwnerDashboard() {
           .getCompanyProducts(user.companyId)
           .catch((err) => {
             console.warn("Failed to fetch products data:", err.message);
+            mockDataUsed = true;
             return [];
           });
 
@@ -58,6 +59,7 @@ export default function OwnerDashboard() {
           .getCompanyStats(user.companyId, timeFilter)
           .catch((err) => {
             console.warn("Failed to fetch stats data:", err.message);
+            mockDataUsed = true;
             return {
               totalProducts: 0,
               newProducts: 0,
@@ -75,6 +77,8 @@ export default function OwnerDashboard() {
               },
             };
           });
+
+        setIsUsingMockData(mockDataUsed);
 
         setCompany(companyData);
         setProducts(productsData);
