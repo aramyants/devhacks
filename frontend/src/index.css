@@ -497,28 +497,31 @@ table,
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
-  background: #fff;
-  border: 1.5px solid var(--primary-light);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 2px 12px #5f6fff11;
+  box-shadow: var(--shadow-cosmic);
+  backdrop-filter: blur(20px);
 }
 th,
 td {
   padding: 1.1rem 0.9rem;
   text-align: left;
+  color: var(--text);
 }
 th {
-  background: #f1f5ff;
+  background: rgba(0, 212, 255, 0.1);
   font-size: 1rem;
-  color: var(--primary-dark);
+  color: var(--primary);
   font-weight: 700;
+  border-bottom: 1px solid var(--glass-border);
 }
 tr + tr td {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--glass-border);
 }
 tr:hover {
-  background: #f7f8fa;
+  background: var(--surface-hover);
 }
 td button {
   font-size: 0.75rem;
