@@ -74,16 +74,55 @@ export default function CompanyOptimized() {
     }
   };
 
+  const handleEditCompany = (company) => {
+    setEditingCompany({
+      id: company.id,
+      name: company.name || "",
+      industry: company.industry || "",
+      country: company.country || "",
+      city: company.city || "",
+      website: company.website || "",
+      contact_email: company.contact_email || "",
+      phone: company.phone || "",
+      tagline: company.tagline || "",
+      founded_year: company.founded_year || new Date().getFullYear(),
+      size: company.size || "1-10",
+    });
+    setIsEditModalOpen(true);
+    setSelectedCompany(null);
+  };
+
+  const handleUpdateCompany = async (e) => {
+    e.preventDefault();
+    setOperationLoading(true);
+    setError("");
+    try {
+      await companyApi.updateCompany(editingCompany.id, editingCompany);
+      setIsEditModalOpen(false);
+      setEditingCompany(null);
+      await fetchCompanies();
+      await refreshTenants();
+    } catch (err) {
+      setError(`Failed to update company: ${err.message}`);
+    } finally {
+      setOperationLoading(false);
+    }
+  };
+
   const handleDeleteCompany = async (companyId) => {
     if (!window.confirm("Are you sure you want to delete this company?"))
       return;
 
+    setOperationLoading(true);
+    setError("");
     try {
       await companyApi.deleteCompany(companyId);
       await fetchCompanies();
       await refreshTenants();
     } catch (err) {
-      setError(err.message);
+      setError(`Failed to delete company: ${err.message}`);
+    } finally {
+      setOperationLoading(false);
     }
   };
 
