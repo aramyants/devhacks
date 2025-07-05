@@ -545,6 +545,11 @@
   color: var(--text);
 }
 
+.modal-body {
+  color: var(--text);
+  line-height: 1.6;
+}
+
 .close-btn {
   width: 40px;
   height: 40px;
