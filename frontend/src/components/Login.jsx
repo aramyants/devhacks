@@ -187,7 +187,7 @@ export default function Login({ onSwitchToRegister }) {
             type="button"
             className="auth-switch-btn"
             onClick={onSwitchToRegister}
-            disabled={loading}
+            disabled={loading || isSubmitting}
           >
             Create Account
           </button>
