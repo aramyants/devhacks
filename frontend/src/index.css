@@ -2067,12 +2067,12 @@ td button {
 
 .nav-item:hover {
   color: var(--primary);
-  background: rgba(95, 111, 255, 0.05);
+  background: var(--surface-hover);
 }
 
 .nav-item.active {
   color: var(--primary);
-  background: rgba(95, 111, 255, 0.1);
+  background: rgba(0, 212, 255, 0.1);
   font-weight: 600;
 }
 
