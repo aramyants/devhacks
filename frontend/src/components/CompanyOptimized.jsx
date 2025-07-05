@@ -561,9 +561,9 @@ export default function CompanyOptimized() {
                 <button
                   type="submit"
                   className="cosmic-btn primary"
-                  disabled={loading || !newCompany.name.trim()}
+                  disabled={operationLoading || !newCompany.name.trim()}
                 >
-                  {loading ? (
+                  {operationLoading ? (
                     <>
                       <div className="cosmic-spinner"></div>
                       Creating...
