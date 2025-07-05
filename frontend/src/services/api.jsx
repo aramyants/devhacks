@@ -97,12 +97,13 @@ export const companyApi = {
       const response = await api.get(`/companies/${id}`);
       return response.data;
     } catch (error) {
-      console.error(
-        "❌ Backend API unavailable. Please start the FastAPI backend server.",
-      );
-      throw new Error(
-        "Backend API unavailable. Please start the FastAPI server on port 8000.",
-      );
+      console.warn("⚠️ Backend API unavailable. Using mock data fallback.");
+      // Return mock data as fallback
+      const company = MOCK_COMPANIES.find((c) => c.id === parseInt(id));
+      if (!company) {
+        throw new Error("Company not found");
+      }
+      return company;
     }
   },
 
