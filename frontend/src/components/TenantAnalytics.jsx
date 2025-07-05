@@ -293,24 +293,43 @@ export default function TenantAnalytics() {
       </div>
 
       {/* Product Performance */}
-      {data.productPerformance && (
-        <div className="chart-section">
-          <div className="chart-container">
+      {data.productPerformance && data.productPerformance.length > 0 && (
+        <div className="analytics-section">
+          <div className="chart-card">
             <div className="chart-header">
-              <h3>Product Performance</h3>
+              <h3 className="chart-title">Product Performance</h3>
+              <p className="chart-subtitle">Revenue by product category</p>
             </div>
-            <div className="chart-content">
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={data.productPerformance}>
-                  <XAxis dataKey="name" />
-                  <YAxis />
+            <div className="chart-wrapper">
+              <ResponsiveContainer width="100%" height={320}>
+                <BarChart
+                  data={data.productPerformance}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                >
+                  <XAxis
+                    dataKey="name"
+                    tick={{ fontSize: 12 }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    tick={{ fontSize: 12 }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
                   <Tooltip
+                    contentStyle={{
+                      backgroundColor: "rgba(255, 255, 255, 0.95)",
+                      border: "none",
+                      borderRadius: "12px",
+                      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+                    }}
                     formatter={(value) => [
                       `$${value.toLocaleString()}`,
                       "Revenue",
                     ]}
                   />
-                  <Bar dataKey="revenue" fill="#5f6fff" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="revenue" fill="#6366f1" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
