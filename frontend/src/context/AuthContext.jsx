@@ -36,6 +36,7 @@ export const AuthProvider = ({ children }) => {
     setError("");
 
     try {
+      console.log("AuthContext: Starting login...");
       const response = await authApi.login(email, password);
       const { token, user: userData } = response;
 
@@ -43,9 +44,12 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("user", JSON.stringify(userData));
       setUser(userData);
 
+      console.log("AuthContext: Login successful");
       return { success: true };
     } catch (err) {
+      console.error("AuthContext: Login error caught:", err);
       const errorMessage = err.message || "Login failed. Please try again.";
+      console.log("AuthContext: Setting error to:", errorMessage);
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {

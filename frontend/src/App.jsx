@@ -18,6 +18,7 @@ import Products from "./components/Products";
 import Navigation from "./components/Navigation";
 import { TenantProvider } from "./components/TenantContext";
 import TenantSwitcher from "./components/TenantSwitcher";
+import TenantAnalytics from "./components/TenantAnalytics";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 
 function DashboardRouter() {
@@ -96,7 +97,7 @@ function AppContent() {
             />
             <Route path="/products" element={<Products />} />
             <Route path="/chat" element={<Chat />} />
-            <Route path="/analytics" element={<AdminDashboard />} />
+            <Route path="/analytics" element={<TenantAnalytics />} />
             <Route
               path="/users"
               element={<div>Users Management (Coming Soon)</div>}

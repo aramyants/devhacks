@@ -127,6 +127,37 @@
   flex: 1;
 }
 
+/* Test Credentials Helper */
+.test-credentials {
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.test-credentials h4 {
+  margin: 0 0 0.75rem 0;
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.credentials-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.credential-item {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-family: "Courier New", monospace;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+
 .auth-submit-btn-fixed {
   background: linear-gradient(135deg, #00d4ff, #8000ff);
   color: white;

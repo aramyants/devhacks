@@ -14,6 +14,13 @@ export default function LoginClean({ onSwitchToRegister }) {
     clearError();
   }, [clearError]);
 
+  // Debug: Monitor error state changes
+  useEffect(() => {
+    if (error) {
+      console.log("LoginClean: Error state updated:", error);
+    }
+  }, [error]);
+
   const validateForm = () => {
     const errors = {};
 
@@ -48,13 +55,11 @@ export default function LoginClean({ onSwitchToRegister }) {
 
       if (!result.success) {
         console.error("Login failed:", result.error);
-        // Error is already set by the AuthContext, no need to set it again
       } else {
         console.log("Login successful!");
       }
     } catch (err) {
-      console.error("Login error:", err);
-      // Error is already set by the AuthContext, no need to set it again
+      console.error("Login error caught:", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -140,6 +145,16 @@ export default function LoginClean({ onSwitchToRegister }) {
             </div>
           )}
 
+          {/* Debug: Force show error state to test UI */}
+          {process.env.NODE_ENV === "development" && !error && (
+            <div
+              style={{ fontSize: "12px", color: "#999", marginBottom: "10px" }}
+            >
+              No error in state. Try logging in with wrong credentials to see
+              error display.
+            </div>
+          )}
+
           <button
             type="submit"
             className="auth-submit-btn-fixed"
@@ -155,6 +170,39 @@ export default function LoginClean({ onSwitchToRegister }) {
             )}
           </button>
         </form>
+
+        {/* Test Credentials Helper */}
+        {process.env.NODE_ENV === "development" && (
+          <div className="test-credentials">
+            <h4>🧪 Test Credentials</h4>
+            <div className="credentials-list">
+              <div className="credential-item">
+                <strong>Admin:</strong> admin@saas.com / admin123
+              </div>
+              <div className="credential-item">
+                <strong>Owner:</strong> owner@acme.com / acme123
+              </div>
+              <div className="credential-item">
+                <strong>User:</strong> test@acme.com / test123
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => console.log("Current error state:", error)}
+              style={{
+                background: "rgba(255,255,255,0.1)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                color: "white",
+                padding: "4px 8px",
+                borderRadius: "4px",
+                fontSize: "12px",
+                marginTop: "8px",
+              }}
+            >
+              Check Error State
+            </button>
+          </div>
+        )}
 
         <div className="auth-footer">
           <p className="auth-footer-text">Don't have an account?</p>

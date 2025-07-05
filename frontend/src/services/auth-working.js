@@ -69,14 +69,23 @@ const MOCK_USERS = [
 const mockLogin = async (email, password) => {
   await new Promise((resolve) => setTimeout(resolve, 500));
 
+  console.log("🔍 Mock login attempt:", { email, password });
+  console.log("📋 Available test accounts:");
+  MOCK_USERS.forEach((u) => {
+    console.log(`   ${u.email} / ${u.password} (${u.role})`);
+  });
+
   const user = MOCK_USERS.find(
     (u) =>
       u.email.toLowerCase() === email.toLowerCase() && u.password === password,
   );
 
   if (!user) {
+    console.log("❌ No matching user found");
     throw new Error("Invalid email or password");
   }
+
+  console.log("✅ Login successful for:", user.email);
 
   const { password: _, ...userWithoutPassword } = user;
 
@@ -121,26 +130,27 @@ const mockRegister = async (email, password, companyName) => {
 
 export const workingAuthApi = {
   login: async (email, password) => {
+    console.log("🔄 Attempting login...");
+
+    // Try real backend first
     try {
-      console.log("🔄 Attempting login...");
+      const response = await api.post("/auth/login", {
+        email: email.trim(),
+        password: password,
+      });
 
-      // Try real backend first
+      console.log("✅ Backend login successful");
+      return {
+        token: response.data.access_token,
+        user: response.data.user,
+      };
+    } catch (backendError) {
+      console.warn(
+        "⚠️ Backend unavailable, using mock authentication. Start FastAPI server for real auth.",
+      );
+
+      // Try mock authentication
       try {
-        const response = await api.post("/auth/login", {
-          email: email.trim(),
-          password: password,
-        });
-
-        console.log("✅ Backend login successful");
-        return {
-          token: response.data.access_token,
-          user: response.data.user,
-        };
-      } catch (backendError) {
-        console.warn(
-          "⚠️ Backend unavailable, using mock authentication. Start FastAPI server for real auth.",
-        );
-
         const mockResponse = await mockLogin(email.trim(), password);
         console.log("✅ Mock login successful");
 
@@ -148,10 +158,11 @@ export const workingAuthApi = {
           token: mockResponse.access_token,
           user: mockResponse.user,
         };
+      } catch (mockError) {
+        console.error("❌ Mock login failed:", mockError.message);
+        // Make sure the error is properly thrown to reach the UI
+        throw new Error(mockError.message || "Invalid email or password");
       }
-    } catch (error) {
-      console.error("❌ Login failed:", error.message);
-      throw error;
     }
   },
 
