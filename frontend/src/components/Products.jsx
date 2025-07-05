@@ -48,6 +48,13 @@ export default function Products() {
     setOperationLoading(true);
     setError("");
 
+    // Validate tenant is available
+    if (!tenant?.id) {
+      setError("Company information is not available. Please try again.");
+      setOperationLoading(false);
+      return;
+    }
+
     try {
       const itemData = {
         ...newItem,
