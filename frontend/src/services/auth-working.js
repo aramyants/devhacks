@@ -69,14 +69,23 @@ const MOCK_USERS = [
 const mockLogin = async (email, password) => {
   await new Promise((resolve) => setTimeout(resolve, 500));
 
+  console.log("🔍 Mock login attempt:", { email, password });
+  console.log("📋 Available test accounts:");
+  MOCK_USERS.forEach((u) => {
+    console.log(`   ${u.email} / ${u.password} (${u.role})`);
+  });
+
   const user = MOCK_USERS.find(
     (u) =>
       u.email.toLowerCase() === email.toLowerCase() && u.password === password,
   );
 
   if (!user) {
+    console.log("❌ No matching user found");
     throw new Error("Invalid email or password");
   }
+
+  console.log("✅ Login successful for:", user.email);
 
   const { password: _, ...userWithoutPassword } = user;
 
