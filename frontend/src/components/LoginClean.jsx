@@ -134,9 +134,21 @@ export default function LoginClean({ onSwitchToRegister }) {
           </div>
 
           {error && (
-            <div className="auth-error-fixed">
+            <div
+              className="auth-error-fixed"
+              style={{ display: "block", visibility: "visible" }}
+            >
               <span className="error-icon">⚠️</span>
               <span className="error-text">{error}</span>
+            </div>
+          )}
+
+          {/* Debug info - remove after testing */}
+          {process.env.NODE_ENV === "development" && (
+            <div
+              style={{ fontSize: "12px", color: "#666", marginBottom: "10px" }}
+            >
+              Debug: error="{error}", loading={loading.toString()}
             </div>
           )}
 
