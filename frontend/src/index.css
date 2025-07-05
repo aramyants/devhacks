@@ -1317,7 +1317,7 @@ td button {
 
 .form-group label {
   font-weight: 600;
-  color: var(--text);
+  color: #ffffff;
   font-size: 0.95rem;
   margin-left: 4px;
 }
