@@ -1332,18 +1332,18 @@ td button {
   width: 100%;
   padding: 1rem 1.2rem;
   padding-right: 3rem;
-  border: 2px solid var(--glass-border);
+  border: 2px solid rgba(0, 212, 255, 0.2);
   border-radius: 16px;
   font-size: 1rem;
   background: rgba(255, 255, 255, 0.1);
-  color: var(--text);
+  color: #ffffff;
   transition: all 0.3s ease;
   outline: none;
   backdrop-filter: blur(10px);
 }
 
 .input-wrapper input:focus {
-  border-color: var(--primary);
+  border-color: #00d4ff;
   background: rgba(255, 255, 255, 0.15);
   box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.1);
   transform: translateY(-1px);
