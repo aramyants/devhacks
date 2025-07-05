@@ -102,6 +102,7 @@ export default function TenantSwitcher() {
   return (
     <div className="cosmic-tenant-switcher" ref={dropdownRef}>
       <button
+        ref={triggerRef}
         className={`tenant-trigger ${isOpen ? "active" : ""}`}
         onClick={handleToggle}
         aria-expanded={isOpen}
