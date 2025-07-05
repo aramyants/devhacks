@@ -1263,14 +1263,14 @@ td button {
 
 .logo-icon {
   font-size: 3rem;
-  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  background: linear-gradient(135deg, #00d4ff, #8000ff);
   border-radius: 20px;
   width: 80px;
   height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 24px rgba(95, 111, 255, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
   animation: pulse 2s ease-in-out infinite;
 }
 
