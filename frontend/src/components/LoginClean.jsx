@@ -40,7 +40,6 @@ export default function LoginClean({ onSwitchToRegister }) {
 
     setIsSubmitting(true);
     clearError();
-    setLocalError("");
 
     try {
       console.log("Attempting login with:", { email });
