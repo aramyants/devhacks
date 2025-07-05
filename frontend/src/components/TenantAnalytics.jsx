@@ -337,41 +337,59 @@ export default function TenantAnalytics() {
         </div>
       )}
 
-      {/* Customer Metrics */}
+      {/* Customer Insights */}
       {data.customerMetrics && (
-        <div className="chart-section">
-          <div className="metrics-grid">
-            <div className="metric-card secondary">
-              <div className="metric-content">
-                <h4>Customer Retention</h4>
-                <div className="metric-value">
-                  {data.customerMetrics.retention}%
-                </div>
+        <div className="analytics-section">
+          <h2 className="section-title">Customer Insights</h2>
+          <div className="customer-metrics-grid">
+            <div className="customer-metric-card retention">
+              <div className="metric-header">
+                <div className="metric-icon">🔄</div>
+                <span className="metric-label">Retention Rate</span>
+              </div>
+              <div className="metric-value">
+                {data.customerMetrics.retention}%
+              </div>
+              <div className="metric-description">
+                Customer retention this period
               </div>
             </div>
-            <div className="metric-card secondary">
-              <div className="metric-content">
-                <h4>Satisfaction Score</h4>
-                <div className="metric-value">
-                  {data.customerMetrics.satisfaction}/5
-                </div>
+
+            <div className="customer-metric-card satisfaction">
+              <div className="metric-header">
+                <div className="metric-icon">⭐</div>
+                <span className="metric-label">Satisfaction</span>
+              </div>
+              <div className="metric-value">
+                {data.customerMetrics.satisfaction}/5
+              </div>
+              <div className="metric-description">
+                Average satisfaction score
               </div>
             </div>
-            <div className="metric-card secondary">
-              <div className="metric-content">
-                <h4>Churn Rate</h4>
-                <div className="metric-value">
-                  {data.customerMetrics.churnRate}%
-                </div>
+
+            <div className="customer-metric-card churn">
+              <div className="metric-header">
+                <div className="metric-icon">📉</div>
+                <span className="metric-label">Churn Rate</span>
+              </div>
+              <div className="metric-value">
+                {data.customerMetrics.churnRate}%
+              </div>
+              <div className="metric-description">
+                Customer churn this period
               </div>
             </div>
-            <div className="metric-card secondary">
-              <div className="metric-content">
-                <h4>Lifetime Value</h4>
-                <div className="metric-value">
-                  ${data.customerMetrics.lifetimeValue}
-                </div>
+
+            <div className="customer-metric-card lifetime">
+              <div className="metric-header">
+                <div className="metric-icon">💎</div>
+                <span className="metric-label">Lifetime Value</span>
               </div>
+              <div className="metric-value">
+                ${data.customerMetrics.lifetimeValue}
+              </div>
+              <div className="metric-description">Average customer LTV</div>
             </div>
           </div>
         </div>
