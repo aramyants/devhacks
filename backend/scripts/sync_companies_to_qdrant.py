@@ -1,6 +1,6 @@
 import os
-from backend.database import SessionLocal
-from backend.models import Company  # your SQLAlchemy ORM model for companies
+from database import SessionLocal
+from models import Company  # your SQLAlchemy ORM model for companies
 from qdrant_client import QdrantClient
 from qdrant_client.http import models as rest
 from openai import OpenAI

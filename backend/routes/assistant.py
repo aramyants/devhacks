@@ -9,7 +9,7 @@ import os
 from qdrant_client import QdrantClient
 from qdrant_client.http import models as rest
 
-from ..database import get_db  # your sync DB session dependency
+from database import get_db  # your sync DB session dependency
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

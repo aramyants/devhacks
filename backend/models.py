@@ -1,35 +1,173 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, JSON
+# app/models.py  ────────────────────────────────────────────────────────────
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    Text,
+    DateTime,
+    JSON,
+    ForeignKey,
+    Enum,
+    Numeric,
+)
 from sqlalchemy.sql import func
-from backend.database import Base
+from sqlalchemy.orm import relationship
+import enum
 
+from database import Base   # ← adjust if your Base lives elsewhere
+
+# ── Enums ──────────────────────────────────────────────────────────────────
+class UserRole(str, enum.Enum):
+    admin = "admin"
+    user  = "user"
+
+class OfferingType(str, enum.Enum):
+    product = "product"
+    service = "service"
+
+# ── Company ───────────────────────────────────────────────────────────────
 class Company(Base):
     __tablename__ = "companies"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), nullable=False, index=True)
-    details = Column(Text, nullable=True)
-    industry = Column(String(128), nullable=True)
-    website = Column(String(255), nullable=True)
-    logo = Column(String(255), nullable=True)
-    tagline = Column(String(255), nullable=True)
-    mission = Column(Text, nullable=True)
-    vision = Column(Text, nullable=True)
-    values = Column(String(255), nullable=True)
-    founded_year = Column(Integer, nullable=True)
-    size = Column(String(64), nullable=True)  # e.g. '1-10', '11-50', etc.
-    country = Column(String(64), nullable=True)
-    city = Column(String(64), nullable=True)
-    contact_email = Column(String(255), nullable=True)
-    phone = Column(String(64), nullable=True)
-    social_links = Column(JSON, nullable=True)
-    extra = Column(JSON, nullable=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now(), server_default=func.now())
+    id   = Column(Integer, primary_key=True, index=True)
 
+    # relationships
+    users     = relationship(
+        "User",
+        back_populates="company",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
+    offerings = relationship(
+        "Offering",
+        back_populates="company",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
+    products  = relationship(
+        "Product",
+        back_populates="company",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+    )
+
+    # business fields
+    name         = Column(String(255), nullable=False, index=True)
+    details      = Column(Text)
+    industry     = Column(String(128))
+    website      = Column(String(255))
+    logo         = Column(String(255))
+    tagline      = Column(String(255))
+    mission      = Column(Text)
+    vision       = Column(Text)
+    values       = Column(String(255))
+    founded_year = Column(Integer)
+    size         = Column(String(64))   # e.g. “1-10”, “11-50”
+    country      = Column(String(64))
+    city         = Column(String(64))
+    contact_email = Column(String(255))
+    phone         = Column(String(64))
+    social_links  = Column(JSON)
+    extra         = Column(JSON)
+
+    # timestamps
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+
+# ── ChatMessage ────────────────────────────────────────────────────────────
 class ChatMessage(Base):
     __tablename__ = "chat_messages"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id      = Column(Integer, primary_key=True, index=True)
     message = Column(Text, nullable=False)
-    sender = Column(String(255), nullable=False)
+    sender  = Column(String(255), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+# ── User ───────────────────────────────────────────────────────────────────
+class User(Base):
+    __tablename__ = "users"
+
+    id          = Column(Integer, primary_key=True, index=True)
+    company_id  = Column(
+        Integer,
+        ForeignKey("companies.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    email         = Column(String(255), unique=True, nullable=False, index=True)
+    password_hash = Column(String(255), nullable=False)
+    role          = Column(
+        Enum(UserRole, native_enum=False, name="user_role_enum"),
+        nullable=False,
+        server_default=UserRole.user.value,
+    )
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+
+    company = relationship("Company", back_populates="users")
+
+# ── Product table (stand-alone) ────────────────────────────────────────────
+class Product(Base):
+    __tablename__ = "products"
+
+    id = Column(Integer, primary_key=True, index=True)
+    company_id = Column(
+        Integer,
+        ForeignKey("companies.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+
+    name        = Column(String(255), nullable=False, index=True)
+    description = Column(Text)
+    price       = Column(Numeric(12, 2))
+    stock_qty   = Column(Integer, default=0)
+    attributes  = Column(JSON)
+
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+
+    company = relationship("Company", back_populates="products", lazy="joined")
+
+# ── Unified “Offering” table (product **or** service) ──────────────────────
+class Offering(Base):
+    __tablename__ = "offerings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    company_id = Column(
+        Integer,
+        ForeignKey("companies.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+
+    name = Column(String(255), nullable=False, index=True)
+    type = Column(
+        Enum(OfferingType, native_enum=False, name="offering_type_enum"),
+        nullable=False,
+    )
+    description = Column(Text)
+    price    = Column(Numeric(12, 2))
+    currency = Column(String(3))
+    attributes = Column(JSON)
+
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+
+    company = relationship("Company", back_populates="offerings", lazy="joined")
