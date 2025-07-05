@@ -228,6 +228,19 @@
   text-align: center;
 }
 
+.auth-card-fixed .auth-footer {
+  background: rgba(15, 15, 30, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 212, 255, 0.1);
+  padding: 2rem;
+  margin-top: 2rem;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  text-align: center;
+}
+
 .auth-switch-btn-fixed {
   background: linear-gradient(135deg, #00d4ff, #8000ff);
   border: none;
