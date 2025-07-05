@@ -145,18 +145,8 @@ export default function Dashboard() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div
-              style={{
-                flex: 1,
-                minWidth: 320,
-                height: 320,
-                background: "#fff",
-                borderRadius: 14,
-                boxShadow: "0 2px 12px #5f6fff11",
-                padding: 16,
-              }}
-            >
-              <h3 style={{ textAlign: "center", color: "#27ae60" }}>
+            <div className="chart-card">
+              <h3 style={{ textAlign: "center", color: "var(--success)" }}>
                 Company Sizes
               </h3>
               <ResponsiveContainer width="100%" height={220}>
