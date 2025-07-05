@@ -41,13 +41,13 @@ export default function LoginClean({ onSwitchToRegister }) {
 
     setIsSubmitting(true);
     clearError();
+    setLocalError("");
 
     // Test error display - remove after confirming it works
     if (email === "test@error.com") {
-      setTimeout(() => {
-        console.log("Setting test error manually");
-        // We need to set error directly since we can't access setError from AuthContext
-      }, 100);
+      setLocalError("Test error message - this should appear in UI!");
+      setIsSubmitting(false);
+      return;
     }
 
     try {
