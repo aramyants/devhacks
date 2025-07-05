@@ -118,31 +118,42 @@ export default function TenantAnalytics() {
     isAdmin && tenant ? tenant.name : user?.company?.name || "Company";
 
   return (
-    <div className="dashboard-container">
-      <div className="dashboard-header">
-        <div className="header-content">
-          <h1>Analytics Dashboard</h1>
-          <div className="company-info">
-            <span className="company-name">{currentCompanyName}</span>
-            {isAdmin && tenant && (
-              <span className="tenant-badge">
-                {tenant.industry} • {tenant.country}
-              </span>
-            )}
+    <div className="modern-container">
+      <div className="page-header">
+        <div className="header-main">
+          <div className="header-icon">📊</div>
+          <div className="header-text">
+            <h1>Analytics Dashboard</h1>
+            <div className="company-context">
+              <span className="company-name">{currentCompanyName}</span>
+              {isAdmin && tenant && (
+                <div className="company-details">
+                  <span className="industry-tag">{tenant.industry}</span>
+                  <span className="country-tag">{tenant.country}</span>
+                  {tenant.founded_year && (
+                    <span className="year-tag">Est. {tenant.founded_year}</span>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="dashboard-controls">
-          <select
-            value={timeFilter}
-            onChange={(e) => setTimeFilter(e.target.value)}
-            className="time-filter"
-          >
-            <option value="7d">Last 7 days</option>
-            <option value="30d">Last 30 days</option>
-            <option value="90d">Last 90 days</option>
-            <option value="1y">Last year</option>
-          </select>
+        <div className="header-actions">
+          <div className="filter-container">
+            <label htmlFor="timeFilter">Period:</label>
+            <select
+              id="timeFilter"
+              value={timeFilter}
+              onChange={(e) => setTimeFilter(e.target.value)}
+              className="modern-select"
+            >
+              <option value="7d">Last 7 days</option>
+              <option value="30d">Last 30 days</option>
+              <option value="90d">Last 90 days</option>
+              <option value="1y">Last year</option>
+            </select>
+          </div>
         </div>
       </div>
 
