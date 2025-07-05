@@ -87,41 +87,55 @@ export default function CompanySettings({ companyId = 1 }) {
       </div>
 
       <form onSubmit={handleSubmit} className="settings-form">
-        {/* Company Name */}
-        <label>
-          Company Name
-          <input
-            name="companyName"
-            value={form.companyName}
-            onChange={handleChange}
-            required
-          />
-        </label>
+        <div className="form-grid">
+          {/* Company Name */}
+          <div className="form-group">
+            <label htmlFor="companyName" className="form-label">
+              Company Name
+            </label>
+            <input
+              id="companyName"
+              name="companyName"
+              type="text"
+              className="form-input"
+              value={form.companyName}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        {/* Contact Email */}
-        <label>
-          Contact&nbsp;E-mail
-          <input
-            type="email"
-            name="contactEmail"
-            value={form.contactEmail}
-            onChange={handleChange}
-            required
-          />
-        </label>
+          {/* Contact Email */}
+          <div className="form-group">
+            <label htmlFor="contactEmail" className="form-label">
+              Contact Email
+            </label>
+            <input
+              id="contactEmail"
+              name="contactEmail"
+              type="email"
+              className="form-input"
+              value={form.contactEmail}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        {/* Phone Number */}
-        <label>
-          Phone Number
-          <input
-            type="tel"
-            name="phoneNumber"
-            pattern="^[0-9()+\\-\\s]*$"
-            placeholder="+1 (123) 456-7890"
-            value={form.phoneNumber}
-            onChange={handleChange}
-          />
-        </label>
+          {/* Phone Number */}
+          <div className="form-group">
+            <label htmlFor="phoneNumber" className="form-label">
+              Phone Number
+            </label>
+            <input
+              id="phoneNumber"
+              name="phoneNumber"
+              type="tel"
+              className="form-input"
+              pattern="^[0-9()+\\-\\s]*$"
+              placeholder="+1 (123) 456-7890"
+              value={form.phoneNumber}
+              onChange={handleChange}
+            />
+          </div>
 
         {/* Company Description */}
         <label>
