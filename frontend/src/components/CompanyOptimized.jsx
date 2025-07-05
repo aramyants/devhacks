@@ -3,7 +3,7 @@ import { companyApi } from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import { useTenant } from "./TenantContext";
 
-export default function Company() {
+export default function CompanyOptimized() {
   const { user } = useAuth();
   const { refreshTenants } = useTenant();
   const [companies, setCompanies] = useState([]);
@@ -85,19 +85,25 @@ export default function Company() {
 
   const filteredCompanies = companies.filter(
     (company) =>
-      company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (company.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
       (company.industry || "")
         .toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
-      (company.country || "").toLowerCase().includes(searchTerm.toLowerCase()),
+      (company.country || "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      (company.city || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (company.tagline || "").toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   if (loading && companies.length === 0) {
     return (
       <div className="cosmic-loading">
         <div className="cosmic-spinner-large"></div>
-        <h2>Loading companies...</h2>
-        <p>Fetching data from the cosmic database</p>
+        <h2 className="text-xl lg:text-2xl font-semibold">
+          Loading companies...
+        </h2>
+        <p className="text-base lg:text-lg">Fetching data from the database</p>
       </div>
     );
   }
@@ -106,8 +112,12 @@ export default function Company() {
     <div className="cosmic-companies">
       <div className="companies-header">
         <div className="header-content">
-          <h1>🏢 Company Management</h1>
-          <p>Manage and oversee all companies in the cosmic network</p>
+          <h1 className="text-3xl lg:text-4xl font-bold leading-tight">
+            🏢 Company Management
+          </h1>
+          <p className="text-base lg:text-lg leading-relaxed">
+            Manage and oversee all companies in the network
+          </p>
         </div>
 
         <div className="header-actions">
@@ -135,7 +145,7 @@ export default function Company() {
             onClick={() => setIsCreateModalOpen(true)}
           >
             <span className="btn-icon">✨</span>
-            Add Company
+            <span className="hidden sm:inline">Add Company</span>
           </button>
         </div>
       </div>
@@ -144,45 +154,47 @@ export default function Company() {
         <div className="cosmic-alert error">
           <span className="alert-icon">⚠️</span>
           <div className="alert-content">
-            <h4>Error</h4>
-            <p>{error}</p>
+            <h4 className="font-semibold">Error</h4>
+            <p className="text-sm">{error}</p>
           </div>
         </div>
       )}
 
-      <div className="companies-stats">
+      <div className="companies-stats grid-cols-2 lg:grid-cols-4">
         <div className="stat-card">
           <div className="stat-icon">🏢</div>
           <div className="stat-info">
-            <h3>{companies.length}</h3>
-            <p>Total Companies</p>
+            <h3 className="text-xl lg:text-2xl font-bold">
+              {companies.length}
+            </h3>
+            <p className="text-sm lg:text-base">Total Companies</p>
           </div>
         </div>
 
         <div className="stat-card">
           <div className="stat-icon">🌍</div>
           <div className="stat-info">
-            <h3>
+            <h3 className="text-xl lg:text-2xl font-bold">
               {new Set(companies.map((c) => c.country).filter(Boolean)).size}
             </h3>
-            <p>Countries</p>
+            <p className="text-sm lg:text-base">Countries</p>
           </div>
         </div>
 
         <div className="stat-card">
           <div className="stat-icon">🏭</div>
           <div className="stat-info">
-            <h3>
+            <h3 className="text-xl lg:text-2xl font-bold">
               {new Set(companies.map((c) => c.industry).filter(Boolean)).size}
             </h3>
-            <p>Industries</p>
+            <p className="text-sm lg:text-base">Industries</p>
           </div>
         </div>
 
         <div className="stat-card">
           <div className="stat-icon">📈</div>
           <div className="stat-info">
-            <h3>
+            <h3 className="text-xl lg:text-2xl font-bold">
               {
                 companies.filter(
                   (c) =>
@@ -191,7 +203,7 @@ export default function Company() {
                 ).length
               }
             </h3>
-            <p>New This Month</p>
+            <p className="text-sm lg:text-base">New This Month</p>
           </div>
         </div>
       </div>
@@ -205,13 +217,15 @@ export default function Company() {
                   <img src={company.logo} alt={company.name} />
                 ) : (
                   <div className="company-initial">
-                    {company.name.charAt(0)}
+                    {(company.name || "C").charAt(0)}
                   </div>
                 )}
               </div>
               <div className="company-info">
-                <h3 className="company-name">{company.name}</h3>
-                <p className="company-tagline">
+                <h3 className="company-name text-lg font-bold">
+                  {company.name}
+                </h3>
+                <p className="company-tagline text-sm">
                   {company.tagline || "Building the future"}
                 </p>
               </div>
@@ -220,6 +234,7 @@ export default function Company() {
                   className="action-btn edit"
                   onClick={() => setSelectedCompany(company)}
                   title="Edit Company"
+                  aria-label={`Edit ${company.name}`}
                 >
                   ✏️
                 </button>
@@ -227,6 +242,7 @@ export default function Company() {
                   className="action-btn delete"
                   onClick={() => handleDeleteCompany(company.id)}
                   title="Delete Company"
+                  aria-label={`Delete ${company.name}`}
                 >
                   🗑️
                 </button>
@@ -235,28 +251,28 @@ export default function Company() {
 
             <div className="company-details">
               <div className="detail-row">
-                <span className="detail-label">Industry:</span>
-                <span className="detail-value">
+                <span className="detail-label text-xs">Industry:</span>
+                <span className="detail-value text-xs">
                   {company.industry || "Not specified"}
                 </span>
               </div>
               <div className="detail-row">
-                <span className="detail-label">Location:</span>
-                <span className="detail-value">
+                <span className="detail-label text-xs">Location:</span>
+                <span className="detail-value text-xs">
                   {company.city
                     ? `${company.city}, ${company.country}`
                     : company.country || "Not specified"}
                 </span>
               </div>
               <div className="detail-row">
-                <span className="detail-label">Founded:</span>
-                <span className="detail-value">
+                <span className="detail-label text-xs">Founded:</span>
+                <span className="detail-value text-xs">
                   {company.founded_year || "Unknown"}
                 </span>
               </div>
               <div className="detail-row">
-                <span className="detail-label">Size:</span>
-                <span className="detail-value">
+                <span className="detail-label text-xs">Size:</span>
+                <span className="detail-value text-xs">
                   {company.size || "Not specified"}
                 </span>
               </div>
@@ -268,7 +284,7 @@ export default function Company() {
                   href={company.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="website-link"
+                  className="website-link text-sm"
                 >
                   🌐 Visit Website
                 </a>
@@ -281,8 +297,10 @@ export default function Company() {
       {filteredCompanies.length === 0 && !loading && (
         <div className="cosmic-empty-state">
           <div className="empty-icon">🔍</div>
-          <h3>No companies found</h3>
-          <p>
+          <h3 className="text-xl lg:text-2xl font-semibold">
+            No companies found
+          </h3>
+          <p className="text-base lg:text-lg">
             {searchTerm
               ? `No companies match "${searchTerm}". Try adjusting your search.`
               : "No companies have been added yet. Create your first company to get started."}
@@ -308,10 +326,13 @@ export default function Company() {
           ></div>
           <div className="modal-content">
             <div className="modal-header">
-              <h2>✨ Create New Company</h2>
+              <h2 className="text-xl lg:text-2xl font-bold">
+                ✨ Create New Company
+              </h2>
               <button
                 className="close-btn"
                 onClick={() => setIsCreateModalOpen(false)}
+                aria-label="Close modal"
               >
                 ✕
               </button>
@@ -320,7 +341,9 @@ export default function Company() {
             <form onSubmit={handleCreateCompany} className="company-form">
               <div className="form-grid">
                 <div className="form-group">
-                  <label htmlFor="name">Company Name *</label>
+                  <label htmlFor="name" className="text-sm font-semibold">
+                    Company Name *
+                  </label>
                   <input
                     id="name"
                     type="text"
@@ -330,17 +353,21 @@ export default function Company() {
                     }
                     required
                     placeholder="Enter company name"
+                    className="text-base"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="industry">Industry</label>
+                  <label htmlFor="industry" className="text-sm font-semibold">
+                    Industry
+                  </label>
                   <select
                     id="industry"
                     value={newCompany.industry}
                     onChange={(e) =>
                       setNewCompany({ ...newCompany, industry: e.target.value })
                     }
+                    className="text-base"
                   >
                     <option value="">Select industry</option>
                     <option value="Technology">Technology</option>
@@ -355,7 +382,9 @@ export default function Company() {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="country">Country</label>
+                  <label htmlFor="country" className="text-sm font-semibold">
+                    Country
+                  </label>
                   <input
                     id="country"
                     type="text"
@@ -364,11 +393,14 @@ export default function Company() {
                       setNewCompany({ ...newCompany, country: e.target.value })
                     }
                     placeholder="e.g., United States"
+                    className="text-base"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="city">City</label>
+                  <label htmlFor="city" className="text-sm font-semibold">
+                    City
+                  </label>
                   <input
                     id="city"
                     type="text"
@@ -377,11 +409,14 @@ export default function Company() {
                       setNewCompany({ ...newCompany, city: e.target.value })
                     }
                     placeholder="e.g., San Francisco"
+                    className="text-base"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="website">Website</label>
+                  <label htmlFor="website" className="text-sm font-semibold">
+                    Website
+                  </label>
                   <input
                     id="website"
                     type="url"
@@ -390,11 +425,17 @@ export default function Company() {
                       setNewCompany({ ...newCompany, website: e.target.value })
                     }
                     placeholder="https://example.com"
+                    className="text-base"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="contact_email">Contact Email</label>
+                  <label
+                    htmlFor="contact_email"
+                    className="text-sm font-semibold"
+                  >
+                    Contact Email
+                  </label>
                   <input
                     id="contact_email"
                     type="email"
@@ -406,11 +447,14 @@ export default function Company() {
                       })
                     }
                     placeholder="contact@company.com"
+                    className="text-base"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="phone">Phone</label>
+                  <label htmlFor="phone" className="text-sm font-semibold">
+                    Phone
+                  </label>
                   <input
                     id="phone"
                     type="tel"
@@ -419,17 +463,21 @@ export default function Company() {
                       setNewCompany({ ...newCompany, phone: e.target.value })
                     }
                     placeholder="+1 (555) 123-4567"
+                    className="text-base"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="size">Company Size</label>
+                  <label htmlFor="size" className="text-sm font-semibold">
+                    Company Size
+                  </label>
                   <select
                     id="size"
                     value={newCompany.size}
                     onChange={(e) =>
                       setNewCompany({ ...newCompany, size: e.target.value })
                     }
+                    className="text-base"
                   >
                     <option value="1-10">1-10 employees</option>
                     <option value="11-50">11-50 employees</option>
@@ -442,7 +490,9 @@ export default function Company() {
               </div>
 
               <div className="form-group full-width">
-                <label htmlFor="tagline">Tagline</label>
+                <label htmlFor="tagline" className="text-sm font-semibold">
+                  Tagline
+                </label>
                 <input
                   id="tagline"
                   type="text"
@@ -451,6 +501,7 @@ export default function Company() {
                     setNewCompany({ ...newCompany, tagline: e.target.value })
                   }
                   placeholder="A brief description of what the company does"
+                  className="text-base"
                 />
               </div>
 

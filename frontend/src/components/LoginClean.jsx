@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 
-export default function Login({ onSwitchToRegister }) {
+export default function LoginClean({ onSwitchToRegister }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { login, loading, error, clearError } = useAuth();
 
   useEffect(() => {
     clearError();
-  }, []);
+  }, [clearError]);
 
   const validateForm = () => {
     const errors = {};
@@ -37,33 +38,42 @@ export default function Login({ onSwitchToRegister }) {
 
     if (!validateForm()) return;
 
-    const result = await login(email, password);
+    setIsSubmitting(true);
+    clearError();
 
-    if (!result.success) {
-      // Error is handled by the auth context
+    try {
+      console.log("Attempting login with:", { email });
+      const result = await login(email, password);
+      console.log("Login result:", result);
+
+      if (!result.success) {
+        console.error("Login failed:", result.error);
+      } else {
+        console.log("Login successful!");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+    } finally {
+      setIsSubmitting(false);
     }
-  };
-
-  const demoLogin = async (demoEmail) => {
-    setEmail(demoEmail);
-    setPassword("demo123");
-    await login(demoEmail, "demo123");
   };
 
   return (
     <div className="auth-container">
-      <div className="auth-card">
+      <div className="auth-card-fixed">
         <div className="auth-header">
           <div className="auth-logo">
-            <div className="logo-icon">🏢</div>
-            <h1>Welcome Back</h1>
-            <p>Sign in to your account</p>
+            <div className="logo-icon-fixed">🏢</div>
+            <h1 className="auth-title">Welcome Back</h1>
+            <p className="auth-subtitle">Sign in to your account</p>
           </div>
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">Email Address</label>
+            <label htmlFor="email" className="form-label">
+              Email Address
+            </label>
             <div className="input-wrapper">
               <input
                 id="email"
@@ -76,8 +86,9 @@ export default function Login({ onSwitchToRegister }) {
                     setValidationErrors((prev) => ({ ...prev, email: "" }));
                   }
                 }}
-                className={validationErrors.email ? "error" : ""}
-                disabled={loading}
+                className={`auth-input ${validationErrors.email ? "error" : ""}`}
+                disabled={loading || isSubmitting}
+                required
               />
               <span className="input-icon">📧</span>
             </div>
@@ -87,7 +98,9 @@ export default function Login({ onSwitchToRegister }) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
             <div className="input-wrapper">
               <input
                 id="password"
@@ -100,14 +113,15 @@ export default function Login({ onSwitchToRegister }) {
                     setValidationErrors((prev) => ({ ...prev, password: "" }));
                   }
                 }}
-                className={validationErrors.password ? "error" : ""}
-                disabled={loading}
+                className={`auth-input ${validationErrors.password ? "error" : ""}`}
+                disabled={loading || isSubmitting}
+                required
               />
               <button
                 type="button"
                 className="password-toggle"
                 onClick={() => setShowPassword(!showPassword)}
-                disabled={loading}
+                disabled={loading || isSubmitting}
               >
                 {showPassword ? "🙈" : "👁️"}
               </button>
@@ -118,16 +132,20 @@ export default function Login({ onSwitchToRegister }) {
           </div>
 
           {error && (
-            <div className="auth-error">
+            <div className="auth-error-fixed">
               <span className="error-icon">⚠️</span>
-              {error}
+              <span className="error-text">{error}</span>
             </div>
           )}
 
-          <button type="submit" className="auth-submit-btn" disabled={loading}>
-            {loading ? (
+          <button
+            type="submit"
+            className="auth-submit-btn-fixed"
+            disabled={loading || isSubmitting}
+          >
+            {loading || isSubmitting ? (
               <>
-                <span className="loading-spinner"></span>
+                <span className="loading-spinner-fixed"></span>
                 Signing in...
               </>
             ) : (
@@ -136,56 +154,11 @@ export default function Login({ onSwitchToRegister }) {
           </button>
         </form>
 
-        <div className="auth-divider">
-          <span>or try demo accounts</span>
-        </div>
-
-        <div className="demo-accounts">
-          <button
-            type="button"
-            className="demo-btn admin"
-            onClick={() => demoLogin("admin@saas.com")}
-            disabled={loading}
-          >
-            <span className="demo-icon">👑</span>
-            <div>
-              <div className="demo-title">Admin Demo</div>
-              <div className="demo-desc">Full system access</div>
-            </div>
-          </button>
-
-          <button
-            type="button"
-            className="demo-btn owner"
-            onClick={() => demoLogin("owner@acme.com")}
-            disabled={loading}
-          >
-            <span className="demo-icon">🏢</span>
-            <div>
-              <div className="demo-title">Company Owner</div>
-              <div className="demo-desc">Acme Corp</div>
-            </div>
-          </button>
-
-          <button
-            type="button"
-            className="demo-btn owner"
-            onClick={() => demoLogin("owner@globex.com")}
-            disabled={loading}
-          >
-            <span className="demo-icon">🌐</span>
-            <div>
-              <div className="demo-title">Company Owner</div>
-              <div className="demo-desc">Globex Ltd</div>
-            </div>
-          </button>
-        </div>
-
         <div className="auth-footer">
-          <p>Don't have an account?</p>
+          <p className="auth-footer-text">Don't have an account?</p>
           <button
             type="button"
-            className="auth-switch-btn"
+            className="auth-switch-btn-fixed"
             onClick={onSwitchToRegister}
             disabled={loading || isSubmitting}
           >
