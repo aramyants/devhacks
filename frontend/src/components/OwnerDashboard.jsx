@@ -24,6 +24,7 @@ export default function OwnerDashboard() {
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
   const [timeFilter, setTimeFilter] = useState("30d");
+  const [isUsingMockData, setIsUsingMockData] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
