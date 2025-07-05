@@ -198,4 +198,113 @@ export const authApi = {
   },
 };
 
+export const dashboardApi = {
+  // Get admin dashboard stats (all companies)
+  getAdminStats: async (timeFilter = "30d") => {
+    try {
+      // For demo, return mock data
+      // Real API call: const response = await api.get(`/dashboard/admin?period=${timeFilter}`);
+      return {
+        newCompanies: 5,
+        totalUsers: 47,
+        newUsers: 12,
+        totalProducts: 156,
+        newProducts: 23,
+        revenueChart: [
+          { month: "Jan", revenue: 45000 },
+          { month: "Feb", revenue: 52000 },
+          { month: "Mar", revenue: 48000 },
+          { month: "Apr", revenue: 61000 },
+          { month: "May", revenue: 58000 },
+          { month: "Jun", revenue: 67000 },
+        ],
+      };
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.detail || "Failed to fetch admin stats",
+      );
+    }
+  },
+
+  // Get company dashboard stats
+  getCompanyStats: async (companyId, timeFilter = "30d") => {
+    try {
+      // For demo, return mock data
+      // Real API call: const response = await api.get(`/dashboard/company/${companyId}?period=${timeFilter}`);
+      return {
+        newProducts: 3,
+        revenue: "23,456",
+        revenueGrowth: "12.5",
+        orders: 47,
+        newOrders: 8,
+        teamMembers: 5,
+        revenueChart: [
+          { month: "Jan", revenue: 5000 },
+          { month: "Feb", revenue: 6200 },
+          { month: "Mar", revenue: 4800 },
+          { month: "Apr", revenue: 7100 },
+          { month: "May", revenue: 6800 },
+          { month: "Jun", revenue: 8200 },
+        ],
+      };
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.detail || "Failed to fetch company stats",
+      );
+    }
+  },
+};
+
+export const productsApi = {
+  // Get products for a company
+  getCompanyProducts: async (companyId) => {
+    try {
+      // For demo, return mock data
+      // Real API call: const response = await api.get(`/companies/${companyId}/products`);
+      return [
+        {
+          id: 1,
+          name: "Premium Widget",
+          price: 99.99,
+          stock_qty: 45,
+          category: "Electronics",
+          created_at: "2024-01-15T10:00:00Z",
+        },
+        {
+          id: 2,
+          name: "Professional Service",
+          price: 299.99,
+          stock_qty: null,
+          category: "Services",
+          created_at: "2024-01-20T14:30:00Z",
+        },
+        {
+          id: 3,
+          name: "Basic Plan",
+          price: 29.99,
+          stock_qty: 100,
+          category: "Subscriptions",
+          created_at: "2024-01-25T09:15:00Z",
+        },
+      ];
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.detail || "Failed to fetch products",
+      );
+    }
+  },
+
+  // Get all products (admin only)
+  getAllProducts: async () => {
+    try {
+      const response = await api.get("/products");
+      return response.data;
+    } catch (error) {
+      throw new Error(
+        error.response?.data?.detail || "Failed to fetch products",
+      );
+    }
+  },
+};
+
 export default api;
