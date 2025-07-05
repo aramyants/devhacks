@@ -131,10 +131,10 @@ export default function LoginClean({ onSwitchToRegister }) {
             )}
           </div>
 
-          {(error || localError) && (
+          {error && (
             <div className="auth-error-fixed">
               <span className="error-icon">⚠️</span>
-              <span className="error-text">{error || localError}</span>
+              <span className="error-text">{error}</span>
             </div>
           )}
 
