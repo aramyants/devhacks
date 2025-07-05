@@ -31,16 +31,52 @@ export default function OwnerDashboard() {
 
       setLoading(true);
       try {
-        const [companyData, productsData, statsData] = await Promise.all([
-          companyApi.getCompany(user.companyId),
-          productsApi.getCompanyProducts(user.companyId),
-          dashboardApi.getCompanyStats(user.companyId, timeFilter),
-        ]);
+        // Fetch data individually to prevent one failure from breaking everything
+        const companyData = await companyApi
+          .getCompany(user.companyId)
+          .catch((err) => {
+            console.warn("Failed to fetch company data:", err.message);
+            return {
+              id: user.companyId,
+              name: "Unknown Company",
+              industry: "Unknown",
+            };
+          });
+
+        const productsData = await productsApi
+          .getCompanyProducts(user.companyId)
+          .catch((err) => {
+            console.warn("Failed to fetch products data:", err.message);
+            return [];
+          });
+
+        const statsData = await dashboardApi
+          .getCompanyStats(user.companyId, timeFilter)
+          .catch((err) => {
+            console.warn("Failed to fetch stats data:", err.message);
+            return {
+              totalProducts: 0,
+              newProducts: 0,
+              revenue: 0,
+              revenueGrowth: 0,
+              orders: 0,
+              newOrders: 0,
+              revenueChart: [],
+              productPerformance: [],
+              customerMetrics: {
+                retention: 0,
+                satisfaction: 0,
+                churnRate: 0,
+                lifetimeValue: 0,
+              },
+            };
+          });
+
         setCompany(companyData);
         setProducts(productsData);
         setStats(statsData);
       } catch (error) {
-        console.error("Failed to fetch dashboard data:", error);
+        console.error("Unexpected error in dashboard:", error);
       } finally {
         setLoading(false);
       }
