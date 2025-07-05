@@ -11,14 +11,18 @@ export default function TenantSwitcher() {
   const searchRef = useRef(null);
 
   useEffect(() => {
-    if (tenants) {
+    if (tenants && Array.isArray(tenants)) {
       const filtered = tenants.filter(
         (t) =>
-          t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (t.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
           (t.industry || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (t.country || "").toLowerCase().includes(searchTerm.toLowerCase()),
+          (t.country || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (t.city || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+          (t.tagline || "").toLowerCase().includes(searchTerm.toLowerCase()),
       );
       setFilteredTenants(filtered);
+    } else {
+      setFilteredTenants([]);
     }
   }, [searchTerm, tenants]);
 
@@ -55,9 +59,17 @@ export default function TenantSwitcher() {
 
   if (loading) {
     return (
-      <div className="cosmic-tenant-switcher loading">
-        <div className="cosmic-spinner"></div>
-        <span>Loading companies...</span>
+      <div className="tenant-switcher-loading">
+        <div className="loading-spinner"></div>
+        <span>Loading...</span>
+      </div>
+    );
+  }
+
+  if (!tenant && tenants.length === 0) {
+    return (
+      <div className="tenant-switcher-empty">
+        <span>No companies available</span>
       </div>
     );
   }

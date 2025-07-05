@@ -100,8 +100,12 @@ export default function AdminDashboard() {
     <div className="admin-dashboard">
       <div className="dashboard-header">
         <div className="header-content">
-          <h1>Super Admin Dashboard</h1>
-          <p>Manage and monitor all companies across the platform</p>
+          <h1 className="text-3xl lg:text-4xl font-bold leading-tight">
+            🚀 Super Admin Dashboard
+          </h1>
+          <p className="text-base lg:text-lg leading-relaxed">
+            Manage and monitor all companies across the platform
+          </p>
         </div>
         <div className="header-actions">
           <select
@@ -194,16 +198,43 @@ export default function AdminDashboard() {
 
         <div className="chart-card">
           <div className="chart-header">
-            <h3>Company Sizes</h3>
-            <p>Distribution by employee count</p>
+            <h3 className="text-lg md:text-xl font-bold">👥 Company Sizes</h3>
+            <p className="text-sm md:text-base">
+              Distribution by employee count
+            </p>
           </div>
           <div className="chart-container">
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={sizeChart}>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="value" fill="#5f6fff" radius={[4, 4, 0, 0]} />
+                <XAxis
+                  dataKey="name"
+                  tick={{ fill: "#b3b3cc", fontSize: 12 }}
+                  axisLine={{ stroke: "rgba(255, 255, 255, 0.1)" }}
+                />
+                <YAxis
+                  tick={{ fill: "#b3b3cc", fontSize: 12 }}
+                  axisLine={{ stroke: "rgba(255, 255, 255, 0.1)" }}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    borderRadius: "12px",
+                    backdropFilter: "blur(20px)",
+                    color: "#ffffff",
+                  }}
+                />
+                <Bar
+                  dataKey="value"
+                  fill="url(#blueGradient)"
+                  radius={[4, 4, 0, 0]}
+                />
+                <defs>
+                  <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#00d4ff" />
+                    <stop offset="100%" stopColor="#8000ff" />
+                  </linearGradient>
+                </defs>
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -211,16 +242,49 @@ export default function AdminDashboard() {
 
         <div className="chart-card">
           <div className="chart-header">
-            <h3>Geographic Distribution</h3>
-            <p>Companies by country</p>
+            <h3 className="text-lg md:text-xl font-bold">
+              🌍 Geographic Distribution
+            </h3>
+            <p className="text-sm md:text-base">Companies by country</p>
           </div>
           <div className="chart-container">
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={countryChart}>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="value" fill="#27ae60" radius={[4, 4, 0, 0]} />
+                <XAxis
+                  dataKey="name"
+                  tick={{ fill: "#b3b3cc", fontSize: 12 }}
+                  axisLine={{ stroke: "rgba(255, 255, 255, 0.1)" }}
+                />
+                <YAxis
+                  tick={{ fill: "#b3b3cc", fontSize: 12 }}
+                  axisLine={{ stroke: "rgba(255, 255, 255, 0.1)" }}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    borderRadius: "12px",
+                    backdropFilter: "blur(20px)",
+                    color: "#ffffff",
+                  }}
+                />
+                <Bar
+                  dataKey="value"
+                  fill="url(#greenGradient)"
+                  radius={[4, 4, 0, 0]}
+                />
+                <defs>
+                  <linearGradient
+                    id="greenGradient"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
+                    <stop offset="0%" stopColor="#00ff88" />
+                    <stop offset="100%" stopColor="#ff0080" />
+                  </linearGradient>
+                </defs>
               </BarChart>
             </ResponsiveContainer>
           </div>

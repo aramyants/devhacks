@@ -4,6 +4,7 @@
 ──────────────────────────────────────────────────────────── */
 
 @import url("./cosmic-components.css");
+@import url("./responsive-ui.css");
 
 /* Cosmic Epic Theme Variables */
 :root {

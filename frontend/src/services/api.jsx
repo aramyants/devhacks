@@ -220,7 +220,10 @@ export const dashboardApi = {
       return response.data;
     } catch (error) {
       // Fallback to enhanced mock data if API not ready
-      console.warn("Using fallback data for admin stats:", error.message);
+      console.warn(
+        "Dashboard API not ready, using fallback data:",
+        error.message,
+      );
       return {
         totalCompanies: 42,
         newCompanies: 5,
@@ -265,7 +268,10 @@ export const dashboardApi = {
       return response.data;
     } catch (error) {
       // Fallback to enhanced mock data
-      console.warn("Using fallback data for company stats:", error.message);
+      console.warn(
+        "Dashboard API not ready, using fallback data:",
+        error.message,
+      );
       return {
         totalProducts: 23,
         newProducts: 3,
