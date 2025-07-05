@@ -9,6 +9,49 @@ const api = axios.create({
   },
 });
 
+// Mock companies data for fallback
+const MOCK_COMPANIES = [
+  {
+    id: 1,
+    name: "Admin Company",
+    industry: "Technology",
+    country: "United States",
+    headquarters: "San Francisco, CA",
+    website: "https://admin-company.com",
+    description: "Admin company for platform management",
+    employee_count: 50,
+    revenue: 10000000,
+    founded_year: 2020,
+    status: "active",
+  },
+  {
+    id: 2,
+    name: "Acme Corp",
+    industry: "Manufacturing",
+    country: "United States",
+    headquarters: "Detroit, MI",
+    website: "https://acmecorp.com",
+    description: "Leading manufacturing company",
+    employee_count: 500,
+    revenue: 50000000,
+    founded_year: 1985,
+    status: "active",
+  },
+  {
+    id: 3,
+    name: "Globex Corporation",
+    industry: "Technology",
+    country: "Canada",
+    headquarters: "Toronto, ON",
+    website: "https://globex.com",
+    description: "Global technology solutions provider",
+    employee_count: 1200,
+    revenue: 75000000,
+    founded_year: 1992,
+    status: "active",
+  },
+];
+
 // Add token to requests if available
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("auth_token");
