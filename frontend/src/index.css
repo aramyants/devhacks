@@ -542,19 +542,22 @@ td button {
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
 }
 .modal-content {
-  background: var(--surface);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(30px);
   padding: 2.5rem 2rem;
-  border-radius: var(--radius);
+  border-radius: var(--radius-large);
   width: 95%;
   max-width: 540px;
-  box-shadow: 0 8px 32px #5f6fff22;
+  box-shadow: var(--shadow-floating);
   animation: fadeInUp 0.35s cubic-bezier(0.23, 1.01, 0.32, 1);
 }
 .modal-header {
