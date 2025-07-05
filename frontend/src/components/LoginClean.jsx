@@ -142,13 +142,13 @@ export default function LoginClean({ onSwitchToRegister }) {
             )}
           </div>
 
-          {error && (
+          {(error || localError) && (
             <div
               className="auth-error-fixed"
               style={{ display: "block", visibility: "visible" }}
             >
               <span className="error-icon">⚠️</span>
-              <span className="error-text">{error}</span>
+              <span className="error-text">{error || localError}</span>
             </div>
           )}
 
@@ -157,7 +157,8 @@ export default function LoginClean({ onSwitchToRegister }) {
             <div
               style={{ fontSize: "12px", color: "#666", marginBottom: "10px" }}
             >
-              Debug: error="{error}", loading={loading.toString()}
+              Debug: error="{error}", localError="{localError}", loading=
+              {loading.toString()}
             </div>
           )}
 
