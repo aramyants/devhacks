@@ -5,6 +5,7 @@
 
 @import url("./cosmic-components.css");
 @import url("./responsive-ui.css");
+@import url("./auth-fixes.css");
 
 /* Cosmic Epic Theme Variables */
 :root {
