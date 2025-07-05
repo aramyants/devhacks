@@ -19,8 +19,6 @@ import Navigation from "./components/Navigation";
 import { TenantProvider } from "./components/TenantContext";
 import TenantSwitcher from "./components/TenantSwitcher";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import AuthTest from "./components/AuthTest";
-import AuthTestSimple from "./components/AuthTestSimple";
 
 function DashboardRouter() {
   const { user } = useAuth();
@@ -121,8 +119,6 @@ function AppContent() {
 export default function App() {
   return (
     <AuthProvider>
-      <AuthTest />
-      <AuthTestSimple />
       <AppContent />
     </AuthProvider>
   );

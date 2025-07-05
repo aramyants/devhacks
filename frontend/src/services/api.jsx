@@ -135,120 +135,64 @@ export const authApi = {
   // Login user
   login: async (email, password) => {
     try {
-      // Clean and normalize inputs
-      const cleanEmail = (email || "").trim().toLowerCase();
-      const cleanPassword = (password || "").trim();
+      console.log("AuthAPI: Attempting login with backend API");
 
-      console.log("AuthAPI: Attempting login with", {
-        originalEmail: email,
-        originalPassword: password,
-        cleanEmail,
-        cleanPassword,
+      const response = await api.post("/auth/login", {
+        email: email.trim(),
+        password: password,
       });
 
-      // For demo purposes, we'll simulate the backend response
-      // Accept multiple password variations for demo
-      const validPasswords = ["demo123", "password", "123", "admin", "test"];
+      console.log("AuthAPI: Login successful", response.data);
 
-      console.log("AuthAPI: Valid passwords:", validPasswords);
-      console.log(
-        "AuthAPI: Password check:",
-        validPasswords.includes(cleanPassword),
-      );
-      console.log("AuthAPI: Email checks:", {
-        admin: cleanEmail === "admin@saas.com",
-        acme: cleanEmail === "owner@acme.com",
-        globex: cleanEmail === "owner@globex.com",
-      });
-
-      if (
-        cleanEmail === "admin@saas.com" &&
-        validPasswords.includes(cleanPassword)
-      ) {
-        const result = {
-          token: "demo-admin-token",
-          user: { email: cleanEmail, role: "admin", id: 1 },
-        };
-        console.log("AuthAPI: Admin login successful", result);
-        return result;
-      } else if (
-        cleanEmail === "owner@acme.com" &&
-        validPasswords.includes(cleanPassword)
-      ) {
-        const result = {
-          token: "demo-owner-token-1",
-          user: { email: cleanEmail, role: "owner", companyId: 1, id: 2 },
-        };
-        console.log("AuthAPI: Acme owner login successful", result);
-        return result;
-      } else if (
-        cleanEmail === "owner@globex.com" &&
-        validPasswords.includes(cleanPassword)
-      ) {
-        const result = {
-          token: "demo-owner-token-2",
-          user: { email: cleanEmail, role: "owner", companyId: 2, id: 3 },
-        };
-        console.log("AuthAPI: Globex owner login successful", result);
-        return result;
-      } else {
-        console.log("AuthAPI: Login failed - invalid credentials");
-        console.log("AuthAPI: Failed because - email match:", [
-          cleanEmail === "admin@saas.com",
-          cleanEmail === "owner@acme.com",
-          cleanEmail === "owner@globex.com",
-        ]);
-        console.log(
-          "AuthAPI: Failed because - password match:",
-          validPasswords.includes(cleanPassword),
-        );
-
-        // Emergency fallback - if anything with admin email, just log them in
-        if (
-          cleanEmail.includes("admin") ||
-          cleanPassword === "demo123" ||
-          cleanPassword === "admin"
-        ) {
-          console.log("AuthAPI: Using emergency fallback for admin");
-          return {
-            token: "demo-admin-token-fallback",
-            user: { email: cleanEmail, role: "admin", id: 1 },
-          };
-        }
-
-        throw new Error("Invalid email or password");
-      }
-
-      // Real API call would be:
-      // const response = await api.post('/auth/login', { email, password });
-      // return response.data;
+      return {
+        token: response.data.access_token,
+        user: response.data.user,
+      };
     } catch (error) {
-      throw new Error(error.message || "Login failed");
+      console.error("AuthAPI: Login failed", error);
+
+      if (error.response?.status === 401) {
+        throw new Error("Invalid email or password");
+      } else if (error.response?.status === 422) {
+        throw new Error("Please enter a valid email address");
+      } else {
+        throw new Error(
+          error.response?.data?.detail || "Login failed. Please try again.",
+        );
+      }
     }
   },
 
   // Register user
   register: async (email, password, companyName) => {
     try {
-      // For demo purposes, simulate registration
-      // In production, this would create a real user and company
-      const newUser = {
-        email,
-        role: "owner",
-        companyId: Math.floor(Math.random() * 1000) + 100,
-        id: Math.floor(Math.random() * 1000) + 10,
-      };
+      console.log("AuthAPI: Attempting registration with backend API");
+
+      const response = await api.post("/auth/register", {
+        email: email.trim(),
+        password: password,
+        company_name: companyName.trim(),
+      });
+
+      console.log("AuthAPI: Registration successful", response.data);
 
       return {
-        token: `demo-new-user-token-${newUser.id}`,
-        user: newUser,
+        token: response.data.access_token,
+        user: response.data.user,
       };
-
-      // Real API call would be:
-      // const response = await api.post('/auth/register', { email, password, companyName });
-      // return response.data;
     } catch (error) {
-      throw new Error(error.message || "Registration failed");
+      console.error("AuthAPI: Registration failed", error);
+
+      if (error.response?.status === 400) {
+        throw new Error("Email already registered");
+      } else if (error.response?.status === 422) {
+        throw new Error("Please check your input and try again");
+      } else {
+        throw new Error(
+          error.response?.data?.detail ||
+            "Registration failed. Please try again.",
+        );
+      }
     }
   },
 
