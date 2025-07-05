@@ -275,9 +275,10 @@ export default function CompanyOptimized() {
               <div className="company-actions">
                 <button
                   className="action-btn edit"
-                  onClick={() => setSelectedCompany(company)}
+                  onClick={() => handleEditCompany(company)}
                   title="Edit Company"
                   aria-label={`Edit ${company.name}`}
+                  disabled={operationLoading}
                 >
                   ✏️
                 </button>
