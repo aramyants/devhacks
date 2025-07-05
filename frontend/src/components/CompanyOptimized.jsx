@@ -111,16 +111,22 @@ export default function CompanyOptimized() {
     }
   };
 
-  const handleDeleteCompany = async (companyId) => {
-    if (!window.confirm("Are you sure you want to delete this company?"))
-      return;
+  const handleDeleteClick = (company) => {
+    setCompanyToDelete(company);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!companyToDelete) return;
 
     setOperationLoading(true);
     setError("");
     try {
-      await companyApi.deleteCompany(companyId);
+      await companyApi.deleteCompany(companyToDelete.id);
       await fetchCompanies();
       await refreshTenants();
+      setIsDeleteModalOpen(false);
+      setCompanyToDelete(null);
     } catch (err) {
       setError(`Failed to delete company: ${err.message}`);
     } finally {
