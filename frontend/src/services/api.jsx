@@ -199,11 +199,13 @@ export const authApi = {
   // Logout user
   logout: async () => {
     try {
-      // Real API call would be:
-      // await api.post('/auth/logout');
+      await api.post("/auth/logout");
       localStorage.removeItem("auth_token");
       localStorage.removeItem("user");
     } catch (error) {
+      // Even if API call fails, remove local storage
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("user");
       throw new Error(error.message || "Logout failed");
     }
   },
