@@ -48,11 +48,13 @@ export default function LoginClean({ onSwitchToRegister }) {
 
       if (!result.success) {
         console.error("Login failed:", result.error);
+        // Error is already set by the AuthContext, no need to set it again
       } else {
         console.log("Login successful!");
       }
     } catch (err) {
       console.error("Login error:", err);
+      // Error is already set by the AuthContext, no need to set it again
     } finally {
       setIsSubmitting(false);
     }
