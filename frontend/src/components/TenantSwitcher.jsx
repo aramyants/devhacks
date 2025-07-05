@@ -8,7 +8,13 @@ export default function TenantSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredTenants, setFilteredTenants] = useState([]);
+  const [dropdownPosition, setDropdownPosition] = useState({
+    top: 0,
+    left: 0,
+    width: 0,
+  });
   const dropdownRef = useRef(null);
+  const triggerRef = useRef(null);
   const searchRef = useRef(null);
 
   useEffect(() => {
