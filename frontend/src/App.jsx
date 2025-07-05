@@ -11,33 +11,23 @@ import {
 import Chat from "./components/Chat";
 import Company from "./components/Company";
 import CompanySettings from "./components/CompanySettings";
-import Dashboard from "./components/Dashboard";
+import AdminDashboard from "./components/AdminDashboard";
+import OwnerDashboard from "./components/OwnerDashboard";
 import AuthLayout from "./components/AuthLayout";
 import Products from "./components/Products";
+import Navigation from "./components/Navigation";
 import { TenantProvider } from "./components/TenantContext";
 import TenantSwitcher from "./components/TenantSwitcher";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 
-function Navigation() {
-  const { pathname } = useLocation();
+function DashboardRouter() {
+  const { user } = useAuth();
 
-  const link = (to, label) => (
-    <Link to={to} className={pathname === to ? "active" : ""}>
-      {label}
-    </Link>
-  );
+  if (user?.role === "admin") {
+    return <AdminDashboard />;
+  }
 
-  return (
-    <nav className="navigation">
-      <div className="nav-links">
-        {link("/dashboard", "Dashboard")}
-        {/* {link('/companies', 'Company Mgmt')} */}
-        {link("/company", "Company Settings")}
-        {link("/products", "Products")}
-        {/* {link('/chat', 'Chat Room')} */}
-      </div>
-    </nav>
-  );
+  return <OwnerDashboard />;
 }
 
 function AppContent() {
@@ -62,35 +52,43 @@ function AppContent() {
   return (
     <TenantProvider>
       <Router>
-        <header className="header">
-          <div
-            className="container"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-              <h1 style={{ margin: 0 }}>Admin Panel</h1>
-              {isAdmin && <TenantSwitcher />}
+        <header className="modern-header">
+          <div className="header-container">
+            <div className="header-brand">
+              <div className="brand-logo">🚀</div>
+              <div className="brand-info">
+                <h1>{user?.role === "admin" ? "Admin Panel" : "Dashboard"}</h1>
+                <p>
+                  {user?.role === "admin"
+                    ? "Manage all companies"
+                    : "Your business insights"}
+                </p>
+              </div>
             </div>
+
             <Navigation />
-            <div className="user-info">
-              <span className="user-details">
-                {user.email}
-                <span className="user-role">({user.role})</span>
-              </span>
-              <button className="logout-btn" onClick={logout}>
-                Logout
-              </button>
+
+            <div className="header-actions">
+              {isAdmin && <TenantSwitcher />}
+              <div className="user-menu">
+                <div className="user-avatar">
+                  {user.email.charAt(0).toUpperCase()}
+                </div>
+                <div className="user-details">
+                  <span className="user-name">{user.email}</span>
+                  <span className="user-role">{user.role}</span>
+                </div>
+                <button className="logout-btn" onClick={logout}>
+                  Logout
+                </button>
+              </div>
             </div>
           </div>
         </header>
-        <main className="container">
+        <main className="main-content">
           <Routes>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<DashboardRouter />} />
             <Route path="/companies" element={<Company user={user} />} />
             <Route
               path="/company"
@@ -98,6 +96,19 @@ function AppContent() {
             />
             <Route path="/products" element={<Products />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/analytics" element={<AdminDashboard />} />
+            <Route
+              path="/users"
+              element={<div>Users Management (Coming Soon)</div>}
+            />
+            <Route
+              path="/orders"
+              element={<div>Orders Management (Coming Soon)</div>}
+            />
+            <Route
+              path="/team"
+              element={<div>Team Management (Coming Soon)</div>}
+            />
           </Routes>
         </main>
       </Router>
