@@ -1,4 +1,4 @@
-/* index.css  ─────────────────��──────────────────────────────
+/* index.css  ────────────────────────────────────────────────
    Cosmic Epic Dashboard Theme - Advanced space-themed UI system
    with real database integration and responsive design
 ──────────────────────────────────────────────────────────── */
@@ -868,11 +868,11 @@ td button {
 }
 
 .tenant-dropdown {
-  position: absolute;
+  position: fixed;
   top: calc(100% + 0.5rem);
   left: 0;
   right: 0;
-  z-index: 2101;
+  z-index: 99999;
   animation: cosmicDropdownIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
