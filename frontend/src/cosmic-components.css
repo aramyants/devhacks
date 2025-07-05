@@ -177,6 +177,18 @@
   color: var(--text);
 }
 
+.cosmic-btn.danger {
+  background: linear-gradient(135deg, var(--danger), var(--danger-dark));
+  border-color: var(--danger);
+  color: white;
+}
+
+.cosmic-btn.danger:hover {
+  background: linear-gradient(135deg, #ff4081, #e91e63);
+  box-shadow: 0 0 20px rgba(255, 0, 102, 0.4);
+  transform: translateY(-2px);
+}
+
 .btn-icon {
   font-size: 1rem;
 }
