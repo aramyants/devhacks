@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const CompanyList = ({ companies, onEdit, onDelete, isLoading }) => {
@@ -30,7 +29,10 @@ const CompanyList = ({ companies, onEdit, onDelete, isLoading }) => {
           <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Details</th>
+            <th>Industry</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Website</th>
             <th>Created</th>
             <th>Actions</th>
           </tr>
@@ -40,14 +42,10 @@ const CompanyList = ({ companies, onEdit, onDelete, isLoading }) => {
             <tr key={company.id}>
               <td>{company.id}</td>
               <td>{company.name}</td>
-              <td>
-                {company.details 
-                  ? company.details.length > 100 
-                    ? `${company.details.substring(0, 100)}...`
-                    : company.details
-                  : 'No details'
-                }
-              </td>
+              <td>{company.industry || '-'}</td>
+              <td>{company.country || '-'}</td>
+              <td>{company.city || '-'}</td>
+              <td>{company.website ? <a href={company.website} target="_blank" rel="noopener noreferrer">🌐</a> : '-'}</td>
               <td>{formatDate(company.created_at)}</td>
               <td>
                 <button

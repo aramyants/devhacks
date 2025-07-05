@@ -1,6 +1,7 @@
 // src/pages/CompanySettings.jsx
 import React, { useEffect, useState } from 'react';
 import { companyApi } from '../services/api';
+import { useTenant } from './TenantContext';
 
 /**
  * Company Settings & Privacy page
@@ -9,6 +10,7 @@ import { companyApi } from '../services/api';
  *   - companyId (number)  Optional. Defaults to 1.
  */
 export default function CompanySettings({ companyId = 1 }) {
+  const { tenant } = useTenant();
   // ---------- STATE ----------
   const [form,   setForm]   = useState({
     companyName: '',
@@ -78,6 +80,9 @@ export default function CompanySettings({ companyId = 1 }) {
   return (
     <section className="company-settings">
       <h2>Company Settings&nbsp;&amp;&nbsp;Privacy</h2>
+      <div style={{ marginBottom: 16, color: '#888', fontSize: 15 }}>
+        <b>Tenant:</b> {tenant.name}
+      </div>
       <p>Update company contact details and privacy-policy preferences below.</p>
 
       <form onSubmit={handleSubmit} className="settings-form">

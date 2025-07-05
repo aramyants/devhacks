@@ -1,14 +1,15 @@
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { chatApi } from '../services/api';
+import { useTenant } from './TenantContext';
 
 function Chat() {
+  const { tenant } = useTenant();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [sender, setSender] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const messagesEndRef = '1'//useRef(null);
+  const messagesEndRef = useRef(null);
 
   // Load messages on component mount
   useEffect(() => {
@@ -39,7 +40,7 @@ function Chat() {
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    
+
     if (!newMessage.trim() || !sender.trim()) {
       setError('Please enter both sender name and message');
       return;
@@ -53,7 +54,7 @@ function Chat() {
         message: newMessage.trim(),
         sender: sender.trim()
       });
-      
+
       setNewMessage('');
       await loadMessages(); // Refresh messages immediately after sending
     } catch (err) {
@@ -81,6 +82,9 @@ function Chat() {
     <div className="chat-container">
       <div className="chat-header">
         <h2>Chat Room</h2>
+        <div style={{ color: '#eee', fontSize: 14, marginTop: 4 }}>
+          <b>Tenant:</b> {tenant.name}
+        </div>
       </div>
 
       {error && <div className="error">{error}</div>}
@@ -120,8 +124,8 @@ function Chat() {
             className="message-input"
             disabled={isLoading}
           />
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={isLoading || !newMessage.trim() || !sender.trim()}
             className="send-button"
           >

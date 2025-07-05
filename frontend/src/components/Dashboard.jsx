@@ -1,65 +1,130 @@
-import React from 'react';
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import React, { useEffect, useState } from 'react';
+import { Bar, BarChart, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { companyApi } from '../services/api';
+import { useTenant } from './TenantContext';
 
-const kpis = {
-  totalCalls: 120,
-  bookedCalls: 45,
-  avgHandleTime: '2m 30s',
-};
-
-const pieData = [
-  { name: 'Booked', value: kpis.bookedCalls },
-  { name: 'Not Booked', value: kpis.totalCalls - kpis.bookedCalls },
-];
-
-const COLORS = ['#0088FE', '#FF8042'];
+const COLORS = ['#5f6fff', '#27ae60', '#e67e22', '#e74c3c', '#aab6ff', '#3b3bff'];
 
 export default function Dashboard() {
-  const conversion = (
-    (kpis.bookedCalls / kpis.totalCalls) *
-    100
-  ).toFixed(1);
+  const { tenant } = useTenant();
+  const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchCompanies() {
+      setLoading(true);
+      try {
+        const data = await companyApi.getCompanies();
+        setCompanies(data);
+      } catch {
+        setCompanies([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchCompanies();
+  }, []);
+
+  // Infographics: Industry distribution, company sizes, countries
+  const industryStats = Object.entries(
+    companies.reduce((acc, c) => {
+      if (!c.industry) return acc;
+      acc[c.industry] = (acc[c.industry] || 0) + 1;
+      return acc;
+    }, {})
+  ).map(([name, value]) => ({ name, value }));
+
+  const sizeStats = Object.entries(
+    companies.reduce((acc, c) => {
+      if (!c.size) return acc;
+      acc[c.size] = (acc[c.size] || 0) + 1;
+      return acc;
+    }, {})
+  ).map(([name, value]) => ({ name, value }));
+
+  const countryStats = Object.entries(
+    companies.reduce((acc, c) => {
+      if (!c.country) return acc;
+      acc[c.country] = (acc[c.country] || 0) + 1;
+      return acc;
+    }, {})
+  ).map(([name, value]) => ({ name, value }));
+
+  // Current tenant company details
+  const current = companies.find(c => c.id === tenant.id) || {};
 
   return (
     <>
       <h2>Dashboard</h2>
+      <div style={{ marginBottom: 16, color: '#888', fontSize: 15 }}>
+        <b>Tenant:</b> {tenant.name}
+      </div>
+      {loading ? (
+        <div className="loading">Loading statistics…</div>
+      ) : (
+        <>
+          <section className="kpi-cards">
+            <div className="card">
+              <h3>Industry</h3>
+              <p>{current.industry || '-'}</p>
+            </div>
+            <div className="card">
+              <h3>Size</h3>
+              <p>{current.size || '-'}</p>
+            </div>
+            <div className="card">
+              <h3>Country</h3>
+              <p>{current.country || '-'}</p>
+            </div>
+            <div className="card">
+              <h3>Founded</h3>
+              <p>{current.founded_year || '-'}</p>
+            </div>
+            <div className="card">
+              <h3>Website</h3>
+              <p>{current.website ? <a href={current.website} target="_blank" rel="noopener noreferrer">Visit</a> : '-'}</p>
+            </div>
+          </section>
 
-      <section className="kpi-cards">
-        <div className="card">
-          <h3>Total Calls</h3>
-          <p>{kpis.totalCalls}</p>
-        </div>
-        <div className="card">
-          <h3>Bookings</h3>
-          <p>{kpis.bookedCalls}</p>
-        </div>
-        <div className="card">
-          <h3>Conversion Rate</h3>
-          <p>{conversion}%</p>
-        </div>
-        <div className="card">
-          <h3>Avg Handle Time</h3>
-          <p>{kpis.avgHandleTime}</p>
-        </div>
-      </section>
-
-      <section style={{ height: 300 }}>
-        <ResponsiveContainer>
-          <PieChart>
-            <Pie
-              data={pieData}
-              dataKey="value"
-              outerRadius={100}
-              label
-            >
-              {pieData.map((_, i) => (
-                <Cell key={i} fill={COLORS[i]} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
-      </section>
+          <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', marginBottom: 32 }}>
+            <div style={{ flex: 1, minWidth: 320, height: 320, background: '#fff', borderRadius: 14, boxShadow: '0 2px 12px #5f6fff11', padding: 16 }}>
+              <h3 style={{ textAlign: 'center', color: '#5f6fff' }}>Industry Distribution</h3>
+              <ResponsiveContainer width="100%" height={220}>
+                <PieChart>
+                  <Pie data={industryStats} dataKey="value" nameKey="name" outerRadius={80} label>
+                    {industryStats.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div style={{ flex: 1, minWidth: 320, height: 320, background: '#fff', borderRadius: 14, boxShadow: '0 2px 12px #5f6fff11', padding: 16 }}>
+              <h3 style={{ textAlign: 'center', color: '#27ae60' }}>Company Sizes</h3>
+              <ResponsiveContainer width="100%" height={220}>
+                <BarChart data={sizeStats}>
+                  <XAxis dataKey="name" />
+                  <YAxis allowDecimals={false} />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="value" fill="#27ae60" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div style={{ flex: 1, minWidth: 320, height: 320, background: '#fff', borderRadius: 14, boxShadow: '0 2px 12px #5f6fff11', padding: 16 }}>
+              <h3 style={{ textAlign: 'center', color: '#e67e22' }}>Countries</h3>
+              <ResponsiveContainer width="100%" height={220}>
+                <BarChart data={countryStats}>
+                  <XAxis dataKey="name" />
+                  <YAxis allowDecimals={false} />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="value" fill="#e67e22" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }

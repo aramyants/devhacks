@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { companyApi } from '../services/api';
+import { useTenant } from './TenantContext';
 
 export default function Products() {
+  const { tenant } = useTenant();
   const [items, setItems]   = useState([]);
   const [form,  setForm]    = useState({ id: null, name: '', price: '' });
   const [busy,  setBusy]    = useState(false);
@@ -77,7 +79,9 @@ export default function Products() {
   return (
     <>
       <h2>Products &amp; Services</h2>
-
+      <div style={{ marginBottom: 16, color: '#888', fontSize: 15 }}>
+        <b>Tenant:</b> {tenant.name}
+      </div>
       <form onSubmit={saveProduct} className="product-form">
         <input
           placeholder="Name"
