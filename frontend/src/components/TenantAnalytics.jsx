@@ -218,55 +218,76 @@ export default function TenantAnalytics() {
         </div>
       </div>
 
-      {/* Revenue Chart */}
-      <div className="chart-section">
-        <div className="chart-container">
+      {/* Revenue Trends */}
+      <div className="analytics-section">
+        <div className="chart-card">
           <div className="chart-header">
-            <h3>Revenue Trend</h3>
+            <h3 className="chart-title">Revenue & Orders Trend</h3>
             <div className="chart-legend">
-              <span className="legend-item">
-                <span
-                  className="legend-color"
-                  style={{ backgroundColor: "#5f6fff" }}
-                ></span>
-                Revenue
-              </span>
-              <span className="legend-item">
-                <span
-                  className="legend-color"
-                  style={{ backgroundColor: "#27ae60" }}
-                ></span>
-                Orders
-              </span>
+              <div className="legend-item">
+                <div className="legend-dot revenue"></div>
+                <span>Revenue</span>
+              </div>
+              <div className="legend-item">
+                <div className="legend-dot orders"></div>
+                <span>Orders</span>
+              </div>
             </div>
           </div>
-          <div className="chart-content">
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={data.revenueChart || []}>
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip
-                  formatter={(value, name) => [
-                    name === "revenue" ? `$${value.toLocaleString()}` : value,
-                    name === "revenue" ? "Revenue" : "Orders",
-                  ]}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke="#5f6fff"
-                  strokeWidth={3}
-                  dot={{ fill: "#5f6fff", strokeWidth: 2, r: 4 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="orders"
-                  stroke="#27ae60"
-                  strokeWidth={3}
-                  dot={{ fill: "#27ae60", strokeWidth: 2, r: 4 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+          <div className="chart-wrapper">
+            {data.revenueChart && data.revenueChart.length > 0 ? (
+              <ResponsiveContainer width="100%" height={350}>
+                <LineChart
+                  data={data.revenueChart}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                >
+                  <XAxis
+                    dataKey="month"
+                    tick={{ fontSize: 12 }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    tick={{ fontSize: 12 }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "rgba(255, 255, 255, 0.95)",
+                      border: "none",
+                      borderRadius: "12px",
+                      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+                    }}
+                    formatter={(value, name) => [
+                      name === "revenue" ? `$${value.toLocaleString()}` : value,
+                      name === "revenue" ? "Revenue" : "Orders",
+                    ]}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="revenue"
+                    stroke="#6366f1"
+                    strokeWidth={3}
+                    dot={{ fill: "#6366f1", strokeWidth: 2, r: 5 }}
+                    activeDot={{ r: 7, fill: "#6366f1" }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="orders"
+                    stroke="#10b981"
+                    strokeWidth={3}
+                    dot={{ fill: "#10b981", strokeWidth: 2, r: 5 }}
+                    activeDot={{ r: 7, fill: "#10b981" }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="chart-empty">
+                <div className="empty-icon">📈</div>
+                <p>No revenue data available</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
