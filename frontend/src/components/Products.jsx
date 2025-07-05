@@ -570,7 +570,7 @@ export default function Products() {
               </button>
             </div>
 
-            <form onSubmit={handleUpdateItem} className="product-form">
+            <form className="product-form">
               <div className="form-grid">
                 <div className="form-group">
                   <label htmlFor="edit-name" className="text-sm font-semibold">
