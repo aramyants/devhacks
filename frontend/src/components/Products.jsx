@@ -536,7 +536,9 @@ export default function Products() {
                 <button
                   type="submit"
                   className="cosmic-btn primary"
-                  disabled={operationLoading || !newItem.name.trim()}
+                  disabled={
+                    operationLoading || !newItem.name.trim() || !tenant?.id
+                  }
                 >
                   {operationLoading ? (
                     <>
