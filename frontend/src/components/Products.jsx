@@ -678,35 +678,36 @@ export default function Products() {
                   rows="3"
                 />
               </div>
-
-              <div className="modal-actions">
-                <button
-                  type="button"
-                  className="cosmic-btn secondary"
-                  onClick={() => setIsEditModalOpen(false)}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="cosmic-btn primary"
-                  disabled={operationLoading || !editingItem.name.trim()}
-                >
-                  {operationLoading ? (
-                    <>
-                      <div className="cosmic-spinner"></div>
-                      Updating...
-                    </>
-                  ) : (
-                    <>
-                      <span className="btn-icon">✏️</span>
-                      Update{" "}
-                      {editingItem.type === "product" ? "Product" : "Service"}
-                    </>
-                  )}
-                </button>
-              </div>
             </form>
+
+            <div className="modal-actions">
+              <button
+                type="button"
+                className="cosmic-btn secondary"
+                onClick={() => setIsEditModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="cosmic-btn primary"
+                onClick={handleUpdateItem}
+                disabled={operationLoading || !editingItem.name.trim()}
+              >
+                {operationLoading ? (
+                  <>
+                    <div className="cosmic-spinner"></div>
+                    Updating...
+                  </>
+                ) : (
+                  <>
+                    <span className="btn-icon">✏️</span>
+                    Update{" "}
+                    {editingItem.type === "product" ? "Product" : "Service"}
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}
