@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { workingAuthApi as authApi } from "../services/auth-working";
+import { authApi } from "../services/api";
 
 const AuthContext = createContext(null);
 
@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     const storedUser = localStorage.getItem("user");
-
     if (token && storedUser) {
       try {
         setUser(JSON.parse(storedUser));
@@ -34,22 +33,15 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setLoading(true);
     setError("");
-
     try {
-      console.log("AuthContext: Starting login...");
       const response = await authApi.login(email, password);
       const { token, user: userData } = response;
-
       localStorage.setItem("auth_token", token);
       localStorage.setItem("user", JSON.stringify(userData));
       setUser(userData);
-
-      console.log("AuthContext: Login successful");
       return { success: true };
     } catch (err) {
-      console.error("AuthContext: Login error caught:", err);
       const errorMessage = err.message || "Login failed. Please try again.";
-      console.log("AuthContext: Setting error to:", errorMessage);
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {
@@ -60,19 +52,15 @@ export const AuthProvider = ({ children }) => {
   const register = async (email, password, companyName) => {
     setLoading(true);
     setError("");
-
     try {
       const response = await authApi.register(email, password, companyName);
       const { token, user: userData } = response;
-
       localStorage.setItem("auth_token", token);
       localStorage.setItem("user", JSON.stringify(userData));
       setUser(userData);
-
       return { success: true };
     } catch (err) {
-      const errorMessage =
-        err.message || "Registration failed. Please try again.";
+      const errorMessage = err.message || "Registration failed. Please try again.";
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {

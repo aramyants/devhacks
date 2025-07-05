@@ -60,7 +60,7 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
-    
+
     try:
         payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
@@ -68,7 +68,7 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
             raise credentials_exception
     except jwt.PyJWTError:
         raise credentials_exception
-    
+
     user = db.query(User).filter(User.email == email).first()
     if user is None:
         raise credentials_exception
@@ -77,32 +77,32 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
 @router.post("/login", response_model=TokenResponse)
 def login(login_data: LoginRequest, db: Session = Depends(get_db)):
     """Authenticate user and return access token"""
-    
+
     # Find user by email
     user = db.query(User).filter(User.email == login_data.email).first()
-    
+
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password"
         )
-    
+
     # Verify password
     if not verify_password(login_data.password, user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password"
         )
-    
+
     # Create access token
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
     )
-    
+
     # Get user's company info
     company = db.query(Company).filter(Company.id == user.company_id).first()
-    
+
     # Prepare user data
     user_data = {
         "id": user.id,
@@ -116,7 +116,7 @@ def login(login_data: LoginRequest, db: Session = Depends(get_db)):
             "country": company.country
         } if company else None
     }
-    
+
     return {
         "access_token": access_token,
         "token_type": "bearer",
@@ -126,7 +126,7 @@ def login(login_data: LoginRequest, db: Session = Depends(get_db)):
 @router.post("/register", response_model=TokenResponse)
 def register(register_data: RegisterRequest, db: Session = Depends(get_db)):
     """Register new user and company"""
-    
+
     # Check if user already exists
     existing_user = db.query(User).filter(User.email == register_data.email).first()
     if existing_user:
@@ -134,7 +134,7 @@ def register(register_data: RegisterRequest, db: Session = Depends(get_db)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email already registered"
         )
-    
+
     try:
         # Create company first
         company = Company(
@@ -143,26 +143,26 @@ def register(register_data: RegisterRequest, db: Session = Depends(get_db)):
         )
         db.add(company)
         db.flush()  # Flush to get the company ID
-        
+
         # Hash password
         hashed_password = hash_password(register_data.password)
-        
+
         # Create user
         user = User(
             email=register_data.email,
             password_hash=hashed_password,
-            role="owner",  # First user of company is owner
+            role="user",  # First user of company is owner
             company_id=company.id
         )
         db.add(user)
         db.commit()
-        
+
         # Create access token
         access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = create_access_token(
             data={"sub": user.email}, expires_delta=access_token_expires
         )
-        
+
         # Prepare user data
         user_data = {
             "id": user.id,
@@ -176,13 +176,13 @@ def register(register_data: RegisterRequest, db: Session = Depends(get_db)):
                 "country": company.country
             }
         }
-        
+
         return {
             "access_token": access_token,
             "token_type": "bearer",
             "user": user_data
         }
-        
+
     except Exception as e:
         db.rollback()
         raise HTTPException(
@@ -198,10 +198,10 @@ def logout(current_user: User = Depends(get_current_user)):
 @router.get("/verify")
 def verify_token(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     """Verify if token is valid and return user info"""
-    
+
     # Get user's company info
     company = db.query(Company).filter(Company.id == current_user.company_id).first()
-    
+
     user_data = {
         "id": current_user.id,
         "email": current_user.email,
@@ -214,5 +214,5 @@ def verify_token(current_user: User = Depends(get_current_user), db: Session = D
             "country": company.country
         } if company else None
     }
-    
+
     return {"user": user_data}

@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import {
-  Bar,
-  BarChart,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-  PieChart,
-  Pie,
-  Cell,
+    Bar,
+    BarChart,
+    Cell,
+    Line,
+    LineChart,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
 } from "recharts";
-import { companyApi, dashboardApi, productsApi } from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import { companyApi, dashboardApi, productsApi } from "../services/api";
 
 const COLORS = ["#00d4ff", "#ff0080", "#8000ff", "#00ff88"];
 
@@ -24,62 +24,15 @@ export default function OwnerDashboard() {
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
   const [timeFilter, setTimeFilter] = useState("30d");
-  const [isUsingMockData, setIsUsingMockData] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       if (!user?.companyId) return;
-
       setLoading(true);
       try {
-        // Fetch data individually to prevent one failure from breaking everything
-        let mockDataUsed = false;
-
-        const companyData = await companyApi
-          .getCompany(user.companyId)
-          .catch((err) => {
-            console.warn("Failed to fetch company data:", err.message);
-            mockDataUsed = true;
-            return {
-              id: user.companyId,
-              name: "Demo Company",
-              industry: "Technology",
-            };
-          });
-
-        const productsData = await productsApi
-          .getCompanyProducts(user.companyId)
-          .catch((err) => {
-            console.warn("Failed to fetch products data:", err.message);
-            mockDataUsed = true;
-            return [];
-          });
-
-        const statsData = await dashboardApi
-          .getCompanyStats(user.companyId, timeFilter)
-          .catch((err) => {
-            console.warn("Failed to fetch stats data:", err.message);
-            mockDataUsed = true;
-            return {
-              totalProducts: 0,
-              newProducts: 0,
-              revenue: 0,
-              revenueGrowth: 0,
-              orders: 0,
-              newOrders: 0,
-              revenueChart: [],
-              productPerformance: [],
-              customerMetrics: {
-                retention: 0,
-                satisfaction: 0,
-                churnRate: 0,
-                lifetimeValue: 0,
-              },
-            };
-          });
-
-        setIsUsingMockData(mockDataUsed);
-
+        const companyData = await companyApi.getCompany(user.companyId);
+        const productsData = await productsApi.getCompanyProducts(user.companyId);
+        const statsData = await dashboardApi.getCompanyStats(user.companyId, timeFilter);
         setCompany(companyData);
         setProducts(productsData);
         setStats(statsData);
@@ -156,20 +109,6 @@ export default function OwnerDashboard() {
           </select>
         </div>
       </div>
-
-      {/* Backend Status Notification */}
-      {isUsingMockData && (
-        <div className="cosmic-alert warning" style={{ marginBottom: "2rem" }}>
-          <span className="alert-icon">⚠️</span>
-          <div className="alert-content">
-            <h4 className="font-semibold">Demo Mode</h4>
-            <p className="text-sm">
-              Backend API is not available. Showing demo data for testing. Start
-              the FastAPI server to see real data.
-            </p>
-          </div>
-        </div>
-      )}
 
       <div className="kpi-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <div className="kpi-card primary">

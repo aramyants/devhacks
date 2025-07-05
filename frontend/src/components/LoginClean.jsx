@@ -146,14 +146,14 @@ export default function LoginClean({ onSwitchToRegister }) {
           )}
 
           {/* Debug: Force show error state to test UI */}
-          {process.env.NODE_ENV === "development" && !error && (
+          {/* {process.env.NODE_ENV === "development" && !error && (
             <div
               style={{ fontSize: "12px", color: "#999", marginBottom: "10px" }}
             >
               No error in state. Try logging in with wrong credentials to see
               error display.
             </div>
-          )}
+          )} */}
 
           <button
             type="submit"
@@ -172,7 +172,7 @@ export default function LoginClean({ onSwitchToRegister }) {
         </form>
 
         {/* Test Credentials Helper */}
-        {process.env.NODE_ENV === "development" && (
+        {/* {process.env.NODE_ENV === "development" && (
           <div className="test-credentials">
             <h4>🧪 Test Credentials</h4>
             <div className="credentials-list">
@@ -202,7 +202,7 @@ export default function LoginClean({ onSwitchToRegister }) {
               Check Error State
             </button>
           </div>
-        )}
+        )} */}
 
         <div className="auth-footer">
           <p className="auth-footer-text">Don't have an account?</p>

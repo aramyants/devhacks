@@ -28,12 +28,13 @@ export default function CompanySettings({ companyId = 1 }) {
       try {
         setStatus("loading");
         const data = await companyApi.getCompany(companyId);
+        // Map backend fields to frontend form fields
         setForm({
-          companyName: data.companyName ?? "",
-          contactEmail: data.contactEmail ?? "",
-          phoneNumber: data.phoneNumber ?? "",
-          description: data.description ?? "",
-          privacyPolicy: data.privacyPolicy ?? "",
+          companyName: data.name ?? data.companyName ?? "",
+          contactEmail: data.contact_email ?? data.contactEmail ?? "",
+          phoneNumber: data.phone ?? data.phoneNumber ?? "",
+          description: data.description ?? data.details ?? "",
+          privacyPolicy: data.privacy_policy ?? data.privacyPolicy ?? "",
         });
         setStatus("idle");
       } catch (err) {
@@ -55,7 +56,14 @@ export default function CompanySettings({ companyId = 1 }) {
     e.preventDefault();
     try {
       setStatus("saving");
-      await companyApi.updateCompany(companyId, form);
+      // Map frontend fields to backend fields for update
+      await companyApi.updateCompany(companyId, {
+        name: form.companyName,
+        contact_email: form.contactEmail,
+        phone: form.phoneNumber,
+        description: form.description,
+        privacy_policy: form.privacyPolicy,
+      });
       setStatus("success");
       setTimeout(() => setStatus("idle"), 2500);
     } catch (err) {
