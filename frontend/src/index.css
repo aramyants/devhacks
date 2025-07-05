@@ -1625,6 +1625,211 @@ td button {
   cursor: not-allowed;
 }
 
+/* Company Settings */
+.company-settings {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.settings-header {
+  margin-bottom: 2rem;
+}
+
+.settings-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+  background: linear-gradient(135deg, #00d4ff, #8000ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tenant-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tenant-label {
+  font-weight: 600;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+}
+
+.tenant-name {
+  color: #00d4ff;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.settings-description {
+  color: #e2e8f0;
+  font-size: 1rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.settings-form {
+  background: rgba(15, 15, 30, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 8px 24px rgba(0, 212, 255, 0.1);
+  padding: 2rem;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group-full {
+  grid-column: 1 / -1;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 0.95rem;
+  margin-left: 4px;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border: 2px solid rgba(0, 212, 255, 0.2);
+  border-radius: 16px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transition: all 0.3s ease;
+  outline: none;
+  backdrop-filter: blur(10px);
+  font-family: inherit;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #00d4ff;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.checkbox-input {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0, 212, 255, 0.4);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.checkbox-input:checked {
+  background: linear-gradient(135deg, #00d4ff, #8000ff);
+  border-color: #00d4ff;
+}
+
+.checkbox-text {
+  user-select: none;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.submit-button {
+  background: linear-gradient(135deg, #00d4ff, #8000ff);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 16px rgba(0, 212, 255, 0.3);
+}
+
+.submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 212, 255, 0.4);
+}
+
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.success-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #10b981;
+  font-weight: 600;
+}
+
+.success-icon {
+  font-size: 1.2rem;
+  color: #10b981;
+}
+
+.error-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
+  color: #ef4444;
+  font-weight: 500;
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+.error-icon {
+  font-size: 1.2rem;
+}
+
 /* Loading Container */
 .loading-container {
   min-height: 100vh;
