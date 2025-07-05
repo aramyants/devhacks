@@ -1,7 +1,7 @@
 /* index.css  ────────────────────────────────────────────────
    Cosmic Epic Dashboard Theme - Advanced space-themed UI system
    with real database integration and responsive design
-────────────────────────────────────────────────────��─────── */
+──────────────────────────────────────────────────────────── */
 
 @import url("./cosmic-components.css");
 @import url("./responsive-ui.css");
@@ -228,13 +228,13 @@ main.container {
 
 /* 4. Header + Navigation */
 .header {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: var(--shadow);
+  background: var(--glass);
+  box-shadow: var(--shadow-cosmic);
   position: sticky;
   top: 0;
   z-index: 50;
-  border-bottom: 1.5px solid var(--primary-light);
-  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--glass-border);
+  backdrop-filter: blur(30px);
   transition: background 0.3s;
 }
 .header h1 {
