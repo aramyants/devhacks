@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, JSON
 from sqlalchemy.sql import func
-from database import Base
+from backend.database import Base
 
 class Company(Base):
     __tablename__ = "companies"
