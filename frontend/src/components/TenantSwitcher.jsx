@@ -57,7 +57,21 @@ export default function TenantSwitcher() {
     setSearchTerm("");
   };
 
+  const calculateDropdownPosition = () => {
+    if (triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: rect.bottom + 8,
+        left: rect.left,
+        width: rect.width,
+      });
+    }
+  };
+
   const handleToggle = () => {
+    if (!isOpen) {
+      calculateDropdownPosition();
+    }
     setIsOpen(!isOpen);
     if (!isOpen) {
       setSearchTerm("");
