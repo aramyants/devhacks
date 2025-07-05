@@ -651,6 +651,15 @@
   border-top: 1px solid var(--glass-border);
 }
 
+.modal-actions .cosmic-btn {
+  min-width: 120px;
+  padding: 1rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 /* Cosmic Products */
 .cosmic-products {
   width: 100%;
