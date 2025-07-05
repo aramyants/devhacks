@@ -715,7 +715,7 @@ td button {
 /* Cosmic Tenant Switcher */
 .cosmic-tenant-switcher {
   position: relative;
-  z-index: 1000;
+  z-index: 9999;
 }
 
 .cosmic-tenant-switcher.loading {
@@ -872,7 +872,11 @@ td button {
   top: calc(100% + 0.5rem);
   left: 0;
   right: 0;
-  z-index: 1001;
+  z-index: 99999;
+  animation: cosmicDropdownIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tenant-dropdown-portal {
   animation: cosmicDropdownIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -1223,17 +1227,18 @@ td button {
 }
 
 .auth-card {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(15, 15, 30, 0.95);
   backdrop-filter: blur(20px);
   border-radius: 24px;
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.15),
-    0 8px 24px rgba(95, 111, 255, 0.1);
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 8px 24px rgba(0, 212, 255, 0.1);
   padding: 3rem 2.5rem;
   width: 100%;
   max-width: 440px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(0, 212, 255, 0.2);
   animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #ffffff;
 }
 
 @keyframes slideInUp {
@@ -1262,14 +1267,14 @@ td button {
 
 .logo-icon {
   font-size: 3rem;
-  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  background: linear-gradient(135deg, #00d4ff, #8000ff);
   border-radius: 20px;
   width: 80px;
   height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 24px rgba(95, 111, 255, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 212, 255, 0.3);
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -1286,7 +1291,7 @@ td button {
 .auth-logo h1 {
   font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  background: linear-gradient(135deg, #00d4ff, #8000ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1295,7 +1300,7 @@ td button {
 }
 
 .auth-logo p {
-  color: var(--text-light);
+  color: #e2e8f0;
   margin: 0;
   font-size: 1.1rem;
   font-weight: 500;
@@ -1316,7 +1321,7 @@ td button {
 
 .form-group label {
   font-weight: 600;
-  color: var(--text);
+  color: #ffffff;
   font-size: 0.95rem;
   margin-left: 4px;
 }
@@ -1331,18 +1336,18 @@ td button {
   width: 100%;
   padding: 1rem 1.2rem;
   padding-right: 3rem;
-  border: 2px solid var(--glass-border);
+  border: 2px solid rgba(0, 212, 255, 0.2);
   border-radius: 16px;
   font-size: 1rem;
   background: rgba(255, 255, 255, 0.1);
-  color: var(--text);
+  color: #ffffff;
   transition: all 0.3s ease;
   outline: none;
   backdrop-filter: blur(10px);
 }
 
 .input-wrapper input:focus {
-  border-color: var(--primary);
+  border-color: #00d4ff;
   background: rgba(255, 255, 255, 0.15);
   box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.1);
   transform: translateY(-1px);
@@ -1458,7 +1463,7 @@ td button {
 
 /* Submit Button */
 .auth-submit-btn {
-  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  background: linear-gradient(135deg, #00d4ff, #8000ff);
   color: white;
   border: none;
   border-radius: 16px;
@@ -1471,14 +1476,14 @@ td button {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  box-shadow: 0 4px 16px rgba(95, 111, 255, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 212, 255, 0.3);
   position: relative;
   overflow: hidden;
 }
 
 .auth-submit-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(95, 111, 255, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 212, 255, 0.4);
 }
 
 .auth-submit-btn:active {
@@ -1590,32 +1595,239 @@ td button {
 }
 
 .auth-footer p {
-  color: var(--text-light);
+  color: #e2e8f0;
   margin: 0 0 1rem 0;
   font-size: 0.95rem;
 }
 
 .auth-switch-btn {
-  background: none;
-  border: 2px solid var(--primary);
-  color: var(--primary);
+  background: linear-gradient(135deg, #00d4ff, #8000ff);
+  border: none;
+  color: white;
   border-radius: 12px;
   padding: 0.75rem 2rem;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 212, 255, 0.3);
 }
 
 .auth-switch-btn:hover:not(:disabled) {
-  background: var(--primary);
+  background: linear-gradient(135deg, #0099cc, #6600cc);
   color: white;
   transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
 }
 
 .auth-switch-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* Company Settings */
+.company-settings {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.settings-header {
+  margin-bottom: 2rem;
+}
+
+.settings-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+  background: linear-gradient(135deg, #00d4ff, #8000ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tenant-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tenant-label {
+  font-weight: 600;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+}
+
+.tenant-name {
+  color: #00d4ff;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.settings-description {
+  color: #e2e8f0;
+  font-size: 1rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.settings-form {
+  background: rgba(15, 15, 30, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 8px 24px rgba(0, 212, 255, 0.1);
+  padding: 2rem;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group-full {
+  grid-column: 1 / -1;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 0.95rem;
+  margin-left: 4px;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border: 2px solid rgba(0, 212, 255, 0.2);
+  border-radius: 16px;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transition: all 0.3s ease;
+  outline: none;
+  backdrop-filter: blur(10px);
+  font-family: inherit;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #00d4ff;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.checkbox-input {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0, 212, 255, 0.4);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.checkbox-input:checked {
+  background: linear-gradient(135deg, #00d4ff, #8000ff);
+  border-color: #00d4ff;
+}
+
+.checkbox-text {
+  user-select: none;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.submit-button {
+  background: linear-gradient(135deg, #00d4ff, #8000ff);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 16px rgba(0, 212, 255, 0.3);
+}
+
+.submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 212, 255, 0.4);
+}
+
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.success-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #10b981;
+  font-weight: 600;
+}
+
+.success-icon {
+  font-size: 1.2rem;
+  color: #10b981;
+}
+
+.error-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
+  color: #ef4444;
+  font-weight: 500;
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+.error-icon {
+  font-size: 1.2rem;
 }
 
 /* Loading Container */

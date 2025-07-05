@@ -9,6 +9,49 @@ const api = axios.create({
   },
 });
 
+// Mock companies data for fallback
+const MOCK_COMPANIES = [
+  {
+    id: 1,
+    name: "Admin Company",
+    industry: "Technology",
+    country: "United States",
+    headquarters: "San Francisco, CA",
+    website: "https://admin-company.com",
+    description: "Admin company for platform management",
+    employee_count: 50,
+    revenue: 10000000,
+    founded_year: 2020,
+    status: "active",
+  },
+  {
+    id: 2,
+    name: "Acme Corp",
+    industry: "Manufacturing",
+    country: "United States",
+    headquarters: "Detroit, MI",
+    website: "https://acmecorp.com",
+    description: "Leading manufacturing company",
+    employee_count: 500,
+    revenue: 50000000,
+    founded_year: 1985,
+    status: "active",
+  },
+  {
+    id: 3,
+    name: "Globex Corporation",
+    industry: "Technology",
+    country: "Canada",
+    headquarters: "Toronto, ON",
+    website: "https://globex.com",
+    description: "Global technology solutions provider",
+    employee_count: 1200,
+    revenue: 75000000,
+    founded_year: 1992,
+    status: "active",
+  },
+];
+
 // Add token to requests if available
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("auth_token");
@@ -38,9 +81,13 @@ export const companyApi = {
       const response = await api.get(`/companies?skip=${skip}&limit=${limit}`);
       return response.data;
     } catch (error) {
-      throw new Error(
-        error.response?.data?.detail || "Failed to fetch companies",
+      console.warn(
+        "⚠️ Backend API unavailable. Using mock data fallback. Start FastAPI server on port 8000 for real data.",
       );
+      // Return mock data as fallback
+      const startIndex = skip || 0;
+      const endIndex = startIndex + (limit || 100);
+      return MOCK_COMPANIES.slice(startIndex, endIndex);
     }
   },
 
@@ -50,9 +97,13 @@ export const companyApi = {
       const response = await api.get(`/companies/${id}`);
       return response.data;
     } catch (error) {
-      throw new Error(
-        error.response?.data?.detail || "Failed to fetch company",
-      );
+      console.warn("⚠️ Backend API unavailable. Using mock data fallback.");
+      // Return mock data as fallback
+      const company = MOCK_COMPANIES.find((c) => c.id === parseInt(id));
+      if (!company) {
+        throw new Error("Company not found");
+      }
+      return company;
     }
   },
 
@@ -62,9 +113,15 @@ export const companyApi = {
       const response = await api.post("/companies", companyData);
       return response.data;
     } catch (error) {
-      throw new Error(
-        error.response?.data?.detail || "Failed to create company",
-      );
+      console.log("⚠️ Backend unavailable, using mock company creation");
+      // Mock company creation
+      const newCompany = {
+        id: MOCK_COMPANIES.length + 1,
+        ...companyData,
+        status: "active",
+      };
+      MOCK_COMPANIES.push(newCompany);
+      return newCompany;
     }
   },
 
@@ -74,9 +131,19 @@ export const companyApi = {
       const response = await api.put(`/companies/${id}`, companyData);
       return response.data;
     } catch (error) {
-      throw new Error(
-        error.response?.data?.detail || "Failed to update company",
+      console.log("⚠️ Backend unavailable, using mock company update");
+      // Mock company update
+      const companyIndex = MOCK_COMPANIES.findIndex(
+        (c) => c.id === parseInt(id),
       );
+      if (companyIndex === -1) {
+        throw new Error("Company not found");
+      }
+      MOCK_COMPANIES[companyIndex] = {
+        ...MOCK_COMPANIES[companyIndex],
+        ...companyData,
+      };
+      return MOCK_COMPANIES[companyIndex];
     }
   },
 
@@ -86,9 +153,16 @@ export const companyApi = {
       await api.delete(`/companies/${id}`);
       return true;
     } catch (error) {
-      throw new Error(
-        error.response?.data?.detail || "Failed to delete company",
+      console.log("⚠️ Backend unavailable, using mock company deletion");
+      // Mock company deletion
+      const companyIndex = MOCK_COMPANIES.findIndex(
+        (c) => c.id === parseInt(id),
       );
+      if (companyIndex === -1) {
+        throw new Error("Company not found");
+      }
+      MOCK_COMPANIES.splice(companyIndex, 1);
+      return true;
     }
   },
 

@@ -228,10 +228,23 @@
   text-align: center;
 }
 
+.auth-card-fixed .auth-footer {
+  background: rgba(15, 15, 30, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 212, 255, 0.1);
+  padding: 2rem;
+  margin-top: 2rem;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  text-align: center;
+}
+
 .auth-switch-btn-fixed {
-  background: none;
-  border: 2px solid #00d4ff;
-  color: #00d4ff;
+  background: linear-gradient(135deg, #00d4ff, #8000ff);
+  border: none;
+  color: white;
   border-radius: 12px;
   padding: 0.75rem 2rem;
   font-size: 1rem;
@@ -240,12 +253,14 @@
   transition: all 0.3s ease;
   font-family: inherit;
   width: 100%;
+  box-shadow: 0 4px 16px rgba(0, 212, 255, 0.3);
 }
 
 .auth-switch-btn-fixed:hover:not(:disabled) {
-  background: #00d4ff;
-  color: #0c0c0c;
+  background: linear-gradient(135deg, #0099cc, #6600cc);
+  color: white;
   transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
 }
 
 .auth-switch-btn-fixed:disabled {

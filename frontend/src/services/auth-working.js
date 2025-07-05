@@ -137,7 +137,9 @@ export const workingAuthApi = {
           user: response.data.user,
         };
       } catch (backendError) {
-        console.log("⚠️ Backend unavailable, using mock authentication");
+        console.warn(
+          "⚠️ Backend unavailable, using mock authentication. Start FastAPI server for real auth.",
+        );
 
         const mockResponse = await mockLogin(email.trim(), password);
         console.log("✅ Mock login successful");
