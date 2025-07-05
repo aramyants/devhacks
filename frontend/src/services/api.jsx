@@ -135,24 +135,41 @@ export const authApi = {
   // Login user
   login: async (email, password) => {
     try {
+      console.log("AuthAPI: Attempting login with", { email, password });
+
       // For demo purposes, we'll simulate the backend response
-      // In production, this would be a real API call
-      if (email === "admin@saas.com" && password === "demo123") {
-        return {
+      // Accept multiple password variations for demo
+      const validPasswords = ["demo123", "password", "123", "admin", "test"];
+
+      if (email === "admin@saas.com" && validPasswords.includes(password)) {
+        const result = {
           token: "demo-admin-token",
           user: { email, role: "admin", id: 1 },
         };
-      } else if (email === "owner@acme.com" && password === "demo123") {
-        return {
+        console.log("AuthAPI: Admin login successful", result);
+        return result;
+      } else if (
+        email === "owner@acme.com" &&
+        validPasswords.includes(password)
+      ) {
+        const result = {
           token: "demo-owner-token-1",
           user: { email, role: "owner", companyId: 1, id: 2 },
         };
-      } else if (email === "owner@globex.com" && password === "demo123") {
-        return {
+        console.log("AuthAPI: Acme owner login successful", result);
+        return result;
+      } else if (
+        email === "owner@globex.com" &&
+        validPasswords.includes(password)
+      ) {
+        const result = {
           token: "demo-owner-token-2",
           user: { email, role: "owner", companyId: 2, id: 3 },
         };
+        console.log("AuthAPI: Globex owner login successful", result);
+        return result;
       } else {
+        console.log("AuthAPI: Login failed - invalid credentials");
         throw new Error("Invalid email or password");
       }
 

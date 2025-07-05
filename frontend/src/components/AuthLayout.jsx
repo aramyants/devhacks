@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Login from "./Login";
+import LoginFixed from "./LoginFixed";
 import Register from "./Register";
 
 export default function AuthLayout() {
@@ -14,7 +14,7 @@ export default function AuthLayout() {
 
       <div className="auth-content">
         {isLoginMode ? (
-          <Login onSwitchToRegister={() => setIsLoginMode(false)} />
+          <LoginFixed onSwitchToRegister={() => setIsLoginMode(false)} />
         ) : (
           <Register onSwitchToLogin={() => setIsLoginMode(true)} />
         )}
