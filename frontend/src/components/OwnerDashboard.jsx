@@ -15,7 +15,7 @@ import {
 import { companyApi, dashboardApi, productsApi } from "../services/api";
 import { useAuth } from "../context/AuthContext";
 
-const COLORS = ["#5f6fff", "#27ae60", "#e67e22", "#e74c3c"];
+const COLORS = ["#00d4ff", "#ff0080", "#8000ff", "#00ff88"];
 
 export default function OwnerDashboard() {
   const { user } = useAuth();
@@ -65,8 +65,9 @@ export default function OwnerDashboard() {
   if (loading) {
     return (
       <div className="dashboard-loading">
-        <div className="loading-spinner"></div>
-        <p>Loading dashboard...</p>
+        <div className="cosmic-spinner-large"></div>
+        <h2 className="text-xl font-semibold">Loading dashboard...</h2>
+        <p className="text-base">Fetching your business insights</p>
       </div>
     );
   }
@@ -82,13 +83,19 @@ export default function OwnerDashboard() {
               </div>
             )}
             <div>
-              <h1>{company.name}</h1>
-              <p className="company-tagline">
+              <h1 className="text-3xl lg:text-4xl font-bold leading-tight">
+                {company.name || "Your Company"}
+              </h1>
+              <p className="company-tagline text-base lg:text-lg leading-relaxed">
                 {company.tagline || "Company Dashboard"}
               </p>
-              <div className="company-meta">
-                {company.industry} • {company.country} • Est.{" "}
-                {company.founded_year}
+              <div className="company-meta text-sm lg:text-base">
+                {company.industry && <span>{company.industry}</span>}
+                {company.industry && company.country && <span> • </span>}
+                {company.country && <span>{company.country}</span>}
+                {company.founded_year && (
+                  <span> • Est. {company.founded_year}</span>
+                )}
               </div>
             </div>
           </div>
@@ -106,13 +113,15 @@ export default function OwnerDashboard() {
         </div>
       </div>
 
-      <div className="kpi-grid">
+      <div className="kpi-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <div className="kpi-card primary">
           <div className="kpi-icon">📦</div>
           <div className="kpi-content">
-            <h3>Products</h3>
-            <div className="kpi-value">{products.length}</div>
-            <div className="kpi-change positive">
+            <h3 className="text-xs font-semibold">Products</h3>
+            <div className="kpi-value text-2xl md:text-3xl font-bold">
+              {products.length}
+            </div>
+            <div className="kpi-change positive text-sm">
               +{stats.newProducts || 0} this month
             </div>
           </div>
@@ -121,9 +130,14 @@ export default function OwnerDashboard() {
         <div className="kpi-card success">
           <div className="kpi-icon">💰</div>
           <div className="kpi-content">
-            <h3>Revenue</h3>
-            <div className="kpi-value">${stats.revenue || "0"}</div>
-            <div className="kpi-change positive">
+            <h3 className="text-xs font-semibold">Revenue</h3>
+            <div className="kpi-value text-2xl md:text-3xl font-bold">
+              $
+              {typeof stats.revenue === "number"
+                ? stats.revenue.toLocaleString()
+                : stats.revenue || "0"}
+            </div>
+            <div className="kpi-change positive text-sm">
               +{stats.revenueGrowth || "0"}% this month
             </div>
           </div>
@@ -132,9 +146,11 @@ export default function OwnerDashboard() {
         <div className="kpi-card warning">
           <div className="kpi-icon">🛍️</div>
           <div className="kpi-content">
-            <h3>Orders</h3>
-            <div className="kpi-value">{stats.orders || 0}</div>
-            <div className="kpi-change positive">
+            <h3 className="text-xs font-semibold">Orders</h3>
+            <div className="kpi-value text-2xl md:text-3xl font-bold">
+              {stats.orders || 0}
+            </div>
+            <div className="kpi-change positive text-sm">
               +{stats.newOrders || 0} this month
             </div>
           </div>
@@ -143,18 +159,24 @@ export default function OwnerDashboard() {
         <div className="kpi-card info">
           <div className="kpi-icon">👥</div>
           <div className="kpi-content">
-            <h3>Team Members</h3>
-            <div className="kpi-value">{stats.teamMembers || 1}</div>
-            <div className="kpi-change neutral">Active users</div>
+            <h3 className="text-xs font-semibold">Team Members</h3>
+            <div className="kpi-value text-2xl md:text-3xl font-bold">
+              {stats.teamMembers || 1}
+            </div>
+            <div className="kpi-change neutral text-sm">Active users</div>
           </div>
         </div>
       </div>
 
-      <div className="dashboard-grid">
+      <div className="dashboard-grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         <div className="chart-card">
           <div className="chart-header">
-            <h3>Product Categories</h3>
-            <p>Distribution of your products</p>
+            <h3 className="text-lg md:text-xl font-bold">
+              📊 Product Categories
+            </h3>
+            <p className="text-sm md:text-base">
+              Distribution of your products
+            </p>
           </div>
           <div className="chart-container">
             {categoryChart.length > 0 ? (
@@ -168,6 +190,7 @@ export default function OwnerDashboard() {
                     label={({ name, percent }) =>
                       `${name} ${(percent * 100).toFixed(0)}%`
                     }
+                    labelLine={false}
                   >
                     {categoryChart.map((_, index) => (
                       <Cell
@@ -176,13 +199,25 @@ export default function OwnerDashboard() {
                       />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "rgba(255, 255, 255, 0.05)",
+                      border: "1px solid rgba(255, 255, 255, 0.1)",
+                      borderRadius: "12px",
+                      backdropFilter: "blur(20px)",
+                      color: "#ffffff",
+                    }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
             ) : (
               <div className="empty-chart">
-                <p>No products yet</p>
-                <button className="btn-primary">Add your first product</button>
+                <div className="text-center p-lg">
+                  <p className="text-base mb-lg">No products yet</p>
+                  <button className="cosmic-btn primary">
+                    Add your first product
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -190,21 +225,53 @@ export default function OwnerDashboard() {
 
         <div className="chart-card">
           <div className="chart-header">
-            <h3>Revenue Trend</h3>
-            <p>Monthly revenue over time</p>
+            <h3 className="text-lg md:text-xl font-bold">📈 Revenue Trend</h3>
+            <p className="text-sm md:text-base">Monthly revenue over time</p>
           </div>
           <div className="chart-container">
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={stats.revenueChart || []}>
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip formatter={(value) => [`$${value}`, "Revenue"]} />
+                <XAxis
+                  dataKey="month"
+                  tick={{ fill: "#b3b3cc", fontSize: 12 }}
+                  axisLine={{ stroke: "rgba(255, 255, 255, 0.1)" }}
+                />
+                <YAxis
+                  tick={{ fill: "#b3b3cc", fontSize: 12 }}
+                  axisLine={{ stroke: "rgba(255, 255, 255, 0.1)" }}
+                />
+                <Tooltip
+                  formatter={(value) => [
+                    `$${value.toLocaleString()}`,
+                    "Revenue",
+                  ]}
+                  contentStyle={{
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    borderRadius: "12px",
+                    backdropFilter: "blur(20px)",
+                    color: "#ffffff",
+                  }}
+                />
                 <Line
                   type="monotone"
                   dataKey="revenue"
-                  stroke="#5f6fff"
+                  stroke="url(#revenueGradient)"
                   strokeWidth={3}
+                  dot={{ fill: "#00d4ff", strokeWidth: 2, r: 4 }}
                 />
+                <defs>
+                  <linearGradient
+                    id="revenueGradient"
+                    x1="0"
+                    y1="0"
+                    x2="1"
+                    y2="0"
+                  >
+                    <stop offset="0%" stopColor="#00d4ff" />
+                    <stop offset="100%" stopColor="#8000ff" />
+                  </linearGradient>
+                </defs>
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -212,40 +279,41 @@ export default function OwnerDashboard() {
 
         <div className="chart-card">
           <div className="chart-header">
-            <h3>Company Profile</h3>
-            <p>Your company information</p>
+            <h3 className="text-lg md:text-xl font-bold">🏢 Company Profile</h3>
+            <p className="text-sm md:text-base">Your company information</p>
           </div>
           <div className="company-profile">
             <div className="profile-item">
-              <span className="profile-label">Industry:</span>
-              <span className="profile-value">
+              <span className="profile-label text-sm">Industry:</span>
+              <span className="profile-value text-sm">
                 {company.industry || "Not specified"}
               </span>
             </div>
             <div className="profile-item">
-              <span className="profile-label">Size:</span>
-              <span className="profile-value">
+              <span className="profile-label text-sm">Size:</span>
+              <span className="profile-value text-sm">
                 {company.size || "Not specified"}
               </span>
             </div>
             <div className="profile-item">
-              <span className="profile-label">Location:</span>
-              <span className="profile-value">
+              <span className="profile-label text-sm">Location:</span>
+              <span className="profile-value text-sm">
                 {company.city
                   ? `${company.city}, ${company.country}`
                   : company.country || "Not specified"}
               </span>
             </div>
             <div className="profile-item">
-              <span className="profile-label">Website:</span>
-              <span className="profile-value">
+              <span className="profile-label text-sm">Website:</span>
+              <span className="profile-value text-sm">
                 {company.website ? (
                   <a
                     href={company.website}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="text-primary hover:text-primary-light transition-colors"
                   >
-                    {company.website}
+                    Visit Website
                   </a>
                 ) : (
                   "Not specified"
@@ -253,38 +321,46 @@ export default function OwnerDashboard() {
               </span>
             </div>
             <div className="profile-item">
-              <span className="profile-label">Contact:</span>
-              <span className="profile-value">
+              <span className="profile-label text-sm">Contact:</span>
+              <span className="profile-value text-sm">
                 {company.contact_email || "Not specified"}
               </span>
             </div>
           </div>
         </div>
 
-        <div className="chart-card">
+        <div className="chart-card md:col-span-2 xl:col-span-1">
           <div className="chart-header">
-            <h3>Recent Products</h3>
-            <p>Latest additions to your catalog</p>
+            <h3 className="text-lg md:text-xl font-bold">📦 Recent Products</h3>
+            <p className="text-sm md:text-base">
+              Latest additions to your catalog
+            </p>
           </div>
           <div className="recent-products">
             {recentProducts.length > 0 ? (
               recentProducts.map((product) => (
                 <div key={product.id} className="product-item">
                   <div className="product-info">
-                    <div className="product-name">{product.name}</div>
-                    <div className="product-meta">
+                    <div className="product-name text-sm font-semibold">
+                      {product.name}
+                    </div>
+                    <div className="product-meta text-xs">
                       ${product.price} • Stock: {product.stock_qty || 0}
                     </div>
                   </div>
-                  <div className="product-date">
+                  <div className="product-date text-xs">
                     {new Date(product.created_at).toLocaleDateString()}
                   </div>
                 </div>
               ))
             ) : (
-              <div className="empty-state">
-                <p>No products yet</p>
-                <button className="btn-primary">Add Product</button>
+              <div className="empty-state p-lg">
+                <div className="text-center">
+                  <p className="text-sm mb-md">No products yet</p>
+                  <button className="cosmic-btn primary text-sm">
+                    Add Product
+                  </button>
+                </div>
               </div>
             )}
           </div>

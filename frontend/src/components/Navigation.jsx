@@ -36,10 +36,10 @@ export default function Navigation() {
           <Link
             key={item.path}
             to={item.path}
-            className={`nav-item ${pathname === item.path ? "active" : ""}`}
+            className={`nav-item text-sm md:text-base ${pathname === item.path ? "active" : ""}`}
           >
-            <span className="nav-icon">{item.icon}</span>
-            <span className="nav-label">{item.label}</span>
+            <span className="nav-icon text-base">{item.icon}</span>
+            <span className="nav-label hidden sm:inline">{item.label}</span>
             {pathname === item.path && <div className="nav-indicator" />}
           </Link>
         ))}

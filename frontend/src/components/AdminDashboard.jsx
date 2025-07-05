@@ -121,13 +121,15 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <div className="kpi-grid">
+      <div className="kpi-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <div className="kpi-card primary">
           <div className="kpi-icon">🏢</div>
           <div className="kpi-content">
-            <h3>Total Companies</h3>
-            <div className="kpi-value">{companies.length}</div>
-            <div className="kpi-change positive">
+            <h3 className="text-xs font-semibold">Total Companies</h3>
+            <div className="kpi-value text-2xl md:text-3xl font-bold">
+              {companies.length}
+            </div>
+            <div className="kpi-change positive text-sm">
               +{stats.newCompanies || 0} this month
             </div>
           </div>
@@ -136,9 +138,11 @@ export default function AdminDashboard() {
         <div className="kpi-card success">
           <div className="kpi-icon">👥</div>
           <div className="kpi-content">
-            <h3>Total Users</h3>
-            <div className="kpi-value">{stats.totalUsers || 0}</div>
-            <div className="kpi-change positive">
+            <h3 className="text-xs font-semibold">Total Users</h3>
+            <div className="kpi-value text-2xl md:text-3xl font-bold">
+              {stats.totalUsers || 0}
+            </div>
+            <div className="kpi-change positive text-sm">
               +{stats.newUsers || 0} this month
             </div>
           </div>
@@ -147,9 +151,11 @@ export default function AdminDashboard() {
         <div className="kpi-card warning">
           <div className="kpi-icon">📦</div>
           <div className="kpi-content">
-            <h3>Total Products</h3>
-            <div className="kpi-value">{stats.totalProducts || 0}</div>
-            <div className="kpi-change positive">
+            <h3 className="text-xs font-semibold">Total Products</h3>
+            <div className="kpi-value text-2xl md:text-3xl font-bold">
+              {stats.totalProducts || 0}
+            </div>
+            <div className="kpi-change positive text-sm">
               +{stats.newProducts || 0} this month
             </div>
           </div>
@@ -158,18 +164,22 @@ export default function AdminDashboard() {
         <div className="kpi-card info">
           <div className="kpi-icon">🌍</div>
           <div className="kpi-content">
-            <h3>Countries</h3>
-            <div className="kpi-value">{Object.keys(countryData).length}</div>
-            <div className="kpi-change neutral">Global presence</div>
+            <h3 className="text-xs font-semibold">Countries</h3>
+            <div className="kpi-value text-2xl md:text-3xl font-bold">
+              {Object.keys(countryData).length}
+            </div>
+            <div className="kpi-change neutral text-sm">Global presence</div>
           </div>
         </div>
       </div>
 
-      <div className="dashboard-grid">
+      <div className="dashboard-grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         <div className="chart-card">
           <div className="chart-header">
-            <h3>Industry Distribution</h3>
-            <p>Companies by industry sector</p>
+            <h3 className="text-lg md:text-xl font-bold">
+              📊 Industry Distribution
+            </h3>
+            <p className="text-sm md:text-base">Companies by industry sector</p>
           </div>
           <div className="chart-container">
             <ResponsiveContainer width="100%" height={300}>
@@ -182,6 +192,7 @@ export default function AdminDashboard() {
                   label={({ name, percent }) =>
                     `${name} ${(percent * 100).toFixed(0)}%`
                   }
+                  labelLine={false}
                 >
                   {industryChart.map((_, index) => (
                     <Cell
@@ -190,7 +201,15 @@ export default function AdminDashboard() {
                     />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid rgba(255, 255, 255, 0.1)",
+                    borderRadius: "12px",
+                    backdropFilter: "blur(20px)",
+                    color: "#ffffff",
+                  }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -290,34 +309,48 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="chart-card">
+        <div className="chart-card md:col-span-2 xl:col-span-1">
           <div className="chart-header">
-            <h3>Recent Companies</h3>
-            <p>Latest company registrations</p>
+            <h3 className="text-lg md:text-xl font-bold">
+              🏢 Recent Companies
+            </h3>
+            <p className="text-sm md:text-base">Latest company registrations</p>
           </div>
           <div className="recent-companies">
-            {recentCompanies.map((company) => (
-              <div key={company.id} className="company-item">
-                <div className="company-avatar">
-                  {company.logo ? (
-                    <img src={company.logo} alt={company.name} />
-                  ) : (
-                    <div className="company-initial">
-                      {company.name.charAt(0)}
+            {recentCompanies.length > 0 ? (
+              recentCompanies.map((company) => (
+                <div key={company.id} className="company-item">
+                  <div className="company-avatar">
+                    {company.logo ? (
+                      <img src={company.logo} alt={company.name} />
+                    ) : (
+                      <div className="company-initial">
+                        {company.name.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <div className="company-info">
+                    <div className="company-name text-sm font-semibold">
+                      {company.name}
                     </div>
-                  )}
-                </div>
-                <div className="company-info">
-                  <div className="company-name">{company.name}</div>
-                  <div className="company-meta">
-                    {company.industry} • {company.country}
+                    <div className="company-meta text-xs">
+                      {company.industry && <span>{company.industry}</span>}
+                      {company.industry && company.country && <span> • </span>}
+                      {company.country && <span>{company.country}</span>}
+                    </div>
+                  </div>
+                  <div className="company-date text-xs">
+                    {new Date(company.created_at).toLocaleDateString()}
                   </div>
                 </div>
-                <div className="company-date">
-                  {new Date(company.created_at).toLocaleDateString()}
+              ))
+            ) : (
+              <div className="empty-state p-lg">
+                <div className="text-center">
+                  <p className="text-sm">No recent companies</p>
                 </div>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>

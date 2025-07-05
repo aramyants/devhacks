@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 
 import Chat from "./components/Chat";
-import Company from "./components/Company";
+import Company from "./components/CompanyOptimized";
 import CompanySettings from "./components/CompanySettings";
 import AdminDashboard from "./components/AdminDashboard";
 import OwnerDashboard from "./components/OwnerDashboard";
