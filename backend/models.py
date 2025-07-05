@@ -31,52 +31,17 @@ class Company(Base):
 
     id   = Column(Integer, primary_key=True, index=True)
 
-    # relationships
-    users     = relationship(
-        "User",
-        back_populates="company",
-        cascade="all, delete-orphan",
-        lazy="selectin",
-    )
-    offerings = relationship(
-        "Offering",
-        back_populates="company",
-        cascade="all, delete-orphan",
-        lazy="selectin",
-    )
-    products  = relationship(
-        "Product",
-        back_populates="company",
-        cascade="all, delete-orphan",
-        lazy="selectin",
-    )
+    # Relationships (optional: keep if you need them)
+    users     = relationship("User", back_populates="company", cascade="all, delete-orphan", lazy="selectin")
+    offerings = relationship("Offering", back_populates="company", cascade="all, delete-orphan", lazy="selectin")
+    products  = relationship("Product", back_populates="company", cascade="all, delete-orphan", lazy="selectin")
 
-    # business fields
-    name         = Column(String(255), nullable=False, index=True)
-    details      = Column(Text)
-    industry     = Column(String(128))
-    website      = Column(String(255))
-    logo         = Column(String(255))
-    tagline      = Column(String(255))
-    mission      = Column(Text)
-    vision       = Column(Text)
-    values       = Column(String(255))
-    founded_year = Column(Integer)
-    size         = Column(String(64))   # e.g. “1-10”, “11-50”
-    country      = Column(String(64))
-    city         = Column(String(64))
-    contact_email = Column(String(255))
-    phone         = Column(String(64))
-    social_links  = Column(JSON)
-    extra         = Column(JSON)
+    # Keep only the required columns
+    name        = Column(String(255), nullable=False, index=True)
+    details     = Column(Text)
+    created_at  = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at  = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
-    # timestamps
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(
-        DateTime(timezone=True),
-        server_default=func.now(),
-        onupdate=func.now(),
-    )
 
 # ── ChatMessage ────────────────────────────────────────────────────────────
 class ChatMessage(Base):
