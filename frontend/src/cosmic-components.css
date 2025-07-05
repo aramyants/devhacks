@@ -212,6 +212,12 @@
   color: var(--danger);
 }
 
+.cosmic-alert.warning {
+  background: rgba(255, 170, 0, 0.1);
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
 .alert-icon {
   font-size: 1.5rem;
   flex-shrink: 0;
