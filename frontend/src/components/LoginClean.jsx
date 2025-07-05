@@ -43,13 +43,6 @@ export default function LoginClean({ onSwitchToRegister }) {
     clearError();
     setLocalError("");
 
-    // Test error display - remove after confirming it works
-    if (email === "test@error.com") {
-      setLocalError("Test error message - this should appear in UI!");
-      setIsSubmitting(false);
-      return;
-    }
-
     try {
       console.log("Attempting login with:", { email });
       const result = await login(email, password);
