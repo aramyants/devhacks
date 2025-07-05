@@ -1591,7 +1591,7 @@ td button {
 }
 
 .auth-footer p {
-  color: var(--text-light);
+  color: #e2e8f0;
   margin: 0 0 1rem 0;
   font-size: 0.95rem;
 }
