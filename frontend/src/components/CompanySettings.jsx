@@ -68,10 +68,20 @@ export default function CompanySettings({ companyId = 1 }) {
 
   // ---------- RENDER ----------
   if (status === "loading")
-    return <p style={{ padding: "1rem" }}>Loading company data…</p>;
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <span>Loading company data...</span>
+      </div>
+    );
 
   if (status === "error")
-    return <p style={{ padding: "1rem", color: "crimson" }}>Error: {error}</p>;
+    return (
+      <div className="error-container">
+        <span className="error-icon">⚠️</span>
+        <span>Error: {error}</span>
+      </div>
+    );
 
   return (
     <section className="company-settings">
@@ -137,48 +147,71 @@ export default function CompanySettings({ companyId = 1 }) {
             />
           </div>
 
-        {/* Company Description */}
-        <label>
-          Company Description
-          <textarea
-            name="description"
-            rows={3}
-            placeholder="Brief description of what your company does"
-            value={form.description}
-            onChange={handleChange}
-          />
-        </label>
+          {/* Company Description */}
+          <div className="form-group form-group-full">
+            <label htmlFor="description" className="form-label">
+              Company Description
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              className="form-textarea"
+              rows={3}
+              placeholder="Brief description of what your company does"
+              value={form.description}
+              onChange={handleChange}
+            />
+          </div>
 
-        {/* Privacy Policy */}
-        <label>
-          Privacy Policy
-          <textarea
-            name="privacyPolicy"
-            rows={6}
-            placeholder="Add or edit your company’s privacy policy here"
-            value={form.privacyPolicy}
-            onChange={handleChange}
-          />
-        </label>
+          {/* Privacy Policy */}
+          <div className="form-group form-group-full">
+            <label htmlFor="privacyPolicy" className="form-label">
+              Privacy Policy
+            </label>
+            <textarea
+              id="privacyPolicy"
+              name="privacyPolicy"
+              className="form-textarea"
+              rows={6}
+              placeholder="Add or edit your company's privacy policy here"
+              value={form.privacyPolicy}
+              onChange={handleChange}
+            />
+          </div>
 
-        {/* Marketing Opt-in */}
-        <label className="checkbox">
-          <input
-            type="checkbox"
-            name="acceptsMarketing"
-            checked={form.acceptsMarketing}
-            onChange={handleChange}
-          />
-          Allow marketing e-mails to customers
-        </label>
+          {/* Marketing Opt-in */}
+          <div className="form-group form-group-full">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                name="acceptsMarketing"
+                className="checkbox-input"
+                checked={form.acceptsMarketing}
+                onChange={handleChange}
+              />
+              <span className="checkbox-text">
+                Allow marketing emails to customers
+              </span>
+            </label>
+          </div>
+        </div>
 
-        <button type="submit" disabled={status === "saving"}>
-          {status === "saving" ? "Saving…" : "Save Changes"}
-        </button>
+        <div className="form-actions">
+          <button
+            type="submit"
+            className="submit-button"
+            disabled={status === "saving"}
+          >
+            {status === "saving" ? "Saving..." : "Save Changes"}
+          </button>
 
-        {status === "success" && (
-          <span style={{ marginLeft: 12, color: "green" }}>Saved!</span>
-        )}
+          {status === "success" && (
+            <div className="success-message">
+              <span className="success-icon">✓</span>
+              <span>Changes saved successfully!</span>
+            </div>
+          )}
+        </div>
       </form>
     </section>
   );
