@@ -155,7 +155,7 @@ export default function Dashboard() {
                   <YAxis allowDecimals={false} />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="value" fill="#27ae60" />
+                  <Bar dataKey="value" fill="var(--success)" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
