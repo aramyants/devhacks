@@ -228,13 +228,13 @@ main.container {
 
 /* 4. Header + Navigation */
 .header {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: var(--shadow);
+  background: var(--glass);
+  box-shadow: var(--shadow-cosmic);
   position: sticky;
   top: 0;
   z-index: 50;
-  border-bottom: 1.5px solid var(--primary-light);
-  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--glass-border);
+  backdrop-filter: blur(30px);
   transition: background 0.3s;
 }
 .header h1 {
@@ -413,24 +413,37 @@ input:not([type="checkbox"]),
 textarea,
 select {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1.5px solid var(--primary-light);
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   font: inherit;
-  font-size: 1.05rem;
-  background: #f7f8fa;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
-  box-shadow: 0 1px 4px #5f6fff11;
+  font-size: 1rem;
+  background: var(--glass);
+  color: var(--text);
+  backdrop-filter: blur(20px);
+  transition: var(--transition);
+  outline: none;
+  box-shadow: var(--shadow-cosmic);
+}
+
+select {
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2300d4ff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 2px 8px rgba(0, 212, 255, 0.3);
-  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 input::placeholder,
@@ -496,28 +509,31 @@ table,
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
-  background: #fff;
-  border: 1.5px solid var(--primary-light);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 2px 12px #5f6fff11;
+  box-shadow: var(--shadow-cosmic);
+  backdrop-filter: blur(20px);
 }
 th,
 td {
   padding: 1.1rem 0.9rem;
   text-align: left;
+  color: var(--text);
 }
 th {
-  background: #f1f5ff;
+  background: rgba(0, 212, 255, 0.1);
   font-size: 1rem;
-  color: var(--primary-dark);
+  color: var(--primary);
   font-weight: 700;
+  border-bottom: 1px solid var(--glass-border);
 }
 tr + tr td {
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--glass-border);
 }
 tr:hover {
-  background: #f7f8fa;
+  background: var(--surface-hover);
 }
 td button {
   font-size: 0.75rem;
@@ -538,19 +554,22 @@ td button {
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
 }
 .modal-content {
-  background: var(--surface);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(30px);
   padding: 2.5rem 2rem;
-  border-radius: var(--radius);
+  border-radius: var(--radius-large);
   width: 95%;
   max-width: 540px;
-  box-shadow: 0 8px 32px #5f6fff22;
+  box-shadow: var(--shadow-floating);
   animation: fadeInUp 0.35s cubic-bezier(0.23, 1.01, 0.32, 1);
 }
 .modal-header {
@@ -577,46 +596,67 @@ td button {
   border-radius: var(--radius);
   margin-bottom: 1.25rem;
   border: 1px solid transparent;
+  backdrop-filter: blur(20px);
 }
 .error {
-  background: #f8d7da;
-  color: #721c24;
-  border-color: #f5c6cb;
+  background: rgba(255, 0, 102, 0.1);
+  color: var(--danger);
+  border-color: var(--danger);
 }
 .success {
-  background: #d4edda;
-  color: #155724;
-  border-color: #c3e6cb;
+  background: rgba(0, 255, 136, 0.1);
+  color: var(--success);
+  border-color: var(--success);
 }
 
 /* 11. Chat */
 .chat-container {
   display: flex;
   flex-direction: column;
-  background: var(--surface);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-cosmic);
+  backdrop-filter: blur(20px);
   height: 600px;
   overflow: hidden;
 }
 .chat-header {
-  background: var(--text);
-  color: #fff;
-  padding: 1rem;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: var(--text);
+  padding: 1.5rem;
   text-align: center;
+  border-bottom: 1px solid var(--glass-border);
+}
+.chat-header h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 .chat-messages {
   flex: 1;
   padding: 1rem;
   overflow-y: auto;
-  background: #f8f9fa;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.no-messages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-light);
+  font-style: italic;
+  text-align: center;
 }
 .message {
-  background: var(--surface);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius);
   padding: 1rem;
   margin-bottom: 1rem;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-cosmic);
+  backdrop-filter: blur(20px);
   animation: fadeInUp 0.3s ease-out;
 }
 .message-header {
@@ -637,9 +677,10 @@ td button {
   word-wrap: break-word;
 }
 .chat-input-form {
-  background: var(--surface);
+  background: var(--glass);
   padding: 1rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
 }
 .input-group {
   display: flex;
@@ -1873,20 +1914,22 @@ td button {
 }
 
 .logout-btn {
-  background: rgba(245, 246, 250, 0.8);
+  background: var(--glass);
   color: var(--text-light);
-  border: 1.5px solid #e2e6ed;
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
   font-weight: 600;
   padding: 0.5rem 1.1rem;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition);
+  backdrop-filter: blur(20px);
 }
 
 .logout-btn:hover {
-  background: #e2e6ed;
+  background: var(--surface-hover);
   color: var(--text);
+  border-color: var(--primary);
 }
 
 /* Cosmic Modern Header */
@@ -1983,10 +2026,11 @@ td button {
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: rgba(248, 250, 252, 0.8);
+  background: var(--glass);
   border-radius: 16px;
   padding: 0.5rem 1rem;
-  border: 1px solid rgba(226, 232, 240, 0.5);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
 }
 
 .user-avatar {
@@ -2035,10 +2079,11 @@ td button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(248, 250, 252, 0.6);
+  background: var(--glass);
   border-radius: 16px;
   padding: 0.5rem;
-  border: 1px solid rgba(226, 232, 240, 0.5);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
 }
 
 .nav-item {
@@ -2058,12 +2103,12 @@ td button {
 
 .nav-item:hover {
   color: var(--primary);
-  background: rgba(95, 111, 255, 0.05);
+  background: var(--surface-hover);
 }
 
 .nav-item.active {
   color: var(--primary);
-  background: rgba(95, 111, 255, 0.1);
+  background: rgba(0, 212, 255, 0.1);
   font-weight: 600;
 }
 
@@ -2166,20 +2211,22 @@ td button {
 }
 
 .time-filter {
-  background: white;
-  border: 2px solid var(--border);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
   border-radius: 12px;
   padding: 0.75rem 1rem;
   font-size: 0.875rem;
   color: var(--text);
   font-weight: 500;
   cursor: pointer;
-  transition: border-color 0.3s ease;
+  transition: var(--transition);
+  backdrop-filter: blur(20px);
 }
 
 .time-filter:focus {
   outline: none;
   border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
 }
 
 /* KPI Grid */

@@ -12,6 +12,11 @@ export default function CompanyOptimized() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingCompany, setEditingCompany] = useState(null);
+  const [operationLoading, setOperationLoading] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [companyToDelete, setCompanyToDelete] = useState(null);
   const [newCompany, setNewCompany] = useState({
     name: "",
     industry: "",
@@ -45,7 +50,8 @@ export default function CompanyOptimized() {
 
   const handleCreateCompany = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setOperationLoading(true);
+    setError("");
     try {
       await companyApi.createCompany(newCompany);
       setIsCreateModalOpen(false);
@@ -64,22 +70,67 @@ export default function CompanyOptimized() {
       await fetchCompanies();
       await refreshTenants();
     } catch (err) {
-      setError(err.message);
+      setError(`Failed to create company: ${err.message}`);
     } finally {
-      setLoading(false);
+      setOperationLoading(false);
     }
   };
 
-  const handleDeleteCompany = async (companyId) => {
-    if (!window.confirm("Are you sure you want to delete this company?"))
-      return;
+  const handleEditCompany = (company) => {
+    setEditingCompany({
+      id: company.id,
+      name: company.name || "",
+      industry: company.industry || "",
+      country: company.country || "",
+      city: company.city || "",
+      website: company.website || "",
+      contact_email: company.contact_email || "",
+      phone: company.phone || "",
+      tagline: company.tagline || "",
+      founded_year: company.founded_year || new Date().getFullYear(),
+      size: company.size || "1-10",
+    });
+    setIsEditModalOpen(true);
+    setSelectedCompany(null);
+  };
 
+  const handleUpdateCompany = async (e) => {
+    e.preventDefault();
+    setOperationLoading(true);
+    setError("");
     try {
-      await companyApi.deleteCompany(companyId);
+      await companyApi.updateCompany(editingCompany.id, editingCompany);
+      setIsEditModalOpen(false);
+      setEditingCompany(null);
       await fetchCompanies();
       await refreshTenants();
     } catch (err) {
-      setError(err.message);
+      setError(`Failed to update company: ${err.message}`);
+    } finally {
+      setOperationLoading(false);
+    }
+  };
+
+  const handleDeleteClick = (company) => {
+    setCompanyToDelete(company);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!companyToDelete) return;
+
+    setOperationLoading(true);
+    setError("");
+    try {
+      await companyApi.deleteCompany(companyToDelete.id);
+      await fetchCompanies();
+      await refreshTenants();
+      setIsDeleteModalOpen(false);
+      setCompanyToDelete(null);
+    } catch (err) {
+      setError(`Failed to delete company: ${err.message}`);
+    } finally {
+      setOperationLoading(false);
     }
   };
 
@@ -232,17 +283,19 @@ export default function CompanyOptimized() {
               <div className="company-actions">
                 <button
                   className="action-btn edit"
-                  onClick={() => setSelectedCompany(company)}
+                  onClick={() => handleEditCompany(company)}
                   title="Edit Company"
                   aria-label={`Edit ${company.name}`}
+                  disabled={operationLoading}
                 >
                   ✏️
                 </button>
                 <button
                   className="action-btn delete"
-                  onClick={() => handleDeleteCompany(company.id)}
+                  onClick={() => handleDeleteClick(company)}
                   title="Delete Company"
                   aria-label={`Delete ${company.name}`}
+                  disabled={operationLoading}
                 >
                   🗑️
                 </button>
@@ -516,9 +569,9 @@ export default function CompanyOptimized() {
                 <button
                   type="submit"
                   className="cosmic-btn primary"
-                  disabled={loading || !newCompany.name.trim()}
+                  disabled={operationLoading || !newCompany.name.trim()}
                 >
-                  {loading ? (
+                  {operationLoading ? (
                     <>
                       <div className="cosmic-spinner"></div>
                       Creating...
@@ -532,6 +585,319 @@ export default function CompanyOptimized() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Company Modal */}
+      {isEditModalOpen && editingCompany && (
+        <div className="cosmic-modal">
+          <div
+            className="modal-backdrop"
+            onClick={() => setIsEditModalOpen(false)}
+          ></div>
+          <div className="modal-content">
+            <div className="modal-header">
+              <h2 className="text-xl lg:text-2xl font-bold">✏️ Edit Company</h2>
+              <button
+                className="close-btn"
+                onClick={() => setIsEditModalOpen(false)}
+                aria-label="Close modal"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleUpdateCompany} className="company-form">
+              <div className="form-grid">
+                <div className="form-group">
+                  <label htmlFor="edit-name" className="text-sm font-semibold">
+                    Company Name *
+                  </label>
+                  <input
+                    id="edit-name"
+                    type="text"
+                    value={editingCompany.name}
+                    onChange={(e) =>
+                      setEditingCompany({
+                        ...editingCompany,
+                        name: e.target.value,
+                      })
+                    }
+                    required
+                    placeholder="Enter company name"
+                    className="text-base"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label
+                    htmlFor="edit-industry"
+                    className="text-sm font-semibold"
+                  >
+                    Industry
+                  </label>
+                  <select
+                    id="edit-industry"
+                    value={editingCompany.industry}
+                    onChange={(e) =>
+                      setEditingCompany({
+                        ...editingCompany,
+                        industry: e.target.value,
+                      })
+                    }
+                    className="text-base"
+                  >
+                    <option value="">Select industry</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Finance">Finance</option>
+                    <option value="E-commerce">E-commerce</option>
+                    <option value="Manufacturing">Manufacturing</option>
+                    <option value="Education">Education</option>
+                    <option value="Real Estate">Real Estate</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label
+                    htmlFor="edit-country"
+                    className="text-sm font-semibold"
+                  >
+                    Country
+                  </label>
+                  <input
+                    id="edit-country"
+                    type="text"
+                    value={editingCompany.country}
+                    onChange={(e) =>
+                      setEditingCompany({
+                        ...editingCompany,
+                        country: e.target.value,
+                      })
+                    }
+                    placeholder="e.g., United States"
+                    className="text-base"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="edit-city" className="text-sm font-semibold">
+                    City
+                  </label>
+                  <input
+                    id="edit-city"
+                    type="text"
+                    value={editingCompany.city}
+                    onChange={(e) =>
+                      setEditingCompany({
+                        ...editingCompany,
+                        city: e.target.value,
+                      })
+                    }
+                    placeholder="e.g., San Francisco"
+                    className="text-base"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label
+                    htmlFor="edit-website"
+                    className="text-sm font-semibold"
+                  >
+                    Website
+                  </label>
+                  <input
+                    id="edit-website"
+                    type="url"
+                    value={editingCompany.website}
+                    onChange={(e) =>
+                      setEditingCompany({
+                        ...editingCompany,
+                        website: e.target.value,
+                      })
+                    }
+                    placeholder="https://example.com"
+                    className="text-base"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label
+                    htmlFor="edit-contact_email"
+                    className="text-sm font-semibold"
+                  >
+                    Contact Email
+                  </label>
+                  <input
+                    id="edit-contact_email"
+                    type="email"
+                    value={editingCompany.contact_email}
+                    onChange={(e) =>
+                      setEditingCompany({
+                        ...editingCompany,
+                        contact_email: e.target.value,
+                      })
+                    }
+                    placeholder="contact@company.com"
+                    className="text-base"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="edit-phone" className="text-sm font-semibold">
+                    Phone
+                  </label>
+                  <input
+                    id="edit-phone"
+                    type="tel"
+                    value={editingCompany.phone}
+                    onChange={(e) =>
+                      setEditingCompany({
+                        ...editingCompany,
+                        phone: e.target.value,
+                      })
+                    }
+                    placeholder="+1 (555) 123-4567"
+                    className="text-base"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="edit-size" className="text-sm font-semibold">
+                    Company Size
+                  </label>
+                  <select
+                    id="edit-size"
+                    value={editingCompany.size}
+                    onChange={(e) =>
+                      setEditingCompany({
+                        ...editingCompany,
+                        size: e.target.value,
+                      })
+                    }
+                    className="text-base"
+                  >
+                    <option value="1-10">1-10 employees</option>
+                    <option value="11-50">11-50 employees</option>
+                    <option value="51-200">51-200 employees</option>
+                    <option value="201-500">201-500 employees</option>
+                    <option value="501-1000">501-1000 employees</option>
+                    <option value="1000+">1000+ employees</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-group full-width">
+                <label htmlFor="edit-tagline" className="text-sm font-semibold">
+                  Tagline
+                </label>
+                <input
+                  id="edit-tagline"
+                  type="text"
+                  value={editingCompany.tagline}
+                  onChange={(e) =>
+                    setEditingCompany({
+                      ...editingCompany,
+                      tagline: e.target.value,
+                    })
+                  }
+                  placeholder="A brief description of what the company does"
+                  className="text-base"
+                />
+              </div>
+
+              <div className="modal-actions">
+                <button
+                  type="button"
+                  className="cosmic-btn secondary"
+                  onClick={() => setIsEditModalOpen(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="cosmic-btn primary"
+                  disabled={operationLoading || !editingCompany.name.trim()}
+                >
+                  {operationLoading ? (
+                    <>
+                      <div className="cosmic-spinner"></div>
+                      Updating...
+                    </>
+                  ) : (
+                    <>
+                      <span className="btn-icon">✏️</span>
+                      Update Company
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && companyToDelete && (
+        <div className="cosmic-modal">
+          <div
+            className="modal-backdrop"
+            onClick={() => setIsDeleteModalOpen(false)}
+          ></div>
+          <div className="modal-content">
+            <div className="modal-header">
+              <h2 className="text-xl lg:text-2xl font-bold">
+                🗑️ Delete Company
+              </h2>
+              <button
+                className="close-btn"
+                onClick={() => setIsDeleteModalOpen(false)}
+                aria-label="Close modal"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <p className="text-base lg:text-lg mb-4">
+                Are you sure you want to delete{" "}
+                <strong>{companyToDelete.name}</strong>?
+              </p>
+              <p className="text-sm text-gray-600">
+                This action cannot be undone. All company data will be
+                permanently removed.
+              </p>
+            </div>
+
+            <div className="modal-actions">
+              <button
+                type="button"
+                className="cosmic-btn secondary"
+                onClick={() => setIsDeleteModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="cosmic-btn danger"
+                onClick={handleConfirmDelete}
+                disabled={operationLoading}
+              >
+                {operationLoading ? (
+                  <>
+                    <div className="cosmic-spinner"></div>
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <span className="btn-icon">🗑️</span>
+                    Delete Company
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}

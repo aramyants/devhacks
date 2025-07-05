@@ -24,6 +24,7 @@ export default function OwnerDashboard() {
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
   const [timeFilter, setTimeFilter] = useState("30d");
+  const [isUsingMockData, setIsUsingMockData] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -31,16 +32,59 @@ export default function OwnerDashboard() {
 
       setLoading(true);
       try {
-        const [companyData, productsData, statsData] = await Promise.all([
-          companyApi.getCompany(user.companyId),
-          productsApi.getCompanyProducts(user.companyId),
-          dashboardApi.getCompanyStats(user.companyId, timeFilter),
-        ]);
+        // Fetch data individually to prevent one failure from breaking everything
+        let mockDataUsed = false;
+
+        const companyData = await companyApi
+          .getCompany(user.companyId)
+          .catch((err) => {
+            console.warn("Failed to fetch company data:", err.message);
+            mockDataUsed = true;
+            return {
+              id: user.companyId,
+              name: "Demo Company",
+              industry: "Technology",
+            };
+          });
+
+        const productsData = await productsApi
+          .getCompanyProducts(user.companyId)
+          .catch((err) => {
+            console.warn("Failed to fetch products data:", err.message);
+            mockDataUsed = true;
+            return [];
+          });
+
+        const statsData = await dashboardApi
+          .getCompanyStats(user.companyId, timeFilter)
+          .catch((err) => {
+            console.warn("Failed to fetch stats data:", err.message);
+            mockDataUsed = true;
+            return {
+              totalProducts: 0,
+              newProducts: 0,
+              revenue: 0,
+              revenueGrowth: 0,
+              orders: 0,
+              newOrders: 0,
+              revenueChart: [],
+              productPerformance: [],
+              customerMetrics: {
+                retention: 0,
+                satisfaction: 0,
+                churnRate: 0,
+                lifetimeValue: 0,
+              },
+            };
+          });
+
+        setIsUsingMockData(mockDataUsed);
+
         setCompany(companyData);
         setProducts(productsData);
         setStats(statsData);
       } catch (error) {
-        console.error("Failed to fetch dashboard data:", error);
+        console.error("Unexpected error in dashboard:", error);
       } finally {
         setLoading(false);
       }
@@ -112,6 +156,20 @@ export default function OwnerDashboard() {
           </select>
         </div>
       </div>
+
+      {/* Backend Status Notification */}
+      {isUsingMockData && (
+        <div className="cosmic-alert warning" style={{ marginBottom: "2rem" }}>
+          <span className="alert-icon">⚠️</span>
+          <div className="alert-content">
+            <h4 className="font-semibold">Demo Mode</h4>
+            <p className="text-sm">
+              Backend API is not available. Showing demo data for testing. Start
+              the FastAPI server to see real data.
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="kpi-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <div className="kpi-card primary">
