@@ -129,106 +129,122 @@ export default function TenantSwitcher() {
         </div>
       </button>
 
-      {isOpen && (
-        <div className="tenant-dropdown">
-          <div className="cosmic-backdrop"></div>
-          <div className="dropdown-content">
-            <div className="search-container">
-              <div className="cosmic-search">
-                <svg
-                  className="search-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                >
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <path d="21 21l-4.35-4.35"></path>
-                </svg>
-                <input
-                  ref={searchRef}
-                  type="text"
-                  placeholder="Search companies..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="search-input"
-                />
-                {searchTerm && (
-                  <button
-                    className="clear-search"
-                    onClick={() => setSearchTerm("")}
+      {isOpen &&
+        createPortal(
+          <div
+            className="tenant-dropdown-portal"
+            style={{
+              position: "fixed",
+              top: dropdownPosition.top,
+              left: dropdownPosition.left,
+              width: dropdownPosition.width,
+              zIndex: 99999,
+            }}
+          >
+            <div className="cosmic-backdrop"></div>
+            <div className="dropdown-content">
+              <div className="search-container">
+                <div className="cosmic-search">
+                  <svg
+                    className="search-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
                   >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="21 21l-4.35-4.35"></path>
+                  </svg>
+                  <input
+                    ref={searchRef}
+                    type="text"
+                    placeholder="Search companies..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="search-input"
+                  />
+                  {searchTerm && (
+                    <button
+                      className="clear-search"
+                      onClick={() => setSearchTerm("")}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                      >
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="tenant-list">
+                {filteredTenants.length > 0 ? (
+                  <>
+                    <div className="list-header">
+                      <span>{filteredTenants.length} companies found</span>
+                    </div>
+                    {filteredTenants.map((t) => (
+                      <button
+                        key={t.id}
+                        className={`tenant-option ${t.id === tenant.id ? "selected" : ""}`}
+                        onClick={() => handleTenantSelect(t)}
+                      >
+                        <div className="option-avatar">
+                          {t.logo ? (
+                            <img src={t.logo} alt={t.name} />
+                          ) : (
+                            <div className="option-initial">
+                              {t.name.charAt(0)}
+                            </div>
+                          )}
+                        </div>
+                        <div className="option-info">
+                          <div className="option-name">{t.name}</div>
+                          <div className="option-meta">
+                            {t.industry && (
+                              <span className="industry">{t.industry}</span>
+                            )}
+                            {t.country && (
+                              <span className="country">{t.country}</span>
+                            )}
+                            {t.founded_year && (
+                              <span className="year">
+                                Est. {t.founded_year}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        {t.id === tenant.id && (
+                          <div className="selected-indicator">
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                            >
+                              <polyline points="20,6 9,17 4,12"></polyline>
+                            </svg>
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </>
+                ) : (
+                  <div className="empty-state">
+                    <div className="empty-icon">🔍</div>
+                    <div className="empty-message">
+                      {searchTerm
+                        ? `No companies found for "${searchTerm}"`
+                        : "No companies available"}
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
-
-            <div className="tenant-list">
-              {filteredTenants.length > 0 ? (
-                <>
-                  <div className="list-header">
-                    <span>{filteredTenants.length} companies found</span>
-                  </div>
-                  {filteredTenants.map((t) => (
-                    <button
-                      key={t.id}
-                      className={`tenant-option ${t.id === tenant.id ? "selected" : ""}`}
-                      onClick={() => handleTenantSelect(t)}
-                    >
-                      <div className="option-avatar">
-                        {t.logo ? (
-                          <img src={t.logo} alt={t.name} />
-                        ) : (
-                          <div className="option-initial">
-                            {t.name.charAt(0)}
-                          </div>
-                        )}
-                      </div>
-                      <div className="option-info">
-                        <div className="option-name">{t.name}</div>
-                        <div className="option-meta">
-                          {t.industry && (
-                            <span className="industry">{t.industry}</span>
-                          )}
-                          {t.country && (
-                            <span className="country">{t.country}</span>
-                          )}
-                          {t.founded_year && (
-                            <span className="year">Est. {t.founded_year}</span>
-                          )}
-                        </div>
-                      </div>
-                      {t.id === tenant.id && (
-                        <div className="selected-indicator">
-                          <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                          >
-                            <polyline points="20,6 9,17 4,12"></polyline>
-                          </svg>
-                        </div>
-                      )}
-                    </button>
-                  ))}
-                </>
-              ) : (
-                <div className="empty-state">
-                  <div className="empty-icon">🔍</div>
-                  <div className="empty-message">
-                    {searchTerm
-                      ? `No companies found for "${searchTerm}"`
-                      : "No companies available"}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+          </div>,
+        )}
     </div>
   );
 }
