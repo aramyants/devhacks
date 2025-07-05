@@ -838,6 +838,69 @@ export default function CompanyOptimized() {
           </div>
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      {isDeleteModalOpen && companyToDelete && (
+        <div className="cosmic-modal">
+          <div
+            className="modal-backdrop"
+            onClick={() => setIsDeleteModalOpen(false)}
+          ></div>
+          <div className="modal-content">
+            <div className="modal-header">
+              <h2 className="text-xl lg:text-2xl font-bold">
+                🗑️ Delete Company
+              </h2>
+              <button
+                className="close-btn"
+                onClick={() => setIsDeleteModalOpen(false)}
+                aria-label="Close modal"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <p className="text-base lg:text-lg mb-4">
+                Are you sure you want to delete{" "}
+                <strong>{companyToDelete.name}</strong>?
+              </p>
+              <p className="text-sm text-gray-600">
+                This action cannot be undone. All company data will be
+                permanently removed.
+              </p>
+            </div>
+
+            <div className="modal-actions">
+              <button
+                type="button"
+                className="cosmic-btn secondary"
+                onClick={() => setIsDeleteModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="cosmic-btn danger"
+                onClick={handleConfirmDelete}
+                disabled={operationLoading}
+              >
+                {operationLoading ? (
+                  <>
+                    <div className="cosmic-spinner"></div>
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <span className="btn-icon">🗑️</span>
+                    Delete Company
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
