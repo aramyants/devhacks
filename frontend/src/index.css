@@ -1287,7 +1287,7 @@ td button {
 .auth-logo h1 {
   font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  background: linear-gradient(135deg, #00d4ff, #8000ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1296,7 +1296,7 @@ td button {
 }
 
 .auth-logo p {
-  color: var(--text-light);
+  color: #e2e8f0;
   margin: 0;
   font-size: 1.1rem;
   font-weight: 500;
