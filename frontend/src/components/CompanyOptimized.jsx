@@ -287,6 +287,7 @@ export default function CompanyOptimized() {
                   onClick={() => handleDeleteCompany(company.id)}
                   title="Delete Company"
                   aria-label={`Delete ${company.name}`}
+                  disabled={operationLoading}
                 >
                   🗑️
                 </button>
