@@ -1880,20 +1880,22 @@ td button {
 }
 
 .logout-btn {
-  background: rgba(245, 246, 250, 0.8);
+  background: var(--glass);
   color: var(--text-light);
-  border: 1.5px solid #e2e6ed;
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
   font-weight: 600;
   padding: 0.5rem 1.1rem;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition);
+  backdrop-filter: blur(20px);
 }
 
 .logout-btn:hover {
-  background: #e2e6ed;
+  background: var(--surface-hover);
   color: var(--text);
+  border-color: var(--primary);
 }
 
 /* Cosmic Modern Header */
