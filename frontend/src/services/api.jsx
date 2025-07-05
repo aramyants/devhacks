@@ -81,12 +81,13 @@ export const companyApi = {
       const response = await api.get(`/companies?skip=${skip}&limit=${limit}`);
       return response.data;
     } catch (error) {
-      console.error(
-        "❌ Backend API unavailable. Please start the FastAPI backend server.",
+      console.warn(
+        "⚠️ Backend API unavailable. Using mock data fallback. Start FastAPI server on port 8000 for real data.",
       );
-      throw new Error(
-        "Backend API unavailable. Please start the FastAPI server on port 8000.",
-      );
+      // Return mock data as fallback
+      const startIndex = skip || 0;
+      const endIndex = startIndex + (limit || 100);
+      return MOCK_COMPANIES.slice(startIndex, endIndex);
     }
   },
 
