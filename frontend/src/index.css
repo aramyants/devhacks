@@ -2042,10 +2042,11 @@ td button {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(248, 250, 252, 0.6);
+  background: var(--glass);
   border-radius: 16px;
   padding: 0.5rem;
-  border: 1px solid rgba(226, 232, 240, 0.5);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
 }
 
 .nav-item {
