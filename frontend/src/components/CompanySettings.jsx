@@ -176,22 +176,6 @@ export default function CompanySettings({ companyId = 1 }) {
               onChange={handleChange}
             />
           </div>
-
-          {/* Marketing Opt-in */}
-          <div className="form-group form-group-full">
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                name="acceptsMarketing"
-                className="checkbox-input"
-                checked={form.acceptsMarketing}
-                onChange={handleChange}
-              />
-              <span className="checkbox-text">
-                Allow marketing emails to customers
-              </span>
-            </label>
-          </div>
         </div>
 
         <div className="form-actions">
