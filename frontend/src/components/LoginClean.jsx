@@ -138,6 +138,16 @@ export default function LoginClean({ onSwitchToRegister }) {
             </div>
           )}
 
+          {/* Debug: Force show error state to test UI */}
+          {process.env.NODE_ENV === "development" && !error && (
+            <div
+              style={{ fontSize: "12px", color: "#999", marginBottom: "10px" }}
+            >
+              No error in state. Try logging in with wrong credentials to see
+              error display.
+            </div>
+          )}
+
           <button
             type="submit"
             className="auth-submit-btn-fixed"
