@@ -1,19 +1,28 @@
-
 from logging.config import fileConfig
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import engine_from_config, pool
 from alembic import context
-import os
-import sys
+import os, sys, configparser, pathlib          # ← NEW imports
 
-# Add the parent directory to the path so we can import our modules
+# ── NEW : create DATABASE_URL from alembic.ini if user didn't export it ──
+ini_path   = pathlib.Path(__file__).with_name("alembic.ini")
+_cfg       = configparser.ConfigParser()
+_cfg.read(ini_path)
+if (
+    "alembic" in _cfg
+    and "sqlalchemy.url" in _cfg["alembic"]
+    and "DATABASE_URL" not in os.environ
+):
+    os.environ["DATABASE_URL"] = _cfg["alembic"]["sqlalchemy.url"]
+# ─────────────────────────────────────────────────────────────────────────
+
+# Make repo root importable
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from database import Base
-from models import Company
+from database import Base                    # ← now safe: env var exists
+from models   import Company
 
-if os.getenv("DATABASE_URL"):
-    context.config.set_main_option("sqlalchemy.url", os.environ["DATABASE_URL"])
+# if os.getenv("DATABASE_URL"):
+#     context.config.set_main_option("sqlalchemy.url", os.environ["DATABASE_URL"])
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
