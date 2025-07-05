@@ -81,9 +81,10 @@ function Chat() {
   return (
     <div className="chat-container">
       <div className="chat-header">
-        <h2>Chat Room</h2>
-        <div style={{ color: "#eee", fontSize: 14, marginTop: 4 }}>
-          <b>Tenant:</b> {tenant.name}
+        <h2>💬 Chat Room</h2>
+        <div className="tenant-info">
+          <span className="tenant-label">Company:</span>
+          <span className="tenant-name">{tenant.name}</span>
         </div>
       </div>
 
