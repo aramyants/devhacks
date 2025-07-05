@@ -65,7 +65,12 @@ export function TenantProvider({ children }) {
       let companies = [];
 
       if (user.role === "admin") {
-        companies = await companyApi.getCompanies();
+        const allCompanies = await companyApi.getCompanies();
+        companies = allCompanies.filter(
+          (company) =>
+            company.name !== "Admin Company" &&
+            !company.name.toLowerCase().includes("admin"),
+        );
       } else if (user.companyId) {
         const company = await companyApi.getCompany(user.companyId);
         companies = [company];
