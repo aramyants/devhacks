@@ -4,6 +4,7 @@ from routes.companies import router as companies_router
 from routes.assistant import router as assistant_router
 from routes.dashboard import router as dashboard_router
 from routes.auth import router as auth_router
+from routes.products import router as products_router
 from database import engine
 from models import Base
 
