@@ -18,7 +18,6 @@ export default function CompanySettings({ companyId = 1 }) {
     phoneNumber: "",
     description: "",
     privacyPolicy: "",
-    acceptsMarketing: false,
   });
   const [status, setStatus] = useState("idle"); // idle | loading | saving | success | error
   const [error, setError] = useState(null);
