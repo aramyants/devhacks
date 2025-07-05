@@ -34,7 +34,6 @@ export default function CompanySettings({ companyId = 1 }) {
           phoneNumber: data.phoneNumber ?? "",
           description: data.description ?? "",
           privacyPolicy: data.privacyPolicy ?? "",
-          acceptsMarketing: data.acceptsMarketing ?? false,
         });
         setStatus("idle");
       } catch (err) {
