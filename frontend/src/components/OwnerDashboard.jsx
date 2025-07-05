@@ -157,6 +157,20 @@ export default function OwnerDashboard() {
         </div>
       </div>
 
+      {/* Backend Status Notification */}
+      {isUsingMockData && (
+        <div className="cosmic-alert warning" style={{ marginBottom: "2rem" }}>
+          <span className="alert-icon">⚠️</span>
+          <div className="alert-content">
+            <h4 className="font-semibold">Demo Mode</h4>
+            <p className="text-sm">
+              Backend API is not available. Showing demo data for testing. Start
+              the FastAPI server to see real data.
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="kpi-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <div className="kpi-card primary">
           <div className="kpi-icon">📦</div>
