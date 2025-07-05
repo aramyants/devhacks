@@ -7,7 +7,6 @@ export default function LoginClean({ onSwitchToRegister }) {
   const [showPassword, setShowPassword] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [localError, setLocalError] = useState("");
 
   const { login, loading, error, clearError } = useAuth();
 
