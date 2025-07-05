@@ -41,6 +41,14 @@ export default function LoginClean({ onSwitchToRegister }) {
     setIsSubmitting(true);
     clearError();
 
+    // Test error display - remove after confirming it works
+    if (email === "test@error.com") {
+      setTimeout(() => {
+        console.log("Setting test error manually");
+        // We need to set error directly since we can't access setError from AuthContext
+      }, 100);
+    }
+
     try {
       console.log("Attempting login with:", { email });
       const result = await login(email, password);
