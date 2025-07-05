@@ -48,7 +48,8 @@ export default function CompanyOptimized() {
 
   const handleCreateCompany = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setOperationLoading(true);
+    setError("");
     try {
       await companyApi.createCompany(newCompany);
       setIsCreateModalOpen(false);
@@ -67,9 +68,9 @@ export default function CompanyOptimized() {
       await fetchCompanies();
       await refreshTenants();
     } catch (err) {
-      setError(err.message);
+      setError(`Failed to create company: ${err.message}`);
     } finally {
-      setLoading(false);
+      setOperationLoading(false);
     }
   };
 
