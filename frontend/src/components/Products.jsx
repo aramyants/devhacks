@@ -87,8 +87,7 @@ export default function Products() {
     setIsEditModalOpen(true);
   };
 
-  const handleUpdateItem = async (e) => {
-    e.preventDefault();
+  const handleUpdateItem = async () => {
     setOperationLoading(true);
     setError("");
 
