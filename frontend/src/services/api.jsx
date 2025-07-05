@@ -199,7 +199,11 @@ export const authApi = {
   // Logout user
   logout: async () => {
     try {
-      await api.post("/auth/logout");
+      try {
+        await api.post("/auth/logout");
+      } catch (backendError) {
+        await mockAuthApi.logout();
+      }
       localStorage.removeItem("auth_token");
       localStorage.removeItem("user");
     } catch (error) {
@@ -213,8 +217,12 @@ export const authApi = {
   // Verify token
   verifyToken: async () => {
     try {
-      const response = await api.get("/auth/verify");
-      return response.data;
+      try {
+        const response = await api.get("/auth/verify");
+        return response.data;
+      } catch (backendError) {
+        return await mockAuthApi.verifyToken();
+      }
     } catch (error) {
       throw new Error(error.message || "Token verification failed");
     }
