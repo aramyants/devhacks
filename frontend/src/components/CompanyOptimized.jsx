@@ -15,6 +15,8 @@ export default function CompanyOptimized() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingCompany, setEditingCompany] = useState(null);
   const [operationLoading, setOperationLoading] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [companyToDelete, setCompanyToDelete] = useState(null);
   const [newCompany, setNewCompany] = useState({
     name: "",
     industry: "",
