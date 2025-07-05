@@ -666,9 +666,10 @@ td button {
   word-wrap: break-word;
 }
 .chat-input-form {
-  background: var(--surface);
+  background: var(--glass);
   padding: 1rem;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
 }
 .input-group {
   display: flex;
