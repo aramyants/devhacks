@@ -1,7 +1,9 @@
 /* index.css  ────────────────────────────────────────────────
-   Dashboard theme – merges your original palette with
-   a modern card/table/form system driven by CSS variables.
+   Cosmic Epic Dashboard Theme - Advanced space-themed UI system
+   with real database integration and responsive design
 ──────────────────────────────────────────────────────────── */
+
+@import url("./cosmic-components.css");
 
 /* Cosmic Epic Theme Variables */
 :root {
