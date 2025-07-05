@@ -135,13 +135,16 @@ export const authApi = {
   // Login user
   login: async (email, password) => {
     try {
-      console.log("AuthAPI: Attempting login with", { email, password });
-      console.log(
-        "AuthAPI: Email type:",
-        typeof email,
-        "Password type:",
-        typeof password,
-      );
+      // Clean and normalize inputs
+      const cleanEmail = (email || "").trim().toLowerCase();
+      const cleanPassword = (password || "").trim();
+
+      console.log("AuthAPI: Attempting login with", {
+        originalEmail: email,
+        originalPassword: password,
+        cleanEmail,
+        cleanPassword,
+      });
 
       // For demo purposes, we'll simulate the backend response
       // Accept multiple password variations for demo
@@ -150,49 +153,54 @@ export const authApi = {
       console.log("AuthAPI: Valid passwords:", validPasswords);
       console.log(
         "AuthAPI: Password check:",
-        validPasswords.includes(password),
+        validPasswords.includes(cleanPassword),
       );
-      console.log("AuthAPI: Email check admin:", email === "admin@saas.com");
-      console.log("AuthAPI: Email check acme:", email === "owner@acme.com");
-      console.log("AuthAPI: Email check globex:", email === "owner@globex.com");
+      console.log("AuthAPI: Email checks:", {
+        admin: cleanEmail === "admin@saas.com",
+        acme: cleanEmail === "owner@acme.com",
+        globex: cleanEmail === "owner@globex.com",
+      });
 
-      if (email === "admin@saas.com" && validPasswords.includes(password)) {
+      if (
+        cleanEmail === "admin@saas.com" &&
+        validPasswords.includes(cleanPassword)
+      ) {
         const result = {
           token: "demo-admin-token",
-          user: { email, role: "admin", id: 1 },
+          user: { email: cleanEmail, role: "admin", id: 1 },
         };
         console.log("AuthAPI: Admin login successful", result);
         return result;
       } else if (
-        email === "owner@acme.com" &&
-        validPasswords.includes(password)
+        cleanEmail === "owner@acme.com" &&
+        validPasswords.includes(cleanPassword)
       ) {
         const result = {
           token: "demo-owner-token-1",
-          user: { email, role: "owner", companyId: 1, id: 2 },
+          user: { email: cleanEmail, role: "owner", companyId: 1, id: 2 },
         };
         console.log("AuthAPI: Acme owner login successful", result);
         return result;
       } else if (
-        email === "owner@globex.com" &&
-        validPasswords.includes(password)
+        cleanEmail === "owner@globex.com" &&
+        validPasswords.includes(cleanPassword)
       ) {
         const result = {
           token: "demo-owner-token-2",
-          user: { email, role: "owner", companyId: 2, id: 3 },
+          user: { email: cleanEmail, role: "owner", companyId: 2, id: 3 },
         };
         console.log("AuthAPI: Globex owner login successful", result);
         return result;
       } else {
         console.log("AuthAPI: Login failed - invalid credentials");
         console.log("AuthAPI: Failed because - email match:", [
-          email === "admin@saas.com",
-          email === "owner@acme.com",
-          email === "owner@globex.com",
+          cleanEmail === "admin@saas.com",
+          cleanEmail === "owner@acme.com",
+          cleanEmail === "owner@globex.com",
         ]);
         console.log(
           "AuthAPI: Failed because - password match:",
-          validPasswords.includes(password),
+          validPasswords.includes(cleanPassword),
         );
         throw new Error("Invalid email or password");
       }
