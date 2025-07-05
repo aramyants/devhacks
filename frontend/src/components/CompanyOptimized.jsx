@@ -292,7 +292,7 @@ export default function CompanyOptimized() {
                 </button>
                 <button
                   className="action-btn delete"
-                  onClick={() => handleDeleteCompany(company.id)}
+                  onClick={() => handleDeleteClick(company)}
                   title="Delete Company"
                   aria-label={`Delete ${company.name}`}
                   disabled={operationLoading}
