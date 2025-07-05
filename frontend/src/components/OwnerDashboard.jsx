@@ -33,14 +33,17 @@ export default function OwnerDashboard() {
       setLoading(true);
       try {
         // Fetch data individually to prevent one failure from breaking everything
+        let mockDataUsed = false;
+
         const companyData = await companyApi
           .getCompany(user.companyId)
           .catch((err) => {
             console.warn("Failed to fetch company data:", err.message);
+            mockDataUsed = true;
             return {
               id: user.companyId,
-              name: "Unknown Company",
-              industry: "Unknown",
+              name: "Demo Company",
+              industry: "Technology",
             };
           });
 
