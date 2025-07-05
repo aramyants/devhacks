@@ -14,6 +14,13 @@ export default function LoginClean({ onSwitchToRegister }) {
     clearError();
   }, [clearError]);
 
+  // Debug: Monitor error state changes
+  useEffect(() => {
+    if (error) {
+      console.log("LoginClean: Error state updated:", error);
+    }
+  }, [error]);
+
   const validateForm = () => {
     const errors = {};
 
