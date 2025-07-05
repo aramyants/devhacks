@@ -96,7 +96,7 @@ function AppContent() {
             />
             <Route path="/products" element={<Products />} />
             <Route path="/chat" element={<Chat />} />
-            <Route path="/analytics" element={<AdminDashboard />} />
+            <Route path="/analytics" element={<TenantAnalytics />} />
             <Route
               path="/users"
               element={<div>Users Management (Coming Soon)</div>}
