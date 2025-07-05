@@ -21,8 +21,8 @@ class Company(Base):
     city = Column(String(64), nullable=True)
     contact_email = Column(String(255), nullable=True)
     phone = Column(String(64), nullable=True)
-    social_links = Column(JSON, nullable=True)  # e.g. {"linkedin": "...", "twitter": "..."}
-    extra = Column(JSON, nullable=True)         # for custom fields
+    social_links = Column(JSON, nullable=True)
+    extra = Column(JSON, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now(), server_default=func.now())
 
