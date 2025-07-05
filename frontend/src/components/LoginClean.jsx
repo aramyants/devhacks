@@ -50,13 +50,11 @@ export default function LoginClean({ onSwitchToRegister }) {
 
       if (!result.success) {
         console.error("Login failed:", result.error);
-        console.log("Error state after failed login:", error);
       } else {
         console.log("Login successful!");
       }
     } catch (err) {
       console.error("Login error caught:", err);
-      console.log("Error state after catch:", error);
     } finally {
       setIsSubmitting(false);
     }
