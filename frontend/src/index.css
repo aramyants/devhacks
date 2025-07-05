@@ -638,6 +638,16 @@ td button {
   overflow-y: auto;
   background: rgba(0, 0, 0, 0.1);
 }
+
+.no-messages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-light);
+  font-style: italic;
+  text-align: center;
+}
 .message {
   background: var(--glass);
   border: 1px solid var(--glass-border);
