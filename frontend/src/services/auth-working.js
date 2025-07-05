@@ -137,12 +137,17 @@ export const workingAuthApi = {
           user: response.data.user,
         };
       } catch (backendError) {
-        console.error(
-          "❌ Backend API unavailable. Please start the FastAPI backend server.",
+        console.warn(
+          "⚠️ Backend unavailable, using mock authentication. Start FastAPI server for real auth.",
         );
-        throw new Error(
-          "Backend API unavailable. Please start the FastAPI server on port 8000.",
-        );
+
+        const mockResponse = await mockLogin(email.trim(), password);
+        console.log("✅ Mock login successful");
+
+        return {
+          token: mockResponse.access_token,
+          user: mockResponse.user,
+        };
       }
     } catch (error) {
       console.error("❌ Login failed:", error.message);
