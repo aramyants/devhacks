@@ -10,4 +10,4 @@ Our project is an AI voice assistant integrated with [Vapi](https://www.vapi.ai/
 
 ## Demo
 
-You can try the voice assistant by calling this number: **+1 985-449-8525**
+You can try the voice assistant by calling this number: **+1 985-449-*****
